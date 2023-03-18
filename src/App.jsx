@@ -40,7 +40,7 @@ function App() {
 
       {/* up next */}
       <div>
-        <h2>Next Server: Sylvester </h2>
+        <h2>Next Server: Finn </h2>
       </div>
       <hr />
 
