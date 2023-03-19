@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./App.css";
 
 import AssignBtn from "./components/Btns/AssignBtn";
@@ -8,12 +8,17 @@ import BreakBtn from "./components/Btns/BreakBtn";
 // import BreakOverBtn from "./components/Btns/BreakOverBtn";
 import ClockOutBtn from "./components/Btns/ClockOutBtn";
 import Footer from "./components/Footer";
+import AddBtn from "./components/Btns/AddBtn";
 // import Header from "./components/Header";
 
 function App() {
   const [employeeName, setEmployeeName] = useState("");
   const [isTrainee, setIsTrainee] = useState(false);
   const [employees, setEmployees] = useState([]);
+
+  useEffect(() => {
+    console.log("employees arr: ", employees);
+  }, [employees]);
 
   const handleNameChange = (event) => {
     setEmployeeName(event.target.value);
@@ -35,13 +40,36 @@ function App() {
     };
 
     const newEmployees = [...employees, newEmployee];
-    console.log("employees 1: ", employees);
 
     setEmployees(newEmployees);
     setEmployeeName("");
     setIsTrainee(false);
-    console.log("employees: ", employees);
   };
+
+  const handleAssignSmall = () => {
+    console.log("small assign button clicked");
+  };
+
+  const handleAssignBig = () => {
+    console.log("Big assign button clicked");
+  };
+
+  const handleSkipSmall = () => {
+    console.log("Small Skip button clicked");
+  };
+
+  const handleSkipBig = () => {
+    console.log("Big Skip button clicked");
+  };
+
+  const handleBreak = () => {
+    console.log("Break button clicked");
+  };
+
+  const handleClockOut = () => {
+    console.log("Clock Out button clicked");
+  };
+
   return (
     <div className="App">
       <header>
@@ -67,12 +95,7 @@ function App() {
           Training
         </label>
 
-        <button
-          className="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-          onClick={handleAddEmployee}
-        >
-          Add
-        </button>
+        <AddBtn onClick={handleAddEmployee} />
       </header>
 
       {/* up next */}
@@ -103,16 +126,16 @@ function App() {
                   <td>{employee.employeeName}</td>
                   <td>{employee.smallTopTotal}</td>
                   <td>
-                    <AssignBtn />
+                    <AssignBtn onClick={() => handleAssignSmall(employee.id)} />
                   </td>
                   <td>
-                    <SkipBtn />
+                    <SkipBtn onClick={() => handleSkipSmall(employee.id)} />
                   </td>
                   <td>
-                    <BreakBtn />
+                    <BreakBtn onClick={() => handleBreak(employee.id)} />
                   </td>
                   <td>
-                    <ClockOutBtn />
+                    <ClockOutBtn onClick={() => handleClockOut(employee.id)} />
                   </td>
                 </tr>
               ))}
@@ -140,10 +163,10 @@ function App() {
                   <td>{employee.employeeName}</td>
                   <td>{employee.bigTopTotal}</td>
                   <td>
-                    <AssignBtn />
+                    <AssignBtn onClick={() => handleAssignBig(employee.id)} />
                   </td>
                   <td>
-                    <SkipBtn />
+                    <SkipBtn onClick={() => handleSkipBig(employee.id)} />
                   </td>
                 </tr>
               ))}
