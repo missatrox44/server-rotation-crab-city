@@ -1,7 +1,12 @@
 import { useState } from "react";
 import "./App.css";
 
-import TableRotation from "./components/Sample";
+import AssignBtn from "./components/Btns/AssignBtn";
+import SkipBtn from "./components/Btns/SkipBtn";
+import BreakBtn from "./components/Btns/BreakBtn";
+import ReadyBtn from "./components/Btns/ReadyBtn";
+import BreakOverBtn from "./components/Btns/BreakOverBtn";
+import ClockOutBtn from "./components/Btns/ClockOutBtn";
 
 function App() {
   const [isTrainee, setIsTrainee] = useState(false);
@@ -13,8 +18,9 @@ function App() {
   return (
     <div className="App">
       <header>
-        <h1>Crab City Server Rotation</h1>
-        <label for="name">Employee Name</label>
+        <h1 className="text-blue-600 text-6xl">Crab City Server Rotation</h1>
+        <p className="text-xs mb-6">v.1.2.0</p>
+        <label for="name">Employee Name: </label>
         <input
           type="text"
           name="name"
@@ -22,31 +28,35 @@ function App() {
           required
           // value={employeeName}
           // onChange={handleChange}
+          className="p-2 mx-2 rounded-lg"
         />
 
-        <label>
+        <label className="mx-2">
           <input
-            type="radio"
+            className=" "
+            type="checkbox"
             name="status"
             value="trainee"
             checked={isTrainee}
             onChange={handleStatusChange}
           />
-          Trainee
+          Training
         </label>
 
-        <button>Add</button>
+        <button className="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+          Add
+        </button>
       </header>
 
       {/* up next */}
-      <div>
-        <h2>Next Server: Finn </h2>
+      <div className="my-3">
+        <h2 className="text-3xl">Next Server: Finn </h2>
       </div>
-      <hr />
+      <hr className="my-8" />
 
       {/* small tops */}
       <div>
-        <h3>Small Tops</h3>
+        <h3 className="text-2xl mb-3">Small Tops</h3>
         <table>
           <thead>
             <tr>
@@ -63,48 +73,48 @@ function App() {
               <td>Finn</td>
               <td>3</td>
               <td>
-                <button>+</button>
+                <AssignBtn />
               </td>
               <td>
-                <button>Skip</button>
+                <SkipBtn />
               </td>
               <td>
-                <button>Break</button>
+                <BreakBtn />
               </td>
               <td>
-                <button>Clock Out</button>
+                <ClockOutBtn />
               </td>
             </tr>
             <tr>
               <td>Chelsea</td>
               <td>4</td>
               <td>
-                <button>+</button>
+                <AssignBtn />
               </td>
               <td>
-                <button>Skip</button>
+                <SkipBtn />
               </td>
               <td>
-                <button>Break</button>
+                <BreakBtn />
               </td>
               <td>
-                <button>Clock Out</button>
+                <ClockOutBtn />
               </td>
             </tr>
             <tr>
               <td>Boswell</td>
               <td>4</td>
               <td>
-                <button>+</button>
+                <AssignBtn />
               </td>
               <td>
-                <button>Skip</button>
+                <SkipBtn />
               </td>
               <td>
-                <button>Break</button>
+                <BreakBtn />
               </td>
               <td>
-                <button>Clock Out</button>
+                <ClockOutBtn />
               </td>
             </tr>
             <tr>
@@ -113,10 +123,10 @@ function App() {
               <td></td>
               <td></td>
               <td>
-                <button>Break Over</button>
+                <BreakOverBtn />
               </td>
               <td>
-                <button>Clock Out</button>
+                <ClockOutBtn />
               </td>
             </tr>
             <tr className="clocked-out">
@@ -127,10 +137,10 @@ function App() {
           </tbody>
         </table>
       </div>
-      <hr />
+      <hr className="my-8" />
       {/* big tops */}
       <div>
-        <h3>Big Tops</h3>
+        <h3 className="text-2xl mb-3">Big Tops</h3>
         <table>
           <thead>
             <tr>
@@ -145,17 +155,17 @@ function App() {
               <td>Finn</td>
               <td>0</td>
               <td>
-                <button>+</button>
+                <AssignBtn />
               </td>
               <td>
-                <button>Skip</button>
+                <SkipBtn />
               </td>
             </tr>
             <tr>
               <td>Chelsea</td>
               <td>1</td>
               <td>
-                <button>Ready for more tables</button>
+                <ReadyBtn />
               </td>
               <td>{/* <button>Skip</button> */}</td>
             </tr>
@@ -168,7 +178,7 @@ function App() {
           </tbody>
         </table>
       </div>
-      <hr />
+      <hr className="my-8" />
       <footer>
         Created by{" "}
         <a target="_blank" href="https://github.com/missatrox44">
