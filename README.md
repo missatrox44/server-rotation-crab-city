@@ -36,7 +36,9 @@ The current system of using a dry erase board to keep track of which server gets
 - The app will reset at midnight, clearing totals and removing server names 
 
 
-## Wireframe
+## Wireframes
 ![wireframe](./src/assets/wireframe.png)
+![wireframe2](./src/assets/wireframe2.png)
+
 
 
