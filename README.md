@@ -15,30 +15,33 @@ Click on link to open in browser
 
 
 ## User Story
-The current system of using a dry erase board to keep track of which server gets the next table is not efficient, especially during rushes resulting in servers getting skipped, double sat, or overwhelmed. Customers also become frustrated because the servers are not able to provide a good experience, especially to big tops. As a restaurant owner, I want to efficiently keep track of servers and their table assignments so that customers and other servers will have a streamlined experience with little to no confusion on who gets the next table..
+The current system of using a dry-erase board to keep track of which server gets the next table is not efficient, especially during rushes. It often results in servers getting skipped, double-seated, or overwhelmed. This can lead to customers becoming frustrated because the servers are not able to provide a good experience, particularly with large groups. As a restaurant owner, I want to streamline the process of tracking servers and their table assignments. This will ensure a smooth experience for both customers and servers with minimal confusion on who gets the next table.
 
 
 ## Requirements
-- Display the name of the upcoming server at the top of the app
-- Dedicate a section to keep track of tables (small tops)
-- Dedicate a second section to keep track of big tops (6 or more people)
-- A header section that includes an editable input to enter the name of a server
-- Optional radio button/check box for a trainee
-- Server names will appear in both sections for 'small tops' or 'big tops' if they are not trainees. Trainees will ONLY be able to server 'small tops'
-- A running count of tables assigned to a server for the day (small tops/big tops separately)
-- Buttons will be next to every server name and disabled until it is that server's turn
-- An 'assign' button will increase the table count by one and change the name of the next server to the following name in the list
-- A 'skip' button will change the display of the upcoming server and put the previous server to the end of the list
-- If assigned to a Big Top - the server will be taken out of rotation until the Big Top has ordered food. At this time the server will click a button when 'Ready for more tables'
-- A 'break' button will temporarily take server out of rotation (disable buttons). At that time a button will appear 'Ready for more tables' and can be pressed when the server comes back from break
-- There will be a 'Clock out' button to permanently remove server from rotation for the rest of the day
-- There will be a 'jump' button - reserved for servers who may have customers request to seat them. 'Jump' feature will skip server in next rotation
-- The app will reset at midnight, clearing totals and removing server names 
+- The header section includes an editable input to enter the name of a server.
+- An optional radio button/check box is available for a trainee.
+- The name of the upcoming server is displayed under the header, above the table.
+- The names displayed in the table reflect the actual order of the queue. The top row of the table displays the upcoming server information, allowing users to easily see who is next in line. Once a server is assigned a table, they will move to the bottom of the table. If an employee is on a break, they will be placed at the end of the queue until they return.
+- There is a table that displays the following information:
+  - Name: Employee Name
+  - Status: Current status of the employee
+  - Small Tops: Displays the running count of small tops assigned
+   -Assign Small: When pressed, the small top count is incremented by one, and the employee is moved to the back of the queue.
+  - Big Tops: Displays the running count of big tops assigned. This will not appear for trainees.
+  - Assign Big: When pressed, the big top count is incremented by one, and the employee is taken out of the queue (paused). A new button 'Ready for more tables' will appear, while the Small/Big Assign and Skip buttons are removed/disabled.
+  - Skip: When pressed, the employee is moved to the back of the queue.
+   -Break: When pressed, the employee is taken out of the queue (paused). A new button 'Break Over' will appear, while the Small/Big Assign and Skip buttons are removed/disabled.
+  - Clock Out: When pressed, the employee will be removed from the table completely.
+- When employees are ready for more tables or are back from break, they can press the 'Ready for More Tables' or 'Break Over' button, which will make them the next employee in the queue.
+- The app will have a backend, so all instances of the app will be up-to-date on any iPad used at the restaurant (Firebase implementation).
+- The app will remove all users from the table at midnight.
 
 
 ## Wireframes
-![wireframe](./src/assets/wireframe.png)
-![wireframe2](./src/assets/wireframe2.png)
+<!-- ![wireframe](./src/assets/wireframe.png)
+![wireframe2](./src/assets/wireframe2.png) -->
+![wireframe3](./src/assets/wireframe3.png)
 
 
 

@@ -54,12 +54,8 @@ function App() {
     console.log("Big assign button clicked");
   };
 
-  const handleSkipSmall = () => {
-    console.log("Small Skip button clicked");
-  };
-
-  const handleSkipBig = () => {
-    console.log("Big Skip button clicked");
+  const handleSkip = () => {
+    console.log("Skip button clicked");
   };
 
   const handleBreak = () => {
@@ -74,7 +70,7 @@ function App() {
     <div className="App">
       <header>
         <h1 className="text-blue-600 text-6xl">Crab City Server Rotation</h1>
-        <p className="text-xs mb-6">v.1.2.0</p>
+        <p className="text-xs mb-6">v.1.3.0</p>
 
         <label for="name">Employee Name: </label>
         <input
@@ -104,15 +100,17 @@ function App() {
       </div>
       <hr className="my-8" />
 
-      {/* small tops */}
+      {/* TABLE */}
       <div>
-        <h3 className="text-2xl mb-3">Small Tops</h3>
         <table>
           <thead>
             <tr>
               <th>Name</th>
-              <th>Total Tables</th>
-              <th>Assign</th>
+              <th>Status</th>
+              <th>Small <br /> Tops</th>
+              <th>Assign <br /> Small</th>
+              <th>Big <br /> Tops</th>
+              <th>Assign <br /> Big</th>
               <th>Skip</th>
               <th>Break</th>
               <th>Clock Out</th>
@@ -124,12 +122,19 @@ function App() {
               .map((employee) => (
                 <tr key={employee.id}>
                   <td>{employee.employeeName}</td>
+                  <td>Status HERE</td>
                   <td>{employee.smallTopTotal}</td>
                   <td>
                     <AssignBtn onClick={() => handleAssignSmall(employee.id)} />
                   </td>
+                  <td>{!employee.trainee && employee.bigTopTotal}</td>
                   <td>
-                    <SkipBtn onClick={() => handleSkipSmall(employee.id)} />
+                    {!employee.trainee && (
+                      <AssignBtn onClick={() => handleAssignBig(employee.id)} />
+                    )}
+                  </td>
+                  <td>
+                    <SkipBtn onClick={() => handleSkip(employee.id)} />
                   </td>
                   <td>
                     <BreakBtn onClick={() => handleBreak(employee.id)} />
@@ -143,37 +148,7 @@ function App() {
         </table>
       </div>
       <hr className="my-8" />
-      {/* big tops */}
-      <div>
-        <h3 className="text-2xl mb-3">Big Tops</h3>
-        <table>
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Total Tables</th>
-              <th>Assign</th>
-              <th>Skip</th>
-            </tr>
-          </thead>
-          <tbody>
-            {employees
-              .filter((employee) => !employee.trainee)
-              .map((employee) => (
-                <tr key={employee.id}>
-                  <td>{employee.employeeName}</td>
-                  <td>{employee.bigTopTotal}</td>
-                  <td>
-                    <AssignBtn onClick={() => handleAssignBig(employee.id)} />
-                  </td>
-                  <td>
-                    <SkipBtn onClick={() => handleSkipBig(employee.id)} />
-                  </td>
-                </tr>
-              ))}
-          </tbody>
-        </table>
-      </div>
-      <hr className="my-8" />
+
       <Footer />
     </div>
   );
