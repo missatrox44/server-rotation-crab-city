@@ -32,7 +32,7 @@ The current system of using a dry-erase board to keep track of which server gets
   - Assign Big: When pressed, the big top count is incremented by one, and the employee is taken out of the queue (paused). A new button 'Ready for more tables' will appear, while the Small/Big Assign and Skip buttons are removed/disabled.
   - Skip: When pressed, the employee is moved to the back of the queue.
    -Break: When pressed, the employee is taken out of the queue (paused). A new button 'Break Over' will appear, while the Small/Big Assign and Skip buttons are removed/disabled.
-  - Clock Out: When pressed, the employee will be removed from the table completely.
+  - Clock Out: When pressed, the employee will be prompted to make SURE user meant to press button. Once confirmed, the employee will be removed from the table completely.
 - When employees are ready for more tables or are back from break, they can press the 'Ready for More Tables' or 'Break Over' button, which will make them the next employee in the queue.
 - The app will have a backend, so all instances of the app will be up-to-date on any iPad used at the restaurant (Firebase implementation).
 - The app will remove all users from the table at midnight.
