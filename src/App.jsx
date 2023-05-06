@@ -62,9 +62,7 @@ function App() {
     console.log("Break button clicked");
   };
 
-  const handleClockOut = () => {
-    console.log("Clock Out button clicked");
-  };
+
 
   return (
     <div className="App">
@@ -73,7 +71,7 @@ function App() {
         <p className="text-xs mb-6">v.1.3.0</p>
 
         <form>
-          <label for="name">Employee Name: </label>
+          <label htmlFor="name">Employee Name: </label>
           <input
             type="text"
             name="name"
@@ -143,7 +141,7 @@ function App() {
                     <BreakBtn onClick={() => handleBreak(employee.id)} />
                   </td>
                   <td>
-                    <ClockOutBtn onClick={() => handleClockOut(employee.id)} />
+                    <ClockOutBtn employee={employee} employees={employees} setEmployees={setEmployees}/>
                   </td>
                 </tr>
               ))}
