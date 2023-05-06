@@ -28,8 +28,13 @@ function App() {
     setIsTrainee(event.target.checked);
   };
 
+  const createRandomId = () => {
+    return Math.floor(Math.random() * max);
+  }
+
   const handleAddEmployee = () => {
     const newEmployee = {
+      //WE NEED A DIFFERENT ID SYSTEM HERE
       id: employees.length + 1,
       employeeName: employeeName,
       smallTopTotal: 0,
