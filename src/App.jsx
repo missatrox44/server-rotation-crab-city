@@ -25,8 +25,13 @@ function App() {
     setIsTrainee(event.target.checked);
   };
 
+  const createRandomId = () => {
+    return Math.floor(Math.random() * max);
+  }
+
   const handleAddEmployee = () => {
     const newEmployee = {
+      //WE NEED A DIFFERENT ID SYSTEM HERE
       id: employees.length + 1,
       employeeName: employeeName,
       smallTopTotal: 0,
@@ -68,9 +73,7 @@ function App() {
     console.log("Break button clicked");
   };
 
-  const handleClockOut = () => {
-    console.log("Clock Out button clicked");
-  };
+
 
   useEffect(() => {
     console.log("employees arr: ", employees);
@@ -82,26 +85,29 @@ function App() {
         <h1 className="text-blue-600 text-6xl">Crab City Server Rotation</h1>
         <p className="text-xs mb-6">v.1.3.0</p>
 
-        <label htmlFor="name">Employee Name: </label>
-        <input
-          type="text"
-          name="name"
-          required
-          value={employeeName}
-          onChange={handleNameChange}
-          className="p-2 mx-2 rounded-lg"
-        />
+        <form>
+          <label htmlFor="name">Employee Name: </label>
+            <input
+              type="text"
+              name="name"
+              required
+              value={employeeName}
+              onChange={handleNameChange}
+              className="p-2 mx-2 rounded-lg text-black"
+            />
 
-        <label className="mx-2">
-          <input
-            type="checkbox"
-            checked={isTrainee}
-            onChange={handleTraineeChange}
-          />
-          Training
-        </label>
+          <label className="mx-2">
+            <input
+              type="checkbox"
+              checked={isTrainee}
+              onChange={handleTraineeChange}
+            />
+            Training
+          </label>
 
-        <AddBtn onClick={handleAddEmployee} />
+          <AddBtn onClick={handleAddEmployee} />
+        </form>
+        
       </header>
 
       {/* up next */}
@@ -154,7 +160,7 @@ function App() {
                     <BreakBtn onClick={() => handleBreak(employee.id)} />
                   </td>
                   <td>
-                    <ClockOutBtn onClick={() => handleClockOut(employee.id)} />
+                    <ClockOutBtn employee={employee} employees={employees} setEmployees={setEmployees}/>
                   </td>
                 </tr>
               ))}
