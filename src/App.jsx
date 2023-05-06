@@ -31,8 +31,8 @@ function App() {
 
   const handleAddEmployee = () => {
     const newEmployee = {
-      //WE NEED A DIFFERENT ID SYSTEM HERE
-      id: employees.length + 1,
+      // id: employees.length + 1,
+      id: Date.now(),
       employeeName: employeeName,
       smallTopTotal: 0,
       bigTopTotal: 0,
