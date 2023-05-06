@@ -15,10 +15,7 @@ function App() {
   const [employeeName, setEmployeeName] = useState("");
   const [isTrainee, setIsTrainee] = useState(false);
   const [employees, setEmployees] = useState([]);
-
-  useEffect(() => {
-    console.log("employees arr: ", employees);
-  }, [employees]);
+  const [nextServerIndex, setNextServerIndex] = useState(0);
 
   const handleNameChange = (event) => {
     setEmployeeName(event.target.value);
@@ -61,6 +58,15 @@ function App() {
 
   const handleSkip = () => {
     console.log("Skip button clicked");
+    if (employees.length > 1) {
+      const skippedEmployee = employees[nextServerIndex];
+      const updatedEmployees = [
+        ...employees.slice(0, nextServerIndex),
+        ...employees.slice(nextServerIndex + 1),
+        skippedEmployee,
+      ];
+      setEmployees(updatedEmployees);
+    }
   };
 
   const handleBreak = () => {
@@ -68,6 +74,10 @@ function App() {
   };
 
 
+
+  useEffect(() => {
+    console.log("employees arr: ", employees);
+  }, [employees]);
 
   return (
     <div className="App">
@@ -77,14 +87,14 @@ function App() {
 
         <form>
           <label htmlFor="name">Employee Name: </label>
-          <input
-            type="text"
-            name="name"
-            required
-            value={employeeName}
-            onChange={handleNameChange}
-            className="p-2 mx-2 rounded-lg text-black"
-          />
+            <input
+              type="text"
+              name="name"
+              required
+              value={employeeName}
+              onChange={handleNameChange}
+              className="p-2 mx-2 rounded-lg text-black"
+            />
 
           <label className="mx-2">
             <input
@@ -102,7 +112,9 @@ function App() {
 
       {/* up next */}
       <div className="my-3">
-        <h2 className="text-3xl">Next Server: Finn </h2>
+        <h2 className="text-3xl">
+          Next Server: {employees[nextServerIndex]?.employeeName || "N/A"}{" "}
+        </h2>
       </div>
       <hr className="my-8" />
 
@@ -113,10 +125,10 @@ function App() {
             <tr>
               <th>Name</th>
               <th>Status</th>
-              <th>Small <br /> Tops</th>
-              <th>Assign <br /> Small</th>
-              <th>Big <br /> Tops</th>
-              <th>Assign <br /> Big</th>
+              <th>Small Tops</th>
+              <th>Assign Small</th>
+              <th>Big Tops</th>
+              <th>Assign Big</th>
               <th>Skip</th>
               <th>Break</th>
               <th>Clock Out</th>
@@ -125,7 +137,7 @@ function App() {
           <tbody>
             {employees
               .filter((employee) => employee.trainee || !employee.trainee)
-              .map((employee) => (
+              .map((employee, index) => (
                 <tr key={employee.id}>
                   <td>{employee.employeeName}</td>
                   <td>Status HERE</td>
@@ -140,7 +152,9 @@ function App() {
                     )}
                   </td>
                   <td>
-                    <SkipBtn onClick={() => handleSkip(employee.id)} />
+                    {index === 0 && (
+                      <SkipBtn onClick={() => handleSkip(employee.id)} />
+                    )}
                   </td>
                   <td>
                     <BreakBtn onClick={() => handleBreak(employee.id)} />
