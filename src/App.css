@@ -5,6 +5,12 @@
   text-align: center;
 }
 
+
+th, td {
+  padding: 1vw 2vw;
+}
+
+
 .clocked-out{
   text-decoration: line-through;
 }
