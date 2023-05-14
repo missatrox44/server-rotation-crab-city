@@ -12,19 +12,20 @@ function EmployeeTable({
   handleBreak,
   setEmployees,
 }) {
+
   return (
-    <table>
-      <thead>
+    <table className="mx-auto">
+      <thead className="py-10">
         <tr>
-          <th>Name</th>
-          <th>Status</th>
-          <th>Small Tops</th>
-          <th>Assign Small</th>
-          <th>Big Tops</th>
-          <th>Assign Big</th>
-          <th>Skip</th>
-          <th>Break</th>
-          <th>Clock Out</th>
+          <th className="pr-20 pb-5 text-left">Name</th>
+          <th className="pr-20 pb-5 text-left">Status</th>
+          <th className="px-9 pb-5">Small Tops</th>
+          <th className="px-9 pb-5">Assign Small</th>
+          <th className="px-9 pb-5">Big Tops</th>
+          <th className="px-9 pb-5">Assign Big</th>
+          <th className="px-9 pb-5">Skip</th>
+          <th className="px-9 pb-5">Break</th>
+          <th className="px-9 pb-5">Clock Out</th>
         </tr>
       </thead>
       <tbody>
@@ -32,27 +33,27 @@ function EmployeeTable({
           .filter((employee) => employee.trainee || !employee.trainee)
           .map((employee, index) => (
             <tr key={employee.id}>
-              <td>{employee.employeeName}</td>
-              <td>Status HERE</td>
-              <td>{employee.smallTopTotal}</td>
-              <td>
+              <td className="px-1 text-left">{employee.employeeName}</td>
+              <td className="px-1 text-left">Status HERE</td>
+              <td className="px-1">{employee.smallTopTotal}</td>
+              <td className="px-1">
                 <AssignBtn onClick={() => handleAssignSmall(employee.id)} />
               </td>
-              <td>{!employee.trainee && employee.bigTopTotal}</td>
-              <td>
+              <td className="px-1">{!employee.trainee && employee.bigTopTotal}</td>
+              <td className="px-1">
                 {!employee.trainee && (
                   <AssignBtn onClick={() => handleAssignBig(employee.id)} />
                 )}
               </td>
-              <td>
+              <td className="px-1">
                 {index === 0 && (
                   <SkipBtn onClick={() => handleSkip(employee.id)} />
                 )}
               </td>
-              <td>
+              <td className="px-1">
                 <BreakBtn onClick={() => handleBreak(employee.id)} />
               </td>
-              <td>
+              <td className="px-1">
                 <ClockOutBtn
                   employee={employee}
                   employees={employees}

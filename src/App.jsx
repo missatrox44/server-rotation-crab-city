@@ -88,15 +88,18 @@ function App() {
       <NextServer employees={employees} nextServerIndex={nextServerIndex} />
 
       <hr className="my-8" />
+      
+      <main className="overflow-x-auto">
+        <EmployeeTable
+          employees={employees}
+          handleAssignSmall={handleAssignSmall}
+          handleAssignBig={handleAssignBig}
+          handleSkip={handleSkip}
+          handleBreak={handleBreak}
+          setEmployees={setEmployees}
+        />
+      </main>
 
-      <EmployeeTable
-        employees={employees}
-        handleAssignSmall={handleAssignSmall}
-        handleAssignBig={handleAssignBig}
-        handleSkip={handleSkip}
-        handleBreak={handleBreak}
-        setEmployees={setEmployees}
-      />
 
       <hr className="my-8" />
 

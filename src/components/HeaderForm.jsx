@@ -17,11 +17,12 @@ function HeaderForm({
         required
         value={employeeName}
         onChange={handleNameChange}
-        className="p-2 mx-2 rounded-lg text-black"
+        className="p-2 mx-2 rounded-lg text-white"
       />
 
-      <label className="mx-2">
+      <label className="mx-5">
         <input
+          className="mr-2"
           type="checkbox"
           checked={isTrainee}
           onChange={handleTraineeChange}
