@@ -13,6 +13,8 @@ function App() {
   const [employeeName, setEmployeeName] = useState("");
   const [isTrainee, setIsTrainee] = useState(false);
   const [employees, setEmployees] = useState([]);
+  const [bigTopEmployees, setBigTopEmployees] = useState([]);
+  const [breakEmployees, setBreakEmployees] = useState([]);
   const [nextServerIndex, setNextServerIndex] = useState(0);
 
   const handleNameChange = (event) => {
@@ -61,10 +63,6 @@ function App() {
     }
   };
 
-  const handleAssignBig = () => {
-    console.log("Big assign button clicked");
-  };
-
   const handleSkip = () => {
     console.log("Skip button clicked");
     if (employees.length > 1) {
@@ -81,6 +79,10 @@ function App() {
   const handleBreak = () => {
     console.log("Break button clicked");
   };
+
+  const handleBreakOver = () => {
+    console.log("Break over button clicked");
+  }
 
   useEffect(() => {
     console.log("employees arr: ", employees);
@@ -101,13 +103,29 @@ function App() {
         />
       </header>
 
-      {employees.length > 0 && (
-        <div>
-          <hr className="my-8" />
+    {(employees.length > 0 || bigTopEmployees.length > 0 || breakEmployees.length > 0) && <div>
+
+      <hr className="my-8" />
 
           <NextServer employees={employees} nextServerIndex={nextServerIndex} />
 
-          <hr className="my-8" />
+      <hr className="my-8" />
+
+      <main className="overflow-x-auto">
+        <EmployeeTable
+          employees={employees}
+          setEmployees={setEmployees}
+          bigTopEmployees={bigTopEmployees}
+          setBigTopEmployees={setBigTopEmployees}
+          breakEmployees={breakEmployees}
+          setBreakEmployees={setBreakEmployees}
+          handleAssignSmall={handleAssignSmall}
+          handleSkip={handleSkip}
+          handleBreak={handleBreak}
+          handleBreakOver={handleBreakOver}
+        />
+      </main>
+
 
           <main className="overflow-x-auto">
             <EmployeeTable
