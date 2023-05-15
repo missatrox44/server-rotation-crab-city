@@ -41,16 +41,19 @@ function App() {
     setIsTrainee(false);
   };
 
-  const handleAssignSmall = () => {
-    console.log("small assign button clicked");
+  const handleAssignSmall = (employeeId) => {
+    const employee = employees.find((e) => e.id === employeeId);
+    console.log("Small assign button clicked for employee:", employee.employeeName);
   };
-
-  const handleAssignBig = () => {
-    console.log("Big assign button clicked");
+  
+  const handleAssignBig = (employeeId) => {
+    const employee = employees.find((e) => e.id === employeeId);
+    console.log("Big assign button clicked for employee:", employee.employeeName);
   };
 
   const handleSkip = () => {
-    console.log("Skip button clicked");
+    const employee = employees.find((e) => e.id === employeeId);
+    console.log("Skip button clicked for employee:", employee.employeeName);
     if (employees.length > 1) {
       const skippedEmployee = employees[nextServerIndex];
       const updatedEmployees = [
@@ -62,8 +65,9 @@ function App() {
     }
   };
 
-  const handleBreak = () => {
-    console.log("Break button clicked");
+  const handleBreak = (employeeId) => {
+    const employee = employees.find((e) => e.id === employeeId);
+    console.log("Break button clicked for employee:", employee.employeeName);
   };
 
   useEffect(() => {
