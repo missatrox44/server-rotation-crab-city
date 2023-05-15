@@ -86,7 +86,7 @@ function EmployeeTable({
           .map((employee, index) => (
             <tr key={employee.id}>
               <td className="text-left py-2 pr-2">{employee.employeeName}</td>
-              <td className="text-left py-2 pr-2 hidden-on-mobile">available</td>
+              <td className="text-left py-2 pr-2 text-orange-500 hidden-on-mobile">working a big top</td>
               <td className="p-2 hidden-on-mobile">{employee.smallTopTotal}</td>
               <td className="p-2"></td>
               <td className="p-2 hidden-on-mobile">{!employee.trainee && employee.bigTopTotal}</td>
