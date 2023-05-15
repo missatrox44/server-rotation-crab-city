@@ -81,6 +81,7 @@ function App() {
     console.log("employees arr: ", employees);
   }, [employees]);
 
+
   return (
     <div className="App">
       <header>
@@ -96,44 +97,36 @@ function App() {
         />
       </header>
 
-    {(employees.length > 0 || bigTopEmployees.length > 0 || breakEmployees.length > 0) && <div>
+      {
+        (employees.length > 0 || bigTopEmployees.length > 0 || breakEmployees.length > 0) && 
+      
+        <div>
+          <hr className="my-8" />
 
-      <hr className="my-8" />
+            <NextServer employees={employees} nextServerIndex={nextServerIndex} />
 
-          <NextServer employees={employees} nextServerIndex={nextServerIndex} />
-
-      <hr className="my-8" />
-
-      <main className="overflow-x-auto">
-        <EmployeeTable
-          employees={employees}
-          setEmployees={setEmployees}
-          bigTopEmployees={bigTopEmployees}
-          setBigTopEmployees={setBigTopEmployees}
-          breakEmployees={breakEmployees}
-          setBreakEmployees={setBreakEmployees}
-          handleAssignSmall={handleAssignSmall}
-          handleSkip={handleSkip}
-        />
-      </main>
-
+          <hr className="my-8" />
 
           <main className="overflow-x-auto">
             <EmployeeTable
               employees={employees}
-              handleAssignSmall={handleAssignSmall}
-              handleAssignBig={handleAssignBig}
-              handleSkip={handleSkip}
-              handleBreak={handleBreak}
               setEmployees={setEmployees}
+              bigTopEmployees={bigTopEmployees}
+              setBigTopEmployees={setBigTopEmployees}
+              breakEmployees={breakEmployees}
+              setBreakEmployees={setBreakEmployees}
+              handleAssignSmall={handleAssignSmall}
+              handleSkip={handleSkip}
             />
           </main>
 
           <hr className="my-8" />
+
         </div>
-      )}
+      }
 
       <Footer />
+
     </div>
   );
 }
