@@ -85,20 +85,29 @@ function App() {
         />
       </header>
 
+    {employees.length > 0 && <div>
+
+      <hr className="my-8" />
+
       <NextServer employees={employees} nextServerIndex={nextServerIndex} />
 
       <hr className="my-8" />
 
-      <EmployeeTable
-        employees={employees}
-        handleAssignSmall={handleAssignSmall}
-        handleAssignBig={handleAssignBig}
-        handleSkip={handleSkip}
-        handleBreak={handleBreak}
-        setEmployees={setEmployees}
-      />
+      <main className="overflow-x-auto">
+        <EmployeeTable
+          employees={employees}
+          handleAssignSmall={handleAssignSmall}
+          handleAssignBig={handleAssignBig}
+          handleSkip={handleSkip}
+          handleBreak={handleBreak}
+          setEmployees={setEmployees}
+        />
+      </main>
 
       <hr className="my-8" />
+
+    </div>}
+    
 
       <Footer />
     </div>
