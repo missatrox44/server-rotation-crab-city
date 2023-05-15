@@ -42,8 +42,23 @@ function App() {
   };
 
   const handleAssignSmall = (employeeId) => {
-    const employee = employees.find((e) => e.id === employeeId);
-    console.log("Small assign button clicked for employee:", employee.employeeName);
+    const employeeIndex = employees.findIndex((e) => e.id === employeeId);
+    if (employeeIndex !== -1) {
+      const updatedEmployee = {
+        ...employees[employeeIndex],
+        smallTopTotal: employees[employeeIndex].smallTopTotal + 1,
+      };
+
+      const updatedEmployees = [
+        ...employees.slice(0, employeeIndex),
+        ...employees.slice(employeeIndex + 1),
+        updatedEmployee,
+      ];
+
+      console.log("Small top assigned to:", updatedEmployee.employeeName);
+
+      setEmployees(updatedEmployees);
+    }
   };
   
   const handleAssignBig = (employeeId) => {
@@ -89,20 +104,28 @@ function App() {
         />
       </header>
 
-      <NextServer employees={employees} nextServerIndex={nextServerIndex} />
+      {employees.length > 0 && (
+        <div>
+          <hr className="my-8" />
 
-      <hr className="my-8" />
+          <NextServer employees={employees} nextServerIndex={nextServerIndex} />
 
-      <EmployeeTable
-        employees={employees}
-        handleAssignSmall={handleAssignSmall}
-        handleAssignBig={handleAssignBig}
-        handleSkip={handleSkip}
-        handleBreak={handleBreak}
-        setEmployees={setEmployees}
-      />
+          <hr className="my-8" />
 
-      <hr className="my-8" />
+          <main className="overflow-x-auto">
+            <EmployeeTable
+              employees={employees}
+              handleAssignSmall={handleAssignSmall}
+              handleAssignBig={handleAssignBig}
+              handleSkip={handleSkip}
+              handleBreak={handleBreak}
+              setEmployees={setEmployees}
+            />
+          </main>
+
+          <hr className="my-8" />
+        </div>
+      )}
 
       <Footer />
     </div>
