@@ -50,6 +50,7 @@ function EmployeeTable({
         </tr>
       </thead>
       <tbody>
+    
         {employees
           .map((employee, index) => (
             <tr key={employee.id}>
@@ -140,6 +141,7 @@ function EmployeeTable({
             </tr>
           ))
         }
+
       </tbody>
     </table>
   );
