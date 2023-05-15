@@ -14,18 +14,18 @@ function EmployeeTable({
 }) {
 
   return (
-    <table className="mx-auto">
+    <table className="mx-auto w-full">
       <thead className="py-10">
         <tr>
-          <th className="pr-20 pb-5 text-left">Name</th>
-          <th className="pr-20 pb-5 text-left">Status</th>
-          <th className="px-9 pb-5">Small Tops</th>
-          <th className="px-9 pb-5">Assign Small</th>
-          <th className="px-9 pb-5">Big Tops</th>
-          <th className="px-9 pb-5">Assign Big</th>
-          <th className="px-9 pb-5">Skip</th>
-          <th className="px-9 pb-5">Break</th>
-          <th className="px-9 pb-5">Clock Out</th>
+          <th className="text-left min-w-0 md:min-w-[100px]">Name</th>
+          <th className="text-left hidden-on-mobile">Status</th>
+          <th className="hidden-on-mobile">Small Tops</th>
+          <th>Assign Small</th>
+          <th className="hidden-on-mobile">Big Tops</th>
+          <th>Assign Big</th>
+          <th>Skip</th>
+          <th>Break</th>
+          <th className="hidden-on-mobile">Clock Out</th>
         </tr>
       </thead>
       <tbody>
@@ -33,27 +33,27 @@ function EmployeeTable({
           .filter((employee) => employee.trainee || !employee.trainee)
           .map((employee, index) => (
             <tr key={employee.id}>
-              <td className="px-1 text-left">{employee.employeeName}</td>
-              <td className="px-1 text-left">Status HERE</td>
-              <td className="px-1">{employee.smallTopTotal}</td>
-              <td className="px-1">
+              <td className="text-left py-2 pr-2">{employee.employeeName}</td>
+              <td className="text-left py-2 pr-2 hidden-on-mobile">Status HERE</td>
+              <td className="p-2 hidden-on-mobile">{employee.smallTopTotal}</td>
+              <td className="p-2">
                 <AssignBtn onClick={() => handleAssignSmall(employee.id)} />
               </td>
-              <td className="px-1">{!employee.trainee && employee.bigTopTotal}</td>
-              <td className="px-1">
+              <td className="p-2 hidden-on-mobile">{!employee.trainee && employee.bigTopTotal}</td>
+              <td className="p-2">
                 {!employee.trainee && (
                   <AssignBtn onClick={() => handleAssignBig(employee.id)} />
                 )}
               </td>
-              <td className="px-1">
+              <td className="p-2">
                 {index === 0 && (
                   <SkipBtn onClick={() => handleSkip(employee.id)} />
                 )}
               </td>
-              <td className="px-1">
+              <td className="p-2">
                 <BreakBtn onClick={() => handleBreak(employee.id)} />
               </td>
-              <td className="px-1">
+              <td className="p-2 hidden-on-mobile">
                 <ClockOutBtn
                   employee={employee}
                   employees={employees}

@@ -85,10 +85,14 @@ function App() {
         />
       </header>
 
+    {employees.length > 0 && <div>
+
+      <hr className="my-8" />
+
       <NextServer employees={employees} nextServerIndex={nextServerIndex} />
 
       <hr className="my-8" />
-      
+
       <main className="overflow-x-auto">
         <EmployeeTable
           employees={employees}
@@ -100,8 +104,10 @@ function App() {
         />
       </main>
 
-
       <hr className="my-8" />
+
+    </div>}
+    
 
       <Footer />
     </div>
