@@ -60,13 +60,6 @@ function App() {
     }
   };
 
-  const handleBreak = () => {
-    console.log("Break button clicked");
-  };
-
-  const handleBreakOver = () => {
-    console.log("Break over button clicked");
-  }
 
   useEffect(() => {
     console.log("employees arr: ", employees);
@@ -105,8 +98,6 @@ function App() {
           setBreakEmployees={setBreakEmployees}
           handleAssignSmall={handleAssignSmall}
           handleSkip={handleSkip}
-          handleBreak={handleBreak}
-          handleBreakOver={handleBreakOver}
         />
       </main>
 
