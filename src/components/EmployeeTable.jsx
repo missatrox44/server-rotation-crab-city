@@ -17,20 +17,28 @@ function EmployeeTable({
   setEmployees,
 }) {
 
-  const handleAssignBig = (employee) => {
+  const handleOutOfRotation = (employee, reason) => {
     const employeesCopy = [...employees];
-    const notBigTopEmployees = [];
-    employeesCopy.map((currentEmployee, index) => {
+    const employeesInRotation = [];
+    employeesCopy.map((currentEmployee) => {
       if (currentEmployee.id !== employee.id) {
-        notBigTopEmployees.push(currentEmployee);
+        employeesInRotation.push(currentEmployee);
       } else {
-        currentEmployee.bigTopTotal++;
-        const newBigTopEmployees = [...bigTopEmployees, currentEmployee]
-        setBigTopEmployees(newBigTopEmployees)
+        if (reason === "break") {
+          const newBreakingEmployees = [...breakEmployees, currentEmployee];
+          setBreakEmployees(newBreakingEmployees);
+        }
+        if (reason === "big top") {
+          currentEmployee.bigTopTotal++;
+          const newBigTopEmployees = [...bigTopEmployees, currentEmployee];
+          setBigTopEmployees(newBigTopEmployees);
+        } else if (reason === undefined) {
+          console.log("employee taken out of rotation, but no reason given");
+        }
       }
-      setEmployees(notBigTopEmployees);
     })
-  };
+    setEmployees(employeesInRotation);
+  }
 
   const handleReady = (employee) => {
     const addedReadyEmployee = [employee, ...employees];
@@ -42,20 +50,6 @@ function EmployeeTable({
     })
     setBigTopEmployees(removedReadyEmployee);
   }
-
-  const handleBreak = (employee) => {
-    const employeesCopy = [...employees];
-    const workingEmployees = [];
-    employeesCopy.map((currentEmployee, index) => {
-      if (currentEmployee.id !== employee.id) {
-        workingEmployees.push(currentEmployee);
-      } else {
-        const newBreakingEmployees = [...breakEmployees, currentEmployee]
-        setBreakEmployees(newBreakingEmployees)
-      }
-      setEmployees(workingEmployees);
-    })
-  };
 
   const handleBreakOver = (employee) => {
     const breakOverEmployee = [employee, ...employees];
@@ -73,7 +67,7 @@ function EmployeeTable({
       <thead className="py-10">
         <tr>
           <th className="text-left min-w-0 md:min-w-[100px]">Name</th>
-          <th className="text-left hidden-on-mobile">Status</th>
+          {/* <th className="text-left hidden-on-mobile">Status</th> */}
           <th className="hidden-on-mobile">Small Tops</th>
           <th>Assign Small</th>
           <th className="hidden-on-mobile">Big Tops</th>
@@ -89,7 +83,7 @@ function EmployeeTable({
           .map((employee, index) => (
             <tr key={employee.id}>
               <td className="text-left py-2 pr-2">{employee.employeeName}</td>
-              <td className="text-left py-2 pr-2 hidden-on-mobile">available</td>
+              {/* <td className="text-left py-2 pr-2 hidden-on-mobile">available</td> */}
               <td className="p-2 hidden-on-mobile">{employee.smallTopTotal}</td>
               <td className="p-2">
                 <AssignBtn onClick={() => handleAssignSmall(employee.id)} />
@@ -97,7 +91,7 @@ function EmployeeTable({
               <td className="p-2 hidden-on-mobile">{!employee.trainee && employee.bigTopTotal}</td>
               <td className="p-2">
                 {!employee.trainee && (
-                  <AssignBtn onClick={() => handleAssignBig(employee)} />
+                  <AssignBtn onClick={() => handleOutOfRotation(employee, "big top")} />
                 )}
               </td>
               <td className="p-2">
@@ -106,7 +100,7 @@ function EmployeeTable({
                 )}
               </td>
               <td className="p-2">
-                <BreakBtn onClick={() => handleBreak(employee)} />
+                <BreakBtn onClick={() => handleOutOfRotation(employee, "break")} />
               </td>
               <td className="p-2 hidden-on-mobile">
                 <ClockOutBtn
@@ -121,7 +115,7 @@ function EmployeeTable({
           .map((employee, index) => (
             <tr key={employee.id}>
               <td className="text-left py-2 pr-2">{employee.employeeName}</td>
-              <td className="text-left py-2 pr-2 text-orange-500 font-bold hidden-on-mobile">working a big top</td>
+              {/* <td className="text-left py-2 pr-2 text-orange-500 font-bold hidden-on-mobile">working a big top</td> */}
               <td className="p-2 hidden-on-mobile">{employee.smallTopTotal}</td>
               <td className="p-2"></td>
               <td className="p-2 hidden-on-mobile">{!employee.trainee && employee.bigTopTotal}</td>
@@ -138,7 +132,7 @@ function EmployeeTable({
           .map((employee, index) => (
             <tr key={employee.id}>
               <td className="text-left py-2 pr-2">{employee.employeeName}</td>
-              <td className="text-left py-2 pr-2 hidden-on-mobile text-yellow-400 text-bold">on break</td>
+              {/* <td className="text-left py-2 pr-2 hidden-on-mobile text-yellow-400 font-bold">on break</td> */}
               <td className="p-2 hidden-on-mobile">{employee.smallTopTotal}</td>
               <td></td>
               <td className="p-2 hidden-on-mobile">{!employee.trainee && employee.bigTopTotal}</td>
