@@ -15,6 +15,7 @@ function EmployeeTable({
   handleAssignSmall,
   handleSkip,
   setEmployees,
+  actionList,
 }) {
 
 
@@ -26,6 +27,13 @@ function EmployeeTable({
         notBigTopEmployees.push(currentEmployee);
       } else {
         currentEmployee.bigTopTotal++;
+        const lastAction = {
+          action: "big top", 
+          employee: currentEmployee,
+          currentEmployeeList: employees,
+          time: Date.now(),
+        };
+        actionList.current.push(lastAction)
         const newBigTopEmployees = [...bigTopEmployees, currentEmployee]
         setBigTopEmployees(newBigTopEmployees)
       }
