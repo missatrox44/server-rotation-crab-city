@@ -98,7 +98,7 @@ function EmployeeTable({
               <td className="p-2 hidden-on-mobile">{!employee.trainee && employee.bigTopTotal}</td>
               <td className="p-2">
                 {!employee.trainee && (
-                  <AssignBtn onClick={() => handleAssignBig(employee)} />
+                  <AssignBtn onClick={() => handleAssignBig(employee)} bigTop={true} />
                 )}
               </td>
               <td className="p-2">
