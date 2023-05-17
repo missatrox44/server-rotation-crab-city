@@ -1,8 +1,13 @@
 import React from "react";
+import UndoBtn from "./Btns/UndoBtn"
 
-function Footer() {
+function Footer({ handleUndo, actionList }) {
+
   return (
     <footer className="bottom-0 w-full my-4">
+      <div>
+        <UndoBtn onClick={() => handleUndo()}/>
+      </div>
       Created by{" "}
       <a target="_blank" href="https://github.com/missatrox44">
         S4R4

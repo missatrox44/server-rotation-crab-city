@@ -15,7 +15,9 @@ function EmployeeTable({
   handleAssignSmall,
   handleSkip,
   setEmployees,
+  actionList,
 }) {
+
 
   const handleAssignBig = (employee) => {
     const employeesCopy = [...employees];
@@ -25,6 +27,13 @@ function EmployeeTable({
         notBigTopEmployees.push(currentEmployee);
       } else {
         currentEmployee.bigTopTotal++;
+        const lastAction = {
+          action: "big top", 
+          employee: currentEmployee,
+          currentEmployeeList: employees,
+          time: Date.now(),
+        };
+        actionList.current.push(lastAction)
         const newBigTopEmployees = [...bigTopEmployees, currentEmployee]
         setBigTopEmployees(newBigTopEmployees)
       }
@@ -73,7 +82,7 @@ function EmployeeTable({
       <thead className="py-10">
         <tr>
           <th className="text-left min-w-0 md:min-w-[100px]">Name</th>
-          <th className="text-left hidden-on-mobile">Status</th>
+          {/* <th className="text-left hidden-on-mobile">Status</th> */}
           <th className="hidden-on-mobile">Small Tops</th>
           <th>Assign Small</th>
           <th className="hidden-on-mobile">Big Tops</th>
@@ -89,7 +98,7 @@ function EmployeeTable({
           .map((employee, index) => (
             <tr key={employee.id}>
               <td className="text-left py-2 pr-2">{employee.employeeName}</td>
-              <td className="text-left py-2 pr-2 hidden-on-mobile">available</td>
+              {/* <td className="text-left py-2 pr-2 hidden-on-mobile">available</td> */}
               <td className="p-2 hidden-on-mobile">{employee.smallTopTotal}</td>
               <td className="p-2">
                 <AssignBtn onClick={() => handleAssignSmall(employee.id)} />
@@ -97,7 +106,7 @@ function EmployeeTable({
               <td className="p-2 hidden-on-mobile">{!employee.trainee && employee.bigTopTotal}</td>
               <td className="p-2">
                 {!employee.trainee && (
-                  <AssignBtn onClick={() => handleAssignBig(employee)} />
+                  <AssignBtn onClick={() => handleAssignBig(employee)} bigTop={true} />
                 )}
               </td>
               <td className="p-2">
@@ -121,7 +130,7 @@ function EmployeeTable({
           .map((employee, index) => (
             <tr key={employee.id}>
               <td className="text-left py-2 pr-2">{employee.employeeName}</td>
-              <td className="text-left py-2 pr-2 text-orange-500 font-bold hidden-on-mobile">working a big top</td>
+              {/* <td className="text-left py-2 pr-2 text-orange-500 font-bold hidden-on-mobile">working a big top</td> */}
               <td className="p-2 hidden-on-mobile">{employee.smallTopTotal}</td>
               <td className="p-2"></td>
               <td className="p-2 hidden-on-mobile">{!employee.trainee && employee.bigTopTotal}</td>
@@ -138,7 +147,7 @@ function EmployeeTable({
           .map((employee, index) => (
             <tr key={employee.id}>
               <td className="text-left py-2 pr-2">{employee.employeeName}</td>
-              <td className="text-left py-2 pr-2 hidden-on-mobile text-yellow-400 text-bold">on break</td>
+              {/* <td className="text-left py-2 pr-2 hidden-on-mobile text-yellow-400 font-bold">on break</td> */}
               <td className="p-2 hidden-on-mobile">{employee.smallTopTotal}</td>
               <td></td>
               <td className="p-2 hidden-on-mobile">{!employee.trainee && employee.bigTopTotal}</td>

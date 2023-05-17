@@ -2,7 +2,7 @@ import React from "react";
 
 function BreakBtn({onClick}) {
   return (
-    <button className="text-white bg-yellow-400 hover:bg-yellow-500 focus:outline-none focus:ring-4 focus:ring-yellow-300 font-medium rounded-full text-sm px-5 py-3 text-center dark:focus:ring-yellow-900"
+    <button className="text-white bg-amber-400 hover:bg-amber-500 focus:outline-none focus:ring-4 focus:ring-amber-300 font-medium rounded-full text-sm px-5 py-3 text-center dark:focus:ring-amber-900"
     onClick={onClick}>
       Break
     </button>
