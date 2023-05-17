@@ -17,28 +17,21 @@ function EmployeeTable({
   setEmployees,
 }) {
 
-  const handleOutOfRotation = (employee, reason) => {
+
+  const handleAssignBig = (employee) => {
     const employeesCopy = [...employees];
-    const employeesInRotation = [];
-    employeesCopy.map((currentEmployee) => {
+    const notBigTopEmployees = [];
+    employeesCopy.map((currentEmployee, index) => {
       if (currentEmployee.id !== employee.id) {
-        employeesInRotation.push(currentEmployee);
+        notBigTopEmployees.push(currentEmployee);
       } else {
-        if (reason === "break") {
-          const newBreakingEmployees = [...breakEmployees, currentEmployee];
-          setBreakEmployees(newBreakingEmployees);
-        }
-        if (reason === "big top") {
-          currentEmployee.bigTopTotal++;
-          const newBigTopEmployees = [...bigTopEmployees, currentEmployee];
-          setBigTopEmployees(newBigTopEmployees);
-        } else if (reason === undefined) {
-          console.log("employee taken out of rotation, but no reason given");
-        }
+        currentEmployee.bigTopTotal++;
+        const newBigTopEmployees = [...bigTopEmployees, currentEmployee]
+        setBigTopEmployees(newBigTopEmployees)
       }
+      setEmployees(notBigTopEmployees);
     })
-    setEmployees(employeesInRotation);
-  }
+  };
 
   const handleReady = (employee) => {
     const addedReadyEmployee = [employee, ...employees];
@@ -50,6 +43,20 @@ function EmployeeTable({
     })
     setBigTopEmployees(removedReadyEmployee);
   }
+
+  const handleBreak = (employee) => {
+    const employeesCopy = [...employees];
+    const workingEmployees = [];
+    employeesCopy.map((currentEmployee, index) => {
+      if (currentEmployee.id !== employee.id) {
+        workingEmployees.push(currentEmployee);
+      } else {
+        const newBreakingEmployees = [...breakEmployees, currentEmployee]
+        setBreakEmployees(newBreakingEmployees)
+      }
+      setEmployees(workingEmployees);
+    })
+  };
 
   const handleBreakOver = (employee) => {
     const breakOverEmployee = [employee, ...employees];
@@ -91,7 +98,7 @@ function EmployeeTable({
               <td className="p-2 hidden-on-mobile">{!employee.trainee && employee.bigTopTotal}</td>
               <td className="p-2">
                 {!employee.trainee && (
-                  <AssignBtn onClick={() => handleOutOfRotation(employee, "big top")} />
+                  <AssignBtn onClick={() => handleAssignBig(employee)} />
                 )}
               </td>
               <td className="p-2">
@@ -100,7 +107,7 @@ function EmployeeTable({
                 )}
               </td>
               <td className="p-2">
-                <BreakBtn onClick={() => handleOutOfRotation(employee, "break")} />
+                <BreakBtn onClick={() => handleBreak(employee)} />
               </td>
               <td className="p-2 hidden-on-mobile">
                 <ClockOutBtn
