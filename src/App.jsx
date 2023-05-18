@@ -66,6 +66,7 @@ function App() {
               setBigTopEmployees={setBigTopEmployees}
               breakEmployees={breakEmployees}
               setBreakEmployees={setBreakEmployees}
+              nextServerIndex={nextServerIndex}
               lastAction={lastAction}
             />
           </main>
