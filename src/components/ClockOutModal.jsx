@@ -1,15 +1,15 @@
 import React from "react";
 
 
-export default function ClockOutModal({ employee, employees, setEmployees, setIsModalVisible, actionList }) {
+export default function ClockOutModal({ employee, employees, setEmployees, setIsModalVisible, lastAction }) {
 
 
   const handleClockOut = () => {
-    // console.log(employee)
-    const lastAction = {
+    lastAction.current = {
       action: "clock out", 
+      employee: employee,
+      currentEmployeeList: employees,
     }
-    actionList.current.push(lastAction);
     const employeesCopy = [...employees];
     const clockedInEmployees = employeesCopy.filter((clockedInEmployee) => {
       if (clockedInEmployee.id !== employee.id) {
