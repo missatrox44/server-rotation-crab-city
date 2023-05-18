@@ -1,14 +1,37 @@
-import React from "react";
+import { useState } from "react";
 import AddBtn from "./Btns/AddBtn";
 
-function HeaderForm({
-  employeeName,
-  handleNameChange,
-  isTrainee,
-  handleTraineeChange,
-  handleAddEmployee,
-}) {
-  
+function HeaderForm({ employees, setEmployees }) {
+
+  const [employeeName, setEmployeeName] = useState("");
+  const [isTrainee, setIsTrainee] = useState(false);
+
+  const handleNameChange = (event) => {
+    setEmployeeName(event.target.value);
+  };
+
+  const handleTraineeChange = (event) => {
+    setIsTrainee(event.target.checked);
+  };
+
+  const handleAddEmployee = () => {
+    const newEmployee = {
+      id: Date.now(),
+      employeeName: employeeName,
+      smallTopTotal: 0,
+      bigTopTotal: 0,
+      break: false,
+      clockOut: false,
+      trainee: isTrainee,
+    };
+
+    const newEmployees = [...employees, newEmployee];
+
+    setEmployees(newEmployees);
+    setEmployeeName("");
+    setIsTrainee(false);
+  };
+
   return (
     <form>
       <label 

@@ -5,16 +5,17 @@ import BreakBtn from "./Btns/BreakBtn";
 import ClockOutBtn from "./Btns/ClockOutBtn";
 import BreakOverBtn from "./Btns/BreakOverBtn";
 import ReadyBtn from "./Btns/ReadyBtn";
+import UndoBtn from "./Btns/UndoBtn";
 
 function EmployeeTable({
   employees,
+  setEmployees,
   bigTopEmployees,
   setBigTopEmployees,
   breakEmployees,
   setBreakEmployees,
-  setEmployees,
   lastAction,
-}) {
+  }) {
 
   const handleAssignSmall = (employeeId) => {
     const employeeIndex = employees.findIndex((e) => e.id === employeeId);
