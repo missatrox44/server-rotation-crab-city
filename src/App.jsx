@@ -17,13 +17,10 @@ function App() {
 
 
   const handleUndo = () => {
-
     if (!lastAction.current.action) {
       return;
     }
-
     const {action, employee, currentEmployeeList, currentBigTopEmployeeList, currentBreakEmployeeList} = lastAction.current;
-
     if (action === "big top") {
       employee.bigTopTotal = employee.bigTopTotal - 1;
     }

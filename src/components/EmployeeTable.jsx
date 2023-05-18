@@ -187,6 +187,8 @@ function EmployeeTable({
                   employee={employee}
                   employees={employees}
                   setEmployees={setEmployees}
+                  bigTopEmployees={bigTopEmployees}
+                  breakEmployees={breakEmployees}
                   lastAction={lastAction}
                 />
               </td>
