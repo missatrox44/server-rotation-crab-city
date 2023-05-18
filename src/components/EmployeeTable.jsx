@@ -5,7 +5,6 @@ import BreakBtn from "./Btns/BreakBtn";
 import ClockOutBtn from "./Btns/ClockOutBtn";
 import BreakOverBtn from "./Btns/BreakOverBtn";
 import ReadyBtn from "./Btns/ReadyBtn";
-import UndoBtn from "./Btns/UndoBtn";
 
 function EmployeeTable({
   employees,
@@ -14,6 +13,7 @@ function EmployeeTable({
   setBigTopEmployees,
   breakEmployees,
   setBreakEmployees,
+  nextServerIndex,
   lastAction,
   }) {
 
@@ -47,7 +47,7 @@ function EmployeeTable({
   const handleAssignBig = (employee) => {
     const employeesCopy = [...employees];
     const notBigTopEmployees = [];
-    employeesCopy.map((currentEmployee, index) => {
+    employeesCopy.map((currentEmployee) => {
       if (currentEmployee.id !== employee.id) {
         notBigTopEmployees.push(currentEmployee);
       } else {
