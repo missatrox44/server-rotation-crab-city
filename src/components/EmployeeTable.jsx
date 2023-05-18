@@ -12,12 +12,36 @@ function EmployeeTable({
   setBigTopEmployees,
   breakEmployees,
   setBreakEmployees,
-  handleAssignSmall,
-  handleSkip,
   setEmployees,
   lastAction,
 }) {
 
+  const handleAssignSmall = (employeeId) => {
+    const employeeIndex = employees.findIndex((e) => e.id === employeeId);
+    lastAction.current = {
+      action: "small top", 
+      employee: employees[employeeIndex],
+      currentEmployeeList: employees,
+      currentBigTopEmployeeList: bigTopEmployees,
+      currentBreakEmployeeList: breakEmployees
+    }
+    if (employeeIndex !== -1) {
+      const updatedEmployee = {
+        ...employees[employeeIndex],
+        smallTopTotal: employees[employeeIndex].smallTopTotal + 1,
+      };
+
+      const updatedEmployees = [
+        ...employees.slice(0, employeeIndex),
+        ...employees.slice(employeeIndex + 1),
+        updatedEmployee,
+      ];
+
+      // console.log("Small top assigned to:", updatedEmployee.employeeName);
+
+      setEmployees(updatedEmployees);
+    }
+  };
 
   const handleAssignBig = (employee) => {
     const employeesCopy = [...employees];
@@ -58,6 +82,27 @@ function EmployeeTable({
     };
     setBigTopEmployees(removedReadyEmployee);
   }
+
+
+  const handleSkip = () => {
+    // console.log("Skip button clicked");
+    if (employees.length > 1) {
+      const skippedEmployee = employees[nextServerIndex];
+      const updatedEmployees = [
+        ...employees.slice(0, nextServerIndex),
+        ...employees.slice(nextServerIndex + 1),
+        skippedEmployee,
+      ];
+      lastAction.current = {
+        action: "skip", 
+        employee: skippedEmployee,
+        currentEmployeeList: employees,
+        currentBigTopEmployeeList: bigTopEmployees,
+        currentBreakEmployeeList: breakEmployees
+      }
+      setEmployees(updatedEmployees);
+    }
+  };
 
   const handleBreak = (employee) => {
     lastAction.current = {
@@ -103,7 +148,6 @@ function EmployeeTable({
       <thead className="py-10">
         <tr>
           <th className="text-left min-w-0 md:min-w-[100px]">Name</th>
-          {/* <th className="text-left hidden-on-mobile">Status</th> */}
           <th className="hidden-on-mobile">Small Tops</th>
           <th>Assign Small</th>
           <th className="hidden-on-mobile">Big Tops</th>
@@ -119,7 +163,6 @@ function EmployeeTable({
           .map((employee, index) => (
             <tr key={employee.id}>
               <td className="text-left py-2 pr-2">{employee.employeeName}</td>
-              {/* <td className="text-left py-2 pr-2 hidden-on-mobile">available</td> */}
               <td className="p-2 hidden-on-mobile">{employee.smallTopTotal}</td>
               <td className="p-2">
                 <AssignBtn onClick={() => handleAssignSmall(employee.id)} />
@@ -152,7 +195,6 @@ function EmployeeTable({
           .map((employee, index) => (
             <tr key={employee.id}>
               <td className="text-left py-2 pr-2">{employee.employeeName}</td>
-              {/* <td className="text-left py-2 pr-2 text-orange-500 font-bold hidden-on-mobile">working a big top</td> */}
               <td className="p-2 hidden-on-mobile">{employee.smallTopTotal}</td>
               <td className="p-2"></td>
               <td className="p-2 hidden-on-mobile">{!employee.trainee && employee.bigTopTotal}</td>
@@ -169,7 +211,6 @@ function EmployeeTable({
           .map((employee, index) => (
             <tr key={employee.id}>
               <td className="text-left py-2 pr-2">{employee.employeeName}</td>
-              {/* <td className="text-left py-2 pr-2 hidden-on-mobile text-yellow-400 font-bold">on break</td> */}
               <td className="p-2 hidden-on-mobile">{employee.smallTopTotal}</td>
               <td></td>
               <td className="p-2 hidden-on-mobile">{!employee.trainee && employee.bigTopTotal}</td>

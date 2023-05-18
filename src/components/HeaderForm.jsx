@@ -8,6 +8,7 @@ function HeaderForm({
   handleTraineeChange,
   handleAddEmployee,
 }) {
+  
   return (
     <form>
       <label 

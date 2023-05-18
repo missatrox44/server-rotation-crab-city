@@ -45,65 +45,22 @@ function App() {
     setIsTrainee(false);
   };
 
-  const handleAssignSmall = (employeeId) => {
-    const employeeIndex = employees.findIndex((e) => e.id === employeeId);
-    lastAction.current = {
-      action: "small top", 
-      employee: employees[employeeIndex],
-      currentEmployeeList: employees,
-      currentBigTopEmployeeList: bigTopEmployees,
-      currentBreakEmployeeList: breakEmployees
-    }
-    if (employeeIndex !== -1) {
-      const updatedEmployee = {
-        ...employees[employeeIndex],
-        smallTopTotal: employees[employeeIndex].smallTopTotal + 1,
-      };
-
-      const updatedEmployees = [
-        ...employees.slice(0, employeeIndex),
-        ...employees.slice(employeeIndex + 1),
-        updatedEmployee,
-      ];
-
-      // console.log("Small top assigned to:", updatedEmployee.employeeName);
-
-      setEmployees(updatedEmployees);
-    }
-  };
-
-  const handleSkip = () => {
-    // console.log("Skip button clicked");
-    if (employees.length > 1) {
-      const skippedEmployee = employees[nextServerIndex];
-      const updatedEmployees = [
-        ...employees.slice(0, nextServerIndex),
-        ...employees.slice(nextServerIndex + 1),
-        skippedEmployee,
-      ];
-      lastAction.current = {
-        action: "skip", 
-        employee: skippedEmployee,
-        currentEmployeeList: employees,
-        currentBigTopEmployeeList: bigTopEmployees,
-        currentBreakEmployeeList: breakEmployees
-      }
-      setEmployees(updatedEmployees);
-    }
-  };
 
   const handleUndo = () => {
-      const {action, employee, currentEmployeeList, currentBigTopEmployeeList, currentBreakEmployeeList} = lastAction.current;
-      if (!lastAction.current.action) {
-        return;
-      }
-      if (action === "big top") {
-        employee.bigTopTotal = employee.bigTopTotal - 1;
-      }
-      setEmployees(currentEmployeeList);
-      setBigTopEmployees(currentBigTopEmployeeList);
-      setBreakEmployees(currentBreakEmployeeList);
-      lastAction.current = {};
+
+    if (!lastAction.current.action) {
+      return;
+    }
+
+    const {action, employee, currentEmployeeList, currentBigTopEmployeeList, currentBreakEmployeeList} = lastAction.current;
+
+    if (action === "big top") {
+      employee.bigTopTotal = employee.bigTopTotal - 1;
+    }
+    setEmployees(currentEmployeeList);
+    setBigTopEmployees(currentBigTopEmployeeList);
+    setBreakEmployees(currentBreakEmployeeList);
+    lastAction.current = {};
   }
 
 
@@ -145,8 +102,6 @@ function App() {
               setBigTopEmployees={setBigTopEmployees}
               breakEmployees={breakEmployees}
               setBreakEmployees={setBreakEmployees}
-              handleAssignSmall={handleAssignSmall}
-              handleSkip={handleSkip}
               lastAction={lastAction}
             />
           </main>
