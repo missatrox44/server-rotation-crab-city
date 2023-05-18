@@ -1,7 +1,7 @@
 import React from "react";
 import UndoBtn from "./Btns/UndoBtn"
 
-function Footer({ handleUndo, actionList }) {
+function Footer({ handleUndo }) {
 
   return (
     <footer className="bottom-0 w-full my-4">

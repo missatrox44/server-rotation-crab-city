@@ -2,7 +2,7 @@ import React from "react";
 import ClockOutModal from "../ClockOutModal";
 import { useState } from "react";
 
-function ClockOutBtn({employee, employees, setEmployees}) {
+function ClockOutBtn({employee, employees, setEmployees, actionList}) {
 
   const [isModalVisible, setIsModalVisible] = useState(false)
 
@@ -19,7 +19,7 @@ function ClockOutBtn({employee, employees, setEmployees}) {
         >
         Clock Out
       </button>
-      {isModalVisible ? <ClockOutModal employee={employee} employees={employees} setEmployees={setEmployees} setIsModalVisible={setIsModalVisible}/> : ""}
+      {isModalVisible ? <ClockOutModal employee={employee} employees={employees} setEmployees={setEmployees} setIsModalVisible={setIsModalVisible} actionList={actionList}/> : ""}
     </>
   );
 }
