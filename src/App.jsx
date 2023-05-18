@@ -17,7 +17,7 @@ function App() {
   const [breakEmployees, setBreakEmployees] = useState([]);
   const [nextServerIndex, setNextServerIndex] = useState(0);
 
-  const actionList = useRef([]);
+  let lastAction = useRef({});
 
   const handleNameChange = (event) => {
     setEmployeeName(event.target.value);
@@ -47,13 +47,13 @@ function App() {
 
   const handleAssignSmall = (employeeId) => {
     const employeeIndex = employees.findIndex((e) => e.id === employeeId);
-    const lastAction = {
+    lastAction.current = {
       action: "small top", 
       employee: employees[employeeIndex],
       currentEmployeeList: employees,
-      time: Date.now(),
+      currentBigTopEmployeeList: bigTopEmployees,
+      currentBreakEmployeeList: breakEmployees
     }
-    actionList.current.push(lastAction);
     if (employeeIndex !== -1) {
       const updatedEmployee = {
         ...employees[employeeIndex],
@@ -81,42 +81,29 @@ function App() {
         ...employees.slice(nextServerIndex + 1),
         skippedEmployee,
       ];
+      lastAction.current = {
+        action: "skip", 
+        employee: skippedEmployee,
+        currentEmployeeList: employees,
+        currentBigTopEmployeeList: bigTopEmployees,
+        currentBreakEmployeeList: breakEmployees
+      }
       setEmployees(updatedEmployees);
     }
   };
 
   const handleUndo = () => {
-    let actions = actionList.current;
-    const lastAction = actions.pop();
-    if (!lastAction) {
-      console.log(actions);
-      return;
-    }
-    if (lastAction.action === "big top") {
-      handleUndoBigTop(lastAction);
-    }
-    if (lastAction.action === "small top") {
-      handleUndoSmallTop(lastAction);
-    }
-  }
-
-  const handleUndoSmallTop = ({action, employee, currentEmployeeList, time}) => {
-    const removedEmployeeList = employees.slice(0, -1);
-    // console.log(removedEmployeeList);
-    currentEmployeeList.map((currentEmployee, index) => {
-      if (currentEmployee.id === employee.id) {
-       const updatedEmployeeList = [
-         ...removedEmployeeList.slice(0, index),
-         employee,
-         ...removedEmployeeList.slice(index, currentEmployeeList.length)
-       ];
-       setEmployees(updatedEmployeeList);
+      const {action, employee, currentEmployeeList, currentBigTopEmployeeList, currentBreakEmployeeList} = lastAction.current;
+      if (!lastAction.current.action) {
+        return;
       }
-    })
-  }
-
-  const handleUndoBigTop = (action) => {
-    console.log(action);
+      if (action === "big top") {
+        employee.bigTopTotal = employee.bigTopTotal - 1;
+      }
+      setEmployees(currentEmployeeList);
+      setBigTopEmployees(currentBigTopEmployeeList);
+      setBreakEmployees(currentBreakEmployeeList);
+      lastAction.current = {};
   }
 
 
@@ -160,7 +147,7 @@ function App() {
               setBreakEmployees={setBreakEmployees}
               handleAssignSmall={handleAssignSmall}
               handleSkip={handleSkip}
-              actionList={actionList}
+              lastAction={lastAction}
             />
           </main>
 
@@ -169,7 +156,7 @@ function App() {
         </div>
       }
 
-      <Footer handleUndo={handleUndo} actionList={actionList}/>
+      <Footer handleUndo={handleUndo} />
 
     </div>
   );

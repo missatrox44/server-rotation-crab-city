@@ -15,7 +15,7 @@ function EmployeeTable({
   handleAssignSmall,
   handleSkip,
   setEmployees,
-  actionList,
+  lastAction,
 }) {
 
 
@@ -26,14 +26,14 @@ function EmployeeTable({
       if (currentEmployee.id !== employee.id) {
         notBigTopEmployees.push(currentEmployee);
       } else {
-        currentEmployee.bigTopTotal++;
-        const lastAction = {
+        lastAction.current = {
           action: "big top", 
-          employee: currentEmployee,
+          employee: employee,
           currentEmployeeList: employees,
-          time: Date.now(),
+          currentBigTopEmployeeList: bigTopEmployees,
+          currentBreakEmployeeList: breakEmployees
         };
-        actionList.current.push(lastAction)
+        currentEmployee.bigTopTotal++;
         const newBigTopEmployees = [...bigTopEmployees, currentEmployee]
         setBigTopEmployees(newBigTopEmployees)
       }
@@ -49,13 +49,27 @@ function EmployeeTable({
         return currentEmployee;
       }
     })
+    lastAction.current = {
+      action: "ready", 
+      employee: employee,
+      currentEmployeeList: employees,
+      currentBigTopEmployeeList: bigTopEmployees,
+      currentBreakEmployeeList: breakEmployees
+    };
     setBigTopEmployees(removedReadyEmployee);
   }
 
   const handleBreak = (employee) => {
+    lastAction.current = {
+      action: "break", 
+      employee: employee,
+      currentEmployeeList: employees,
+      currentBigTopEmployeeList: bigTopEmployees,
+      currentBreakEmployeeList: breakEmployees,
+    }
     const employeesCopy = [...employees];
     const workingEmployees = [];
-    employeesCopy.map((currentEmployee, index) => {
+    employeesCopy.map((currentEmployee) => {
       if (currentEmployee.id !== employee.id) {
         workingEmployees.push(currentEmployee);
       } else {
@@ -122,6 +136,7 @@ function EmployeeTable({
                   employee={employee}
                   employees={employees}
                   setEmployees={setEmployees}
+                  lastAction={lastAction}
                 />
               </td>
             </tr>
