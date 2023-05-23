@@ -145,7 +145,13 @@ function EmployeeTable({
       <tbody>
         {employees.map((employee, index) => (
           <tr key={employee.id}>
-            <td className="text-left py-2 pr-2">{employee.employeeName}</td>
+            <td
+              className={`text-left py-2 pr-2 ${
+                employee.trainee ? "text-[#AEDFF2]" : ""
+              }`}
+            >
+              {employee.employeeName}
+            </td>
             <td className="p-2 hidden-on-mobile">{employee.smallTopTotal}</td>
             <td className="p-2">
               <AssignBtn onClick={() => handleAssignSmall(employee.id)} />
@@ -190,7 +196,13 @@ function EmployeeTable({
         ))}
         {bigTopEmployees.map((employee, index) => (
           <tr key={employee.id}>
-            <td className="text-left py-2 pr-2">{employee.employeeName}</td>
+            <td
+              className={`text-left py-2 pr-2 ${
+                employee.trainee ? "text-[#AEDFF2]" : ""
+              }`}
+            >
+              {employee.employeeName}
+            </td>
             <td className="p-2 hidden-on-mobile">{employee.smallTopTotal}</td>
             <td className="p-2"></td>
             <td className="p-2 hidden-on-mobile">
@@ -206,7 +218,13 @@ function EmployeeTable({
         ))}
         {breakEmployees.map((employee, index) => (
           <tr key={employee.id}>
-            <td className="text-left py-2 pr-2">{employee.employeeName}</td>
+            <td
+              className={`text-left py-2 pr-2 ${
+                employee.trainee ? "text-[#AEDFF2]" : ""
+              }`}
+            >
+              {employee.employeeName}
+            </td>
             <td className="p-2 hidden-on-mobile">{employee.smallTopTotal}</td>
             <td></td>
             <td className="p-2 hidden-on-mobile">
