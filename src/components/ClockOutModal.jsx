@@ -41,7 +41,7 @@ export default function ClockOutModal({ employee, employees, setEmployees, setIs
             <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
               <button 
                 type="button" 
-                className="inline-flex w-full justify-center rounded-full bg-red-600 px-3 py-2.5 px-5 text-md font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
+                className="inline-flex w-full justify-center rounded-full bg-rose-600 px-3 py-2.5 px-5 text-md font-semibold text-white shadow-sm hover:bg-rose-500 sm:ml-3 sm:w-auto"
                 onClick={handleClockOut}
               >
                 Clock Out

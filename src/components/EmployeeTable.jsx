@@ -177,7 +177,7 @@ function EmployeeTable({
                 employee={employee}
                 employees={employees}
                 setEmployees={setEmployees}
-                lastAction={lastAction}
+                // lastAction={lastAction}
                 breakEmployees={breakEmployees}
                 setBreakEmployees={setBreakEmployees}
               />
