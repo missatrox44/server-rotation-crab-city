@@ -6,7 +6,7 @@ function BreakBtn({
   employee,
   employees,
   setEmployees,
-  lastAction,
+  // lastAction,
   breakEmployees,
   setBreakEmployees,
 }) {
@@ -30,7 +30,7 @@ function BreakBtn({
           employees={employees}
           setEmployees={setEmployees}
           setIsBreakModalVisible={setIsBreakModalVisible}
-          lastAction={lastAction}
+          // lastAction={lastAction}
           breakEmployees={breakEmployees}
           setBreakEmployees={setBreakEmployees}
         />
