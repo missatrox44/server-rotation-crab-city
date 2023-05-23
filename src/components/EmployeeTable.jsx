@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import AssignBtn from "./Btns/AssignBtn";
 import SkipBtn from "./Btns/SkipBtn";
 import BreakBtn from "./Btns/BreakBtn";
 import ClockOutBtn from "./Btns/ClockOutBtn";
 import BreakOverBtn from "./Btns/BreakOverBtn";
 import ReadyBtn from "./Btns/ReadyBtn";
+import BreakModal from "./BreakModal";
 
 function EmployeeTable({
   employees,
@@ -15,17 +16,19 @@ function EmployeeTable({
   setBreakEmployees,
   nextServerIndex,
   lastAction,
-  }) {
+}) {
+  const [isBreakModalVisible, setIsBreakModalVisible] = useState(false);
+  const [employeeOnBreak, setEmployeeOnBreak] = useState(null);
 
   const handleAssignSmall = (employeeId) => {
     const employeeIndex = employees.findIndex((e) => e.id === employeeId);
     lastAction.current = {
-      action: "small top", 
+      action: "small top",
       employee: employees[employeeIndex],
       currentEmployeeList: employees,
       currentBigTopEmployeeList: bigTopEmployees,
-      currentBreakEmployeeList: breakEmployees
-    }
+      currentBreakEmployeeList: breakEmployees,
+    };
     if (employeeIndex !== -1) {
       const updatedEmployee = {
         ...employees[employeeIndex],
@@ -52,38 +55,39 @@ function EmployeeTable({
         notBigTopEmployees.push(currentEmployee);
       } else {
         lastAction.current = {
-          action: "big top", 
+          action: "big top",
           employee: employee,
           currentEmployeeList: employees,
           currentBigTopEmployeeList: bigTopEmployees,
-          currentBreakEmployeeList: breakEmployees
+          currentBreakEmployeeList: breakEmployees,
         };
         currentEmployee.bigTopTotal++;
-        const newBigTopEmployees = [...bigTopEmployees, currentEmployee]
-        setBigTopEmployees(newBigTopEmployees)
+        const newBigTopEmployees = [...bigTopEmployees, currentEmployee];
+        setBigTopEmployees(newBigTopEmployees);
       }
       setEmployees(notBigTopEmployees);
-    })
+    });
   };
 
   const handleReady = (employee) => {
     const addedReadyEmployee = [employee, ...employees];
     setEmployees(addedReadyEmployee);
-    const removedReadyEmployee = [...bigTopEmployees].filter((currentEmployee) => {
-      if (currentEmployee.id !== employee.id) {
-        return currentEmployee;
+    const removedReadyEmployee = [...bigTopEmployees].filter(
+      (currentEmployee) => {
+        if (currentEmployee.id !== employee.id) {
+          return currentEmployee;
+        }
       }
-    })
+    );
     lastAction.current = {
-      action: "ready", 
+      action: "ready",
       employee: employee,
       currentEmployeeList: employees,
       currentBigTopEmployeeList: bigTopEmployees,
-      currentBreakEmployeeList: breakEmployees
+      currentBreakEmployeeList: breakEmployees,
     };
     setBigTopEmployees(removedReadyEmployee);
-  }
-
+  };
 
   const handleSkip = () => {
     // console.log("Skip button clicked");
@@ -95,54 +99,61 @@ function EmployeeTable({
         skippedEmployee,
       ];
       lastAction.current = {
-        action: "skip", 
+        action: "skip",
         employee: skippedEmployee,
         currentEmployeeList: employees,
         currentBigTopEmployeeList: bigTopEmployees,
-        currentBreakEmployeeList: breakEmployees
-      }
+        currentBreakEmployeeList: breakEmployees,
+      };
       setEmployees(updatedEmployees);
     }
   };
 
+  // const handleBreak = (employee) => {
+  //   lastAction.current = {
+  //     action: "break",
+  //     employee: employee,
+  //     currentEmployeeList: employees,
+  //     currentBigTopEmployeeList: bigTopEmployees,
+  //     currentBreakEmployeeList: breakEmployees,
+  //   }
+  //   const employeesCopy = [...employees];
+  //   const workingEmployees = [];
+  //   employeesCopy.map((currentEmployee) => {
+  //     if (currentEmployee.id !== employee.id) {
+  //       workingEmployees.push(currentEmployee);
+  //     } else {
+  //       const newBreakingEmployees = [...breakEmployees, currentEmployee]
+  //       setBreakEmployees(newBreakingEmployees)
+  //     }
+  //     setEmployees(workingEmployees);
+  //   })
+  // };
+
   const handleBreak = (employee) => {
-    lastAction.current = {
-      action: "break", 
-      employee: employee,
-      currentEmployeeList: employees,
-      currentBigTopEmployeeList: bigTopEmployees,
-      currentBreakEmployeeList: breakEmployees,
-    }
-    const employeesCopy = [...employees];
-    const workingEmployees = [];
-    employeesCopy.map((currentEmployee) => {
-      if (currentEmployee.id !== employee.id) {
-        workingEmployees.push(currentEmployee);
-      } else {
-        const newBreakingEmployees = [...breakEmployees, currentEmployee]
-        setBreakEmployees(newBreakingEmployees)
-      }
-      setEmployees(workingEmployees);
-    })
+    setEmployeeOnBreak(employee);
+    setIsBreakModalVisible(true);
   };
 
   const handleBreakOver = (employee) => {
     lastAction.current = {
-      action: "break over", 
+      action: "break over",
       employee: employee,
       currentEmployeeList: employees,
       currentBigTopEmployeeList: bigTopEmployees,
       currentBreakEmployeeList: breakEmployees,
-    }
+    };
     const breakOverEmployee = [employee, ...employees];
     setEmployees(breakOverEmployee);
-    const removedBreakEmployee = [...breakEmployees].filter((currentEmployee) => {
-      if (currentEmployee.id !== employee.id) {
-        return currentEmployee;
+    const removedBreakEmployee = [...breakEmployees].filter(
+      (currentEmployee) => {
+        if (currentEmployee.id !== employee.id) {
+          return currentEmployee;
+        }
       }
-    })
+    );
     setBreakEmployees(removedBreakEmployee);
-  }
+  };
 
   return (
     <table className="mx-auto w-full">
@@ -159,74 +170,87 @@ function EmployeeTable({
         </tr>
       </thead>
       <tbody>
-    
-        {employees
-          .map((employee, index) => (
-            <tr key={employee.id}>
-              <td className="text-left py-2 pr-2">{employee.employeeName}</td>
-              <td className="p-2 hidden-on-mobile">{employee.smallTopTotal}</td>
-              <td className="p-2">
-                <AssignBtn onClick={() => handleAssignSmall(employee.id)} />
-              </td>
-              <td className="p-2 hidden-on-mobile">{!employee.trainee && employee.bigTopTotal}</td>
-              <td className="p-2">
-                {!employee.trainee && (
-                  <AssignBtn onClick={() => handleAssignBig(employee)} bigTop={true} />
-                )}
-              </td>
-              <td className="p-2">
-                {index === 0 && (
-                  <SkipBtn onClick={() => handleSkip(employee.id)} />
-                )}
-              </td>
-              <td className="p-2">
-                <BreakBtn onClick={() => handleBreak(employee)} />
-              </td>
-              <td className="p-2 hidden-on-mobile">
-                <ClockOutBtn
-                  employee={employee}
+        {employees.map((employee, index) => (
+          <tr key={employee.id}>
+            <td className="text-left py-2 pr-2">{employee.employeeName}</td>
+            <td className="p-2 hidden-on-mobile">{employee.smallTopTotal}</td>
+            <td className="p-2">
+              <AssignBtn onClick={() => handleAssignSmall(employee.id)} />
+            </td>
+            <td className="p-2 hidden-on-mobile">
+              {!employee.trainee && employee.bigTopTotal}
+            </td>
+            <td className="p-2">
+              {!employee.trainee && (
+                <AssignBtn
+                  onClick={() => handleAssignBig(employee)}
+                  bigTop={true}
+                />
+              )}
+            </td>
+            <td className="p-2">
+              {index === 0 && (
+                <SkipBtn onClick={() => handleSkip(employee.id)} />
+              )}
+            </td>
+            <td className="p-2">
+              <BreakBtn onClick={() => handleBreak(employee)} />
+              {isBreakModalVisible && employeeOnBreak && (
+                <BreakModal
+                  employee={employeeOnBreak}
                   employees={employees}
                   setEmployees={setEmployees}
-                  bigTopEmployees={bigTopEmployees}
-                  breakEmployees={breakEmployees}
+                  setIsBreakModalVisible={setIsBreakModalVisible}
                   lastAction={lastAction}
+                  breakEmployees={breakEmployees}
+                  setBreakEmployees={setBreakEmployees}
                 />
-              </td>
-            </tr>
+              )}
+            </td>
+            <td className="p-2 hidden-on-mobile">
+              <ClockOutBtn
+                employee={employee}
+                employees={employees}
+                setEmployees={setEmployees}
+                bigTopEmployees={bigTopEmployees}
+                breakEmployees={breakEmployees}
+                lastAction={lastAction}
+              />
+            </td>
+          </tr>
         ))}
-        {bigTopEmployees
-          .map((employee, index) => (
-            <tr key={employee.id}>
-              <td className="text-left py-2 pr-2">{employee.employeeName}</td>
-              <td className="p-2 hidden-on-mobile">{employee.smallTopTotal}</td>
-              <td className="p-2"></td>
-              <td className="p-2 hidden-on-mobile">{!employee.trainee && employee.bigTopTotal}</td>
-              <td className="p-2">
-                <ReadyBtn onClick={() => handleReady(employee)}/>
-              </td>
-              <td className="p-2"></td>
-              <td className="p-2"></td>
-              <td className="p-2 hidden-on-mobile"></td>
-            </tr>
-          ))
-        }
-        {breakEmployees
-          .map((employee, index) => (
-            <tr key={employee.id}>
-              <td className="text-left py-2 pr-2">{employee.employeeName}</td>
-              <td className="p-2 hidden-on-mobile">{employee.smallTopTotal}</td>
-              <td></td>
-              <td className="p-2 hidden-on-mobile">{!employee.trainee && employee.bigTopTotal}</td>
-              <td></td>
-              <td></td>
-              <td className="p-2">
-                <BreakOverBtn onClick={() => handleBreakOver(employee)} />
-              </td>
-              <td></td>
-            </tr>
-          ))
-        }
-
+        {bigTopEmployees.map((employee, index) => (
+          <tr key={employee.id}>
+            <td className="text-left py-2 pr-2">{employee.employeeName}</td>
+            <td className="p-2 hidden-on-mobile">{employee.smallTopTotal}</td>
+            <td className="p-2"></td>
+            <td className="p-2 hidden-on-mobile">
+              {!employee.trainee && employee.bigTopTotal}
+            </td>
+            <td className="p-2">
+              <ReadyBtn onClick={() => handleReady(employee)} />
+            </td>
+            <td className="p-2"></td>
+            <td className="p-2"></td>
+            <td className="p-2 hidden-on-mobile"></td>
+          </tr>
+        ))}
+        {breakEmployees.map((employee, index) => (
+          <tr key={employee.id}>
+            <td className="text-left py-2 pr-2">{employee.employeeName}</td>
+            <td className="p-2 hidden-on-mobile">{employee.smallTopTotal}</td>
+            <td></td>
+            <td className="p-2 hidden-on-mobile">
+              {!employee.trainee && employee.bigTopTotal}
+            </td>
+            <td></td>
+            <td></td>
+            <td className="p-2">
+              <BreakOverBtn onClick={() => handleBreakOver(employee)} />
+            </td>
+            <td></td>
+          </tr>
+        ))}
       </tbody>
     </table>
   );
