@@ -5,7 +5,6 @@ import BreakBtn from "./Btns/BreakBtn";
 import ClockOutBtn from "./Btns/ClockOutBtn";
 import BreakOverBtn from "./Btns/BreakOverBtn";
 import ReadyBtn from "./Btns/ReadyBtn";
-import BreakModal from "./BreakModal";
 
 function EmployeeTable({
   employees,
@@ -109,32 +108,6 @@ function EmployeeTable({
     }
   };
 
-  // const handleBreak = (employee) => {
-  //   lastAction.current = {
-  //     action: "break",
-  //     employee: employee,
-  //     currentEmployeeList: employees,
-  //     currentBigTopEmployeeList: bigTopEmployees,
-  //     currentBreakEmployeeList: breakEmployees,
-  //   }
-  //   const employeesCopy = [...employees];
-  //   const workingEmployees = [];
-  //   employeesCopy.map((currentEmployee) => {
-  //     if (currentEmployee.id !== employee.id) {
-  //       workingEmployees.push(currentEmployee);
-  //     } else {
-  //       const newBreakingEmployees = [...breakEmployees, currentEmployee]
-  //       setBreakEmployees(newBreakingEmployees)
-  //     }
-  //     setEmployees(workingEmployees);
-  //   })
-  // };
-
-  const handleBreak = (employee) => {
-    setEmployeeOnBreak(employee);
-    setIsBreakModalVisible(true);
-  };
-
   const handleBreakOver = (employee) => {
     lastAction.current = {
       action: "break over",
@@ -194,18 +167,14 @@ function EmployeeTable({
               )}
             </td>
             <td className="p-2">
-              <BreakBtn onClick={() => handleBreak(employee)} />
-              {isBreakModalVisible && employeeOnBreak && (
-                <BreakModal
-                  employee={employeeOnBreak}
-                  employees={employees}
-                  setEmployees={setEmployees}
-                  setIsBreakModalVisible={setIsBreakModalVisible}
-                  lastAction={lastAction}
-                  breakEmployees={breakEmployees}
-                  setBreakEmployees={setBreakEmployees}
-                />
-              )}
+              <BreakBtn
+                employee={employee}
+                employees={employees}
+                setEmployees={setEmployees}
+                lastAction={lastAction}
+                breakEmployees={breakEmployees}
+                setBreakEmployees={setBreakEmployees}
+              />
             </td>
             <td className="p-2 hidden-on-mobile">
               <ClockOutBtn
