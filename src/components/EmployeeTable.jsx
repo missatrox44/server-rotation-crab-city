@@ -147,7 +147,7 @@ function EmployeeTable({
           <tr key={employee.id}>
             <td
               className={`text-left py-2 pr-2 ${
-                employee.trainee ? "text-[#AEDFF2]" : ""
+                employee.trainee ? "text-cyan-600" : ""
               }`}
             >
               {employee.employeeName}
@@ -177,7 +177,7 @@ function EmployeeTable({
                 employee={employee}
                 employees={employees}
                 setEmployees={setEmployees}
-                // lastAction={lastAction}
+                lastAction={lastAction}
                 breakEmployees={breakEmployees}
                 setBreakEmployees={setBreakEmployees}
               />
@@ -198,7 +198,7 @@ function EmployeeTable({
           <tr key={employee.id}>
             <td
               className={`text-left py-2 pr-2 ${
-                employee.trainee ? "text-[#AEDFF2]" : ""
+                employee.trainee ? "text-cyan-600" : ""
               }`}
             >
               {employee.employeeName}
@@ -220,7 +220,7 @@ function EmployeeTable({
           <tr key={employee.id}>
             <td
               className={`text-left py-2 pr-2 ${
-                employee.trainee ? "text-[#AEDFF2]" : ""
+                employee.trainee ? "text-cyan-600" : ""
               }`}
             >
               {employee.employeeName}
