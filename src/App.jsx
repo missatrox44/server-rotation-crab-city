@@ -1,5 +1,7 @@
 import { useState, useEffect, useRef } from "react";
+import { ref, onValue } from "firebase/database";
 import "./App.css";
+import { db } from './utils/firebase';
 
 import Footer from "./components/Footer";
 import HeaderForm from "./components/HeaderForm";
@@ -30,11 +32,33 @@ function App() {
     lastAction.current = {};
   }
 
-
+  
   useEffect(() => {
     // console.log("employees arr: ", employees);
+    try {
+      // const db = getDatabase();
+      const getEmployees = ref(db, 'employees/');
+      onValue(getEmployees, (snapshot) => {
+      const data = snapshot.val();
+      console.log('====================================');
+      console.log('data', data);
+      console.log('====================================');
+      setEmployees(data)
+    });
+    } catch (error) {
+      console.log(error);
+    }
   }, [employees]);
 
+
+  
+  // const getEmployees = ref(db, 'employees/');
+  // onValue(getEmployees, (snapshot) => {
+  //   const data = snapshot.val();
+  //   console.log('====================================');
+  //   console.log('data', data);
+  //   console.log('====================================');;
+  // });
 
   return (
     <div className="App">
