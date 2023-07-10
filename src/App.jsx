@@ -48,17 +48,7 @@ function App() {
     } catch (error) {
       console.log(error);
     }
-  }, [employees]);
-
-
-  
-  // const getEmployees = ref(db, 'employees/');
-  // onValue(getEmployees, (snapshot) => {
-  //   const data = snapshot.val();
-  //   console.log('====================================');
-  //   console.log('data', data);
-  //   console.log('====================================');;
-  // });
+  }, []);
 
   return (
     <div className="App">
