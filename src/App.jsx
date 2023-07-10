@@ -34,16 +34,11 @@ function App() {
 
   
   useEffect(() => {
-    // console.log("employees arr: ", employees);
     try {
-      // const db = getDatabase();
       const getEmployees = ref(db, 'employees/');
       onValue(getEmployees, (snapshot) => {
       const data = snapshot.val();
-      console.log('====================================');
-      console.log('data', data);
-      console.log('====================================');
-      setEmployees(data)
+      setEmployees(data.employees)
     });
     } catch (error) {
       console.log(error);
