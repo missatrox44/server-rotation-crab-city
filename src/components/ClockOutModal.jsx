@@ -1,4 +1,6 @@
 import React from "react";
+import { getDatabase, ref, child, get, onValue } from "firebase/database";
+import { db } from '../utils/firebase';
 
 
 export default function ClockOutModal({ employee, employees, setEmployees, setIsModalVisible, lastAction }) {
@@ -10,16 +12,53 @@ export default function ClockOutModal({ employee, employees, setEmployees, setIs
       employee: employee,
       currentEmployeeList: employees,
     }
+    console.log('====================================');
+    console.log('employee', employee);
+    console.log('====================================');
+    const employeeId = employee.id;
     const employeesCopy = [...employees];
     const clockedInEmployees = employeesCopy.filter((clockedInEmployee) => {
       if (clockedInEmployee.id !== employee.id) {
         return clockedInEmployee;
       }
     })
+    const employeeIndex = employees.indexOf(employee)
+    console.log('====================================');
+    console.log(employeeIndex);
+    console.log('====================================');
     setEmployees(clockedInEmployees);
     setIsModalVisible(false);
+    deleteEmployee(employeeIndex);
   };
 
+  const deleteEmployee =(employeeIndex) => {
+    console.log('====================================');
+    console.log(employeeIndex);
+    console.log('====================================');
+    try {
+      const getEmployee = ref(db, 'employees/' + 'employees/' + employeeIndex);
+      onValue(getEmployee, (snapshot) => {
+      const data = snapshot.val();
+      // setEmployees(data.employees)
+      console.log('====================================');
+      console.log(data);
+      console.log('====================================');
+    });
+    } catch (error) {
+      console.log(error);
+    }
+
+   
+    // get(child(db, 'employees/' + employeeId )).then((snapshot) => {
+    //   if (snapshot.exists()) {
+    //     console.log(snapshot.val());
+    //   } else {
+    //     console.log("No data available");
+    //   }
+    // }).catch((error) => {
+    //   console.error(error);
+    // });
+  }
 
   return (
     <div className="relative z-10" aria-labelledby="modal-title" role="dialog" aria-modal="true">

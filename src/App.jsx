@@ -34,15 +34,15 @@ function App() {
 
   
   useEffect(() => {
-    try {
-      const getEmployees = ref(db, 'employees/');
-      onValue(getEmployees, (snapshot) => {
-      const data = snapshot.val();
-      setEmployees(data.employees)
-    });
-    } catch (error) {
-      console.log(error);
-    }
+    // try {
+    //   const getEmployees = ref(db);
+    //   onValue(getEmployees, (snapshot) => {
+    //   const data = snapshot.val();
+    //   setEmployees(data.employees)
+    // });
+    // } catch (error) {
+    //   console.log(error);
+    // }
   }, []);
 
 
