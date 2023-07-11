@@ -1,6 +1,10 @@
 import { useState } from "react";
 import AddBtn from "./Btns/AddBtn";
 
+import { db } from '../utils/firebase';
+import { onValue, ref, set, getDatabase } from "firebase/database";
+
+
 function HeaderForm({ employees, setEmployees }) {
 
   const [employeeName, setEmployeeName] = useState("");
@@ -30,7 +34,18 @@ function HeaderForm({ employees, setEmployees }) {
     setEmployees(newEmployees);
     setEmployeeName("");
     setIsTrainee(false);
+    writeUserData(newEmployees);
   };
+  
+
+  function writeUserData(employees) {
+    const reference = ref(db, "employees/");
+    set(reference, {
+      employees: employees
+    })
+  }
+
+
 
   return (
     <form>
