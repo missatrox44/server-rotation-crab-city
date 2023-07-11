@@ -32,7 +32,7 @@ function App() {
     lastAction.current = {};
   }
 
-
+  
   useEffect(() => {
     try {
       const getEmployees = ref(db, 'employees/');
