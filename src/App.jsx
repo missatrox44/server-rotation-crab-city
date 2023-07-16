@@ -10,7 +10,7 @@ import EmployeeTable from "./components/EmployeeTable";
 
 function App() {
 
-  const [employees, setEmployees] = useState([]);
+  const [employees, setEmployees] = useState({employeeData: []});
   const [bigTopEmployees, setBigTopEmployees] = useState([]);
   const [breakEmployees, setBreakEmployees] = useState([]);
   const [nextServerIndex, setNextServerIndex] = useState(0);
@@ -35,18 +35,23 @@ function App() {
   
   useEffect(() => {
     try {
-      const getEmployees = ref(db, 'employees/');
+      let employees = [];
+      const getEmployees = ref(db, 'employees');
       onValue(getEmployees, (snapshot) => {
-      const data = snapshot.val();
-      console.log('====================================');
-      console.log(data);
-      console.log('====================================');
-      setEmployees(data);
+        snapshot.forEach((employeeSnapshot) => {
+        const employeeKey = employeeSnapshot.key;
+        const employeeData = employeeSnapshot.val();
+        employees.push({"key": employeeKey, "value": employeeData});
+      })
+      setEmployees({employeeData: employees});
+
     });
     } catch (error) {
       console.log(error);
     }
   }, []);
+
+  console.log('employees:', employees);
 
 
   return (
@@ -55,11 +60,11 @@ function App() {
         <h1 className="text-blue-600 text-6xl">Crab City Server Rotation</h1>
         <p className="text-xs mb-6">v.1.3.0</p>
 
-        <HeaderForm employees={employees} setEmployees={setEmployees}/>
+        {/* <HeaderForm employees={employees} setEmployees={setEmployees}/> */}
       </header>
 
       {
-        (employees.length > 0 || bigTopEmployees.length > 0 || breakEmployees.length > 0) && 
+        (employees.employeeData.length > 0 || bigTopEmployees.length > 0 || breakEmployees.length > 0) && 
       
         <div>
           <hr className="my-8" />

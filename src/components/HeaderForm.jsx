@@ -36,6 +36,7 @@ function HeaderForm({ employees, setEmployees }) {
   
 
   function writeUserData(newEmployee) {
+    console.log('newEmployee:', newEmployee);
     const db = getDatabase();
     let employeesRef = ref(db, 'employees/')
     push(employeesRef, newEmployee);
