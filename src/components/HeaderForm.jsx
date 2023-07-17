@@ -15,9 +15,7 @@ function HeaderForm({ employees, setEmployees }) {
     setIsTrainee(event.target.checked);
   };
 
-  const handleAddEmployee = (event) => {
-    event.preventDefault()
-    console.log('employees', employees);
+  const handleAddEmployee = () => {
     const newEmployee = {
       // id: Date.now(),
       employeeName: employeeName,
@@ -27,7 +25,7 @@ function HeaderForm({ employees, setEmployees }) {
       clockOut: false,
       trainee: isTrainee,
     };
-    // const newEmployees = {...employees, {employeeData: newEmployee}};
+
     console.log("employees", employees);
     setEmployees({...employees.employeeData, newEmployee});
     setEmployeeName("");
@@ -41,6 +39,7 @@ function HeaderForm({ employees, setEmployees }) {
     let employeesRef = ref(db, 'employees/')
     push(employeesRef, newEmployee);
   }
+  console.log('employees', employees);
 
   return (
     <form>

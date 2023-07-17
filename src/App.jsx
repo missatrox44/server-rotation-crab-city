@@ -31,8 +31,12 @@ function App() {
   }
   
   useEffect(() => {
+    getAllEmployees();
+  }, []);
+
+  const getAllEmployees = () => {
+    let employeesArr = [];
     try {
-      let employeesArr = [];
       const getEmployees = ref(db, 'employees');
       onValue(getEmployees, (snapshot) => {
         snapshot.forEach((employeeSnapshot) => {
@@ -44,8 +48,8 @@ function App() {
     });
     } catch (error) {
       console.log(error);
-    }
-  }, [employees]);
+  }
+}
 
   return (
     <div className="App">
@@ -65,7 +69,6 @@ function App() {
             <NextServer employees={employees} nextServerIndex={nextServerIndex} />
 
           <hr className="my-8" />
-
           <main className="overflow-x-auto">
             <EmployeeTable
               employees={employees}
