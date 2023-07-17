@@ -143,7 +143,6 @@ function EmployeeTable({
         </tr>
       </thead>
       <tbody>
-        {console.log(employees.employeeData)}
         {employees.employeeData.map((employee, index) => (
           <tr key={employee.key}>
             <td
@@ -155,7 +154,7 @@ function EmployeeTable({
             </td>
             <td className="p-2 hidden-on-mobile">{employee.value.smallTopTotal}</td>
             <td className="p-2">
-              <AssignBtn onClick={() => handleAssignSmall(employee.value.key)} />
+              <AssignBtn onClick={() => handleAssignSmall(employee.key)} />
             </td>
             <td className="p-2 hidden-on-mobile">
               {!employee.value.trainee && employee.value.bigTopTotal}
@@ -163,14 +162,14 @@ function EmployeeTable({
             <td className="p-2">
               {!employee.value.trainee && (
                 <AssignBtn
-                  onClick={() => handleAssignBig(employee.value)}
+                  onClick={() => handleAssignBig(employee.key)}
                   bigTop={true}
                 />
               )}
             </td>
             <td className="p-2">
               {index === 0 && (
-                <SkipBtn onClick={() => handleSkip(employee.id)} />
+                <SkipBtn onClick={() => handleSkip(employee.key)} />
               )}
             </td>
             <td className="p-2">
@@ -183,7 +182,7 @@ function EmployeeTable({
                 setBreakEmployees={setBreakEmployees}
               />
             </td>
-            <td className="p-2 hidden-on-mobile">
+            <td className="p-2">
               <ClockOutBtn
                 employee={employee}
                 employees={employees}

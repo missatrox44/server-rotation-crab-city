@@ -51,9 +51,6 @@ function App() {
     }
   }, []);
 
-  console.log('employees:', employees);
-
-
   return (
     <div className="App">
       <header>

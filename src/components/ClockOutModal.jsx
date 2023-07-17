@@ -1,7 +1,8 @@
 import React from "react";
-import { getDatabase, ref, child, get, onValue } from "firebase/database";
-import { db } from '../utils/firebase';
+import { getDatabase, ref, child, get, onValue, remove } from "firebase/database";
+// import { db } from '../utils/firebase';
 
+const db = getDatabase();
 
 export default function ClockOutModal({ employee, employees, setEmployees, setIsModalVisible, lastAction }) {
 
@@ -12,52 +13,25 @@ export default function ClockOutModal({ employee, employees, setEmployees, setIs
       employee: employee,
       currentEmployeeList: employees,
     }
-    console.log('====================================');
-    console.log('employee', employee);
-    console.log('====================================');
-    const employeeId = employee.id;
-    const employeesCopy = [...employees];
+    const employeeKey = employee.key;
+    const employeesCopy = [...employees.employeeData];
     const clockedInEmployees = employeesCopy.filter((clockedInEmployee) => {
-      if (clockedInEmployee.id !== employee.id) {
+      if (clockedInEmployee.key !== employeeKey) {
         return clockedInEmployee;
       }
     })
-    const employeeIndex = employees.indexOf(employee)
-    console.log('====================================');
-    console.log(employeeIndex);
-    console.log('====================================');
     setEmployees(clockedInEmployees);
     setIsModalVisible(false);
-    deleteEmployee(employeeIndex);
+    deleteEmployee(employeeKey);
   };
 
-  const deleteEmployee =(employeeIndex) => {
-    console.log('====================================');
-    console.log(employeeIndex);
-    console.log('====================================');
+  const deleteEmployee =(employeeKey) => {
     try {
-      const getEmployee = ref(db, 'employees/' + 'employees/' + employeeIndex);
-      onValue(getEmployee, (snapshot) => {
-      const data = snapshot.val();
-      // setEmployees(data.employees)
-      console.log('====================================');
-      console.log(data);
-      console.log('====================================');
-    });
+      const getEmployee = ref(db, 'employees/' + employeeKey);
+      remove(getEmployee)
     } catch (error) {
       console.log(error);
     }
-
-   
-    // get(child(db, 'employees/' + employeeId )).then((snapshot) => {
-    //   if (snapshot.exists()) {
-    //     console.log(snapshot.val());
-    //   } else {
-    //     console.log("No data available");
-    //   }
-    // }).catch((error) => {
-    //   console.error(error);
-    // });
   }
 
   return (
