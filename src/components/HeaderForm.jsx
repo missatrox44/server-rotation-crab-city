@@ -15,9 +15,11 @@ function HeaderForm({ employees, setEmployees }) {
     setIsTrainee(event.target.checked);
   };
 
-  const handleAddEmployee = () => {
+  const handleAddEmployee = (event) => {
+    event.preventDefault()
+    console.log('employees', employees);
     const newEmployee = {
-      id: Date.now(),
+      // id: Date.now(),
       employeeName: employeeName,
       smallTopTotal: 0,
       bigTopTotal: 0,
@@ -25,10 +27,10 @@ function HeaderForm({ employees, setEmployees }) {
       clockOut: false,
       trainee: isTrainee,
     };
-
-    const newEmployees = [...employees, newEmployee];
-
-    setEmployees(newEmployees);
+    console.log("newEmployee", newEmployee);
+    // const newEmployees = {...employees, {employeeData: newEmployee}};
+    // console.log('newEmployees', newEmployees);
+    // setEmployees(newEmployees);
     setEmployeeName("");
     setIsTrainee(false);
     writeUserData(newEmployee);

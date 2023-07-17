@@ -35,16 +35,15 @@ function App() {
   
   useEffect(() => {
     try {
-      let employees = [];
+      let employeesArr = [];
       const getEmployees = ref(db, 'employees');
       onValue(getEmployees, (snapshot) => {
         snapshot.forEach((employeeSnapshot) => {
         const employeeKey = employeeSnapshot.key;
         const employeeData = employeeSnapshot.val();
-        employees.push({"key": employeeKey, "value": employeeData});
+        employeesArr.push({"key": employeeKey, "value": employeeData});
       })
-      setEmployees({employeeData: employees});
-
+      setEmployees({employeeData: employeesArr});
     });
     } catch (error) {
       console.log(error);
@@ -57,7 +56,7 @@ function App() {
         <h1 className="text-blue-600 text-6xl">Crab City Server Rotation</h1>
         <p className="text-xs mb-6">v.1.3.0</p>
 
-        {/* <HeaderForm employees={employees} setEmployees={setEmployees}/> */}
+        <HeaderForm employees={employees} setEmployees={setEmployees}/>
       </header>
 
       {
