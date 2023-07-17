@@ -2,7 +2,6 @@ import { useState, useEffect, useRef } from "react";
 import { ref, onValue } from "firebase/database";
 import "./App.css";
 import { db } from './utils/firebase';
-
 import Footer from "./components/Footer";
 import HeaderForm from "./components/HeaderForm";
 import NextServer from "./components/NextServer";
@@ -17,7 +16,6 @@ function App() {
 
   let lastAction = useRef({});
 
-
   const handleUndo = () => {
     if (!lastAction.current.action) {
       return;
@@ -31,7 +29,6 @@ function App() {
     setBreakEmployees(currentBreakEmployeeList);
     lastAction.current = {};
   }
-
   
   useEffect(() => {
     try {
@@ -43,12 +40,12 @@ function App() {
         const employeeData = employeeSnapshot.val();
         employeesArr.push({"key": employeeKey, "value": employeeData});
       })
-      setEmployees({employeeData: employeesArr});
+      setEmployees({employeeData: [...employeesArr]});
     });
     } catch (error) {
       console.log(error);
     }
-  }, []);
+  }, [employees]);
 
   return (
     <div className="App">

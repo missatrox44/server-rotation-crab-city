@@ -27,10 +27,9 @@ function HeaderForm({ employees, setEmployees }) {
       clockOut: false,
       trainee: isTrainee,
     };
-    console.log("newEmployee", newEmployee);
     // const newEmployees = {...employees, {employeeData: newEmployee}};
-    // console.log('newEmployees', newEmployees);
-    // setEmployees(newEmployees);
+    console.log("employees", employees);
+    setEmployees({...employees.employeeData, newEmployee});
     setEmployeeName("");
     setIsTrainee(false);
     writeUserData(newEmployee);
@@ -38,7 +37,6 @@ function HeaderForm({ employees, setEmployees }) {
   
 
   function writeUserData(newEmployee) {
-    console.log('newEmployee:', newEmployee);
     const db = getDatabase();
     let employeesRef = ref(db, 'employees/')
     push(employeesRef, newEmployee);
