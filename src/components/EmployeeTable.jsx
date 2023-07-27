@@ -143,8 +143,8 @@ function EmployeeTable({
         </tr>
       </thead>
       <tbody>
-        {employees.map((employee, index) => (
-          <tr key={employee.id}>
+        {Object.entries(employees).map(([key, employee], index) => (
+          <tr key={key}>
             <td
               className={`text-left py-2 pr-2 ${
                 employee.trainee ? "text-cyan-600" : ""

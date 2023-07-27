@@ -10,9 +10,9 @@ import EmployeeTable from "./components/EmployeeTable";
 
 function App() {
 
-  const [employees, setEmployees] = useState([]);
+  const [employees, setEmployees] = useState({});
   const [bigTopEmployees, setBigTopEmployees] = useState([]);
-  const [breakEmployees, setBreakEmployees] = useState([]);
+  const [breakEmployees, setBreakEmployees] = useState([]);  
   const [nextServerIndex, setNextServerIndex] = useState(0);
 
   let lastAction = useRef({});
@@ -38,7 +38,8 @@ function App() {
       const getEmployees = ref(db, 'employees/');
       onValue(getEmployees, (snapshot) => {
       const data = snapshot.val();
-      setEmployees(data.employees)
+      console.log('data: ',data);
+      setEmployees(data)
     });
     } catch (error) {
       console.log(error);
@@ -56,7 +57,7 @@ function App() {
       </header>
 
       {
-        (employees.length > 0 || bigTopEmployees.length > 0 || breakEmployees.length > 0) && 
+    (Object.keys(employees).length > 0 || bigTopEmployees.length > 0 || breakEmployees.length > 0) && 
       
         <div>
           <hr className="my-8" />
