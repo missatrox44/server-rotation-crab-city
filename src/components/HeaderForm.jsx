@@ -1,9 +1,6 @@
 import { useState } from "react";
 import AddBtn from "./Btns/AddBtn";
-
-import { db } from '../utils/firebase';
-import { onValue, ref, set, getDatabase } from "firebase/database";
-
+import { getDatabase, ref, set, push } from 'firebase/database';
 
 function HeaderForm({ employees, setEmployees }) {
 
@@ -20,7 +17,7 @@ function HeaderForm({ employees, setEmployees }) {
 
   const handleAddEmployee = () => {
     const newEmployee = {
-      id: Date.now(),
+      // id: Date.now(),
       employeeName: employeeName,
       smallTopTotal: 0,
       bigTopTotal: 0,
@@ -29,23 +26,20 @@ function HeaderForm({ employees, setEmployees }) {
       trainee: isTrainee,
     };
 
-    const newEmployees = [...employees, newEmployee];
-
-    setEmployees(newEmployees);
+    console.log("employees", employees);
+    setEmployees({...employees.employeeData, newEmployee});
     setEmployeeName("");
     setIsTrainee(false);
-    writeUserData(newEmployees);
+    writeUserData(newEmployee);
   };
   
 
-  function writeUserData(employees) {
-    const reference = ref(db, "employees/");
-    set(reference, {
-      employees: employees
-    })
+  function writeUserData(newEmployee) {
+    const db = getDatabase();
+    let employeesRef = ref(db, 'employees/')
+    push(employeesRef, newEmployee);
   }
-
-
+  console.log('employees', employees);
 
   return (
     <form>

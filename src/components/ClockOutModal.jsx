@@ -1,5 +1,8 @@
 import React from "react";
+import { getDatabase, ref, child, get, onValue, remove } from "firebase/database";
+// import { db } from '../utils/firebase';
 
+const db = getDatabase();
 
 export default function ClockOutModal({ employee, employees, setEmployees, setIsModalVisible, lastAction }) {
 
@@ -10,16 +13,26 @@ export default function ClockOutModal({ employee, employees, setEmployees, setIs
       employee: employee,
       currentEmployeeList: employees,
     }
-    const employeesCopy = [...employees];
+    const employeeKey = employee.key;
+    const employeesCopy = [...employees.employeeData];
     const clockedInEmployees = employeesCopy.filter((clockedInEmployee) => {
-      if (clockedInEmployee.id !== employee.id) {
+      if (clockedInEmployee.key !== employeeKey) {
         return clockedInEmployee;
       }
     })
     setEmployees(clockedInEmployees);
     setIsModalVisible(false);
+    deleteEmployee(employeeKey);
   };
 
+  const deleteEmployee =(employeeKey) => {
+    try {
+      const getEmployee = ref(db, 'employees/' + employeeKey);
+      remove(getEmployee)
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   return (
     <div className="relative z-10" aria-labelledby="modal-title" role="dialog" aria-modal="true">

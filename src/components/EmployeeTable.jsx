@@ -143,33 +143,33 @@ function EmployeeTable({
         </tr>
       </thead>
       <tbody>
-        {employees.map((employee, index) => (
-          <tr key={employee.id}>
+        {employees.employeeData.map((employee, index) => (
+          <tr key={employee.key}>
             <td
               className={`text-left py-2 pr-2 ${
-                employee.trainee ? "text-cyan-600" : ""
+                employee.value.trainee ? "text-cyan-600" : ""
               }`}
             >
-              {employee.employeeName}
+              {employee.value.employeeName}
             </td>
-            <td className="p-2 hidden-on-mobile">{employee.smallTopTotal}</td>
+            <td className="p-2 hidden-on-mobile">{employee.value.smallTopTotal}</td>
             <td className="p-2">
-              <AssignBtn onClick={() => handleAssignSmall(employee.id)} />
+              <AssignBtn onClick={() => handleAssignSmall(employee.key)} />
             </td>
             <td className="p-2 hidden-on-mobile">
-              {!employee.trainee && employee.bigTopTotal}
+              {!employee.value.trainee && employee.value.bigTopTotal}
             </td>
             <td className="p-2">
-              {!employee.trainee && (
+              {!employee.value.trainee && (
                 <AssignBtn
-                  onClick={() => handleAssignBig(employee)}
+                  onClick={() => handleAssignBig(employee.key)}
                   bigTop={true}
                 />
               )}
             </td>
             <td className="p-2">
               {index === 0 && (
-                <SkipBtn onClick={() => handleSkip(employee.id)} />
+                <SkipBtn onClick={() => handleSkip(employee.key)} />
               )}
             </td>
             <td className="p-2">
@@ -182,7 +182,7 @@ function EmployeeTable({
                 setBreakEmployees={setBreakEmployees}
               />
             </td>
-            <td className="p-2 hidden-on-mobile">
+            <td className="p-2">
               <ClockOutBtn
                 employee={employee}
                 employees={employees}

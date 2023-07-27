@@ -2,7 +2,6 @@ import { useState, useEffect, useRef } from "react";
 import { ref, onValue } from "firebase/database";
 import "./App.css";
 import { db } from './utils/firebase';
-
 import Footer from "./components/Footer";
 import HeaderForm from "./components/HeaderForm";
 import NextServer from "./components/NextServer";
@@ -10,13 +9,12 @@ import EmployeeTable from "./components/EmployeeTable";
 
 function App() {
 
-  const [employees, setEmployees] = useState([]);
+  const [employees, setEmployees] = useState({employeeData: []});
   const [bigTopEmployees, setBigTopEmployees] = useState([]);
   const [breakEmployees, setBreakEmployees] = useState([]);
   const [nextServerIndex, setNextServerIndex] = useState(0);
 
   let lastAction = useRef({});
-
 
   const handleUndo = () => {
     if (!lastAction.current.action) {
@@ -31,20 +29,27 @@ function App() {
     setBreakEmployees(currentBreakEmployeeList);
     lastAction.current = {};
   }
-
   
   useEffect(() => {
+    getAllEmployees();
+  }, []);
+
+  const getAllEmployees = () => {
+    let employeesArr = [];
     try {
-      const getEmployees = ref(db, 'employees/');
+      const getEmployees = ref(db, 'employees');
       onValue(getEmployees, (snapshot) => {
-      const data = snapshot.val();
-      setEmployees(data.employees)
+        snapshot.forEach((employeeSnapshot) => {
+        const employeeKey = employeeSnapshot.key;
+        const employeeData = employeeSnapshot.val();
+        employeesArr.push({"key": employeeKey, "value": employeeData});
+      })
+      setEmployees({employeeData: [...employeesArr]});
     });
     } catch (error) {
       console.log(error);
-    }
-  }, []);
-
+  }
+}
 
   return (
     <div className="App">
@@ -56,7 +61,7 @@ function App() {
       </header>
 
       {
-        (employees.length > 0 || bigTopEmployees.length > 0 || breakEmployees.length > 0) && 
+        (employees.employeeData.length > 0 || bigTopEmployees.length > 0 || breakEmployees.length > 0) && 
       
         <div>
           <hr className="my-8" />
@@ -64,7 +69,6 @@ function App() {
             <NextServer employees={employees} nextServerIndex={nextServerIndex} />
 
           <hr className="my-8" />
-
           <main className="overflow-x-auto">
             <EmployeeTable
               employees={employees}
