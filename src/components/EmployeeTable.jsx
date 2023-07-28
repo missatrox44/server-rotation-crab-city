@@ -6,6 +6,7 @@ import ClockOutBtn from "./Btns/ClockOutBtn";
 import BreakOverBtn from "./Btns/BreakOverBtn";
 import ReadyBtn from "./Btns/ReadyBtn";
 import EmployeeRow from "./EmployeeRow";
+import BreakEmployeeRow from "./BreakEmployeeRow";
 
 import { getDatabase, ref, update, get } from "firebase/database";
 
@@ -19,7 +20,6 @@ function EmployeeTable({
   nextServerIndex,
   lastAction,
 }) {
-
   const handleAssignBig = (employee) => {
     const employeesCopy = [...employees];
     const notBigTopEmployees = [];
@@ -60,27 +60,6 @@ function EmployeeTable({
       currentBreakEmployeeList: breakEmployees,
     };
     setBigTopEmployees(removedReadyEmployee);
-  };
-
-
-  const handleBreakOver = (employee) => {
-    lastAction.current = {
-      action: "break over",
-      employee: employee,
-      currentEmployeeList: employees,
-      currentBigTopEmployeeList: bigTopEmployees,
-      currentBreakEmployeeList: breakEmployees,
-    };
-    const breakOverEmployee = [employee, ...employees];
-    setEmployees(breakOverEmployee);
-    const removedBreakEmployee = [...breakEmployees].filter(
-      (currentEmployee) => {
-        if (currentEmployee.id !== employee.id) {
-          return currentEmployee;
-        }
-      }
-    );
-    setBreakEmployees(removedBreakEmployee);
   };
 
   return (
@@ -133,26 +112,12 @@ function EmployeeTable({
           </tr>
         ))}
         {breakEmployees.map((employee, index) => (
-          <tr key={employee.id}>
-            <td
-              className={`text-left py-2 pr-2 ${
-                employee.trainee ? "text-cyan-600" : ""
-              }`}
-            >
-              {employee.employeeName}
-            </td>
-            <td className="p-2 hidden-on-mobile">{employee.smallTopTotal}</td>
-            <td></td>
-            <td className="p-2 hidden-on-mobile">
-              {!employee.trainee && employee.bigTopTotal}
-            </td>
-            <td></td>
-            <td></td>
-            <td className="p-2">
-              <BreakOverBtn onClick={() => handleBreakOver(employee)} />
-            </td>
-            <td></td>
-          </tr>
+          <BreakEmployeeRow
+            employee={employee}
+            setEmployees={setEmployees}
+            lastAction={lastAction}
+            breakEmployees={breakEmployees}
+          />
         ))}
       </tbody>
     </table>
