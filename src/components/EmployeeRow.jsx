@@ -13,7 +13,7 @@ function EmployeeRow({
   breakEmployees,
   setBreakEmployees,
   employees,
-  bigTopEmployees
+  bigTopEmployees,
 }) {
   const handleAssignSmall = async (employeeId) => {
     const db = getDatabase();
@@ -48,24 +48,27 @@ function EmployeeRow({
     }
   };
 
-  const handleSkip = () => {
-    // console.log("Skip button clicked");
-    if (employees.length > 1) {
-      const skippedEmployee = employees[nextServerIndex];
+  const handleSkip = (employeeId) => {
+    if (employees.employeeData.length > 1) {
+      const employeeIndex = employees.employeeData.findIndex(
+        (e) => e.key === employeeId
+      );
+      const skippedEmployee = employees.employeeData[employeeIndex];
       const updatedEmployees = [
-        ...employees.slice(0, nextServerIndex),
-        ...employees.slice(nextServerIndex + 1),
+        ...employees.employeeData.slice(0, employeeIndex),
+        ...employees.employeeData.slice(employeeIndex + 1),
         skippedEmployee,
       ];
+
       lastAction.current = {
         action: "skip",
         employee: skippedEmployee,
         currentEmployeeList: employees,
         currentBigTopEmployeeList: bigTopEmployees,
         currentBreakEmployeeList: breakEmployees,
-  
       };
-      setEmployees(updatedEmployees);
+
+      setEmployees({ employeeData: updatedEmployees });
     }
   };
 
