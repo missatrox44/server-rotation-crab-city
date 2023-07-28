@@ -35,21 +35,22 @@ function App() {
   }, []);
 
   const getAllEmployees = () => {
-    let employeesArr = [];
     try {
       const getEmployees = ref(db, 'employees');
       onValue(getEmployees, (snapshot) => {
+        let employeesArr = []; 
         snapshot.forEach((employeeSnapshot) => {
-        const employeeKey = employeeSnapshot.key;
-        const employeeData = employeeSnapshot.val();
-        employeesArr.push({"key": employeeKey, "value": employeeData});
-      })
-      setEmployees({employeeData: [...employeesArr]});
-    });
+          const employeeKey = employeeSnapshot.key;
+          const employeeData = employeeSnapshot.val();
+          employeesArr.push({"key": employeeKey, "value": employeeData});
+        })
+        setEmployees({employeeData: [...employeesArr]});
+      });
     } catch (error) {
       console.log(error);
+    }
   }
-}
+  
 
   return (
     <div className="App">
