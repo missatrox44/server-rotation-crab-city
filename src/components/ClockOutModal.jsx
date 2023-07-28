@@ -1,41 +1,49 @@
 import React from "react";
-import { getDatabase, ref, child, get, onValue, remove } from "firebase/database";
-// import { db } from '../utils/firebase';
+import { getDatabase, ref, remove } from "firebase/database";
 
 const db = getDatabase();
 
-export default function ClockOutModal({ employee, employees, setEmployees, setIsModalVisible, lastAction }) {
-
-
+export default function ClockOutModal({
+  employee,
+  employees,
+  setEmployees,
+  setIsModalVisible,
+  lastAction,
+}) {
   const handleClockOut = () => {
     lastAction.current = {
-      action: "clock out", 
+      action: "clock out",
       employee: employee,
       currentEmployeeList: employees,
-    }
-    const employeeKey = employee.key;
+    };
     const employeesCopy = [...employees.employeeData];
-    const clockedInEmployees = employeesCopy.filter((clockedInEmployee) => {
-      if (clockedInEmployee.key !== employeeKey) {
-        return clockedInEmployee;
-      }
-    })
-    setEmployees(clockedInEmployees);
+    const clockedInEmployees = employeesCopy.filter(
+      (clockedInEmployee) => clockedInEmployee.key !== employee.key
+    );
+    setEmployees({ employeeData: clockedInEmployees });
     setIsModalVisible(false);
-    deleteEmployee(employeeKey);
+    deleteEmployee(employee.key);
   };
 
-  const deleteEmployee =(employeeKey) => {
+  const deleteEmployee = (employeeKey) => {
     try {
-      const getEmployee = ref(db, 'employees/' + employeeKey);
-      remove(getEmployee)
+      const employeeRef = ref(db, `employees/${employeeKey}`);
+      remove(employeeRef);
     } catch (error) {
-      console.log(error);
+      console.error(
+        `Failed to remove employee with key ${employeeKey}: `,
+        error
+      );
     }
-  }
+  };
 
   return (
-    <div className="relative z-10" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+    <div
+      className="relative z-10"
+      aria-labelledby="modal-title"
+      role="dialog"
+      aria-modal="true"
+    >
       <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
 
       <div className="fixed inset-0 z-10 overflow-y-auto">
@@ -44,23 +52,30 @@ export default function ClockOutModal({ employee, employees, setEmployees, setIs
             <div className="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
               <div className="sm:flex sm:items-start">
                 <div className="mt-3 text-center w-full sm:ml-4 sm:mt-0 sm:text-left">
-                  <h3 className="text-base font-bold leading-10 text-5xl text-gray-900" id="modal-title">{employee.employeeName}</h3>
+                  <h3
+                    className="font-bold leading-10 text-5xl text-gray-900"
+                    id="modal-title"
+                  >
+                    {employee.employeeName}
+                  </h3>
                   <div className="mt-2">
-                    <p className="text-sm text-gray-500 my-5 text-xl">Are you sure you want to clock out?</p>
+                    <p className="text-gray-500 my-5 text-xl">
+                      Are you sure you want to clock out?
+                    </p>
                   </div>
                 </div>
               </div>
             </div>
             <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
-              <button 
-                type="button" 
-                className="inline-flex w-full justify-center rounded-full bg-rose-600 px-3 py-2.5 px-5 text-md font-semibold text-white shadow-sm hover:bg-rose-500 sm:ml-3 sm:w-auto"
+              <button
+                type="button"
+                className="inline-flex w-full justify-center rounded-full bg-rose-600 py-2.5 px-5 text-md font-semibold text-white shadow-sm hover:bg-rose-500 sm:ml-3 sm:w-auto"
                 onClick={handleClockOut}
               >
                 Clock Out
               </button>
-              <button 
-                type="button" 
+              <button
+                type="button"
                 className="mt-3 mx-2 inline-flex w-full justify-center rounded-md bg-white px-3 py-2.5 text-md font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
                 onClick={() => setIsModalVisible(false)}
               >
@@ -71,5 +86,5 @@ export default function ClockOutModal({ employee, employees, setEmployees, setIs
         </div>
       </div>
     </div>
-  )
+  );
 }
