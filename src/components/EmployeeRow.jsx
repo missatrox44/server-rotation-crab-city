@@ -48,6 +48,29 @@ function EmployeeRow({
     }
   };
 
+  // CURRENTLY NOT FUNCTIONAL
+  const handleAssignBig = (employee) => {
+    const employeesCopy = [...employees];
+    const notBigTopEmployees = [];
+    employeesCopy.map((currentEmployee) => {
+      if (currentEmployee.id !== employee.id) {
+        notBigTopEmployees.push(currentEmployee);
+      } else {
+        lastAction.current = {
+          action: "big top",
+          employee: employee,
+          currentEmployeeList: employees,
+          currentBigTopEmployeeList: bigTopEmployees,
+          currentBreakEmployeeList: breakEmployees,
+        };
+        currentEmployee.bigTopTotal++;
+        const newBigTopEmployees = [...bigTopEmployees, currentEmployee];
+        setBigTopEmployees(newBigTopEmployees);
+      }
+      setEmployees(notBigTopEmployees);
+    });
+  };
+
   const handleSkip = (employeeId) => {
     if (employees.employeeData.length > 1) {
       const employeeIndex = employees.employeeData.findIndex(
