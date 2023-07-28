@@ -6,6 +6,8 @@ import ClockOutBtn from "./Btns/ClockOutBtn";
 import BreakOverBtn from "./Btns/BreakOverBtn";
 import ReadyBtn from "./Btns/ReadyBtn";
 
+import { getDatabase, ref, update, get } from "firebase/database";
+
 function EmployeeTable({
   employees,
   setEmployees,
@@ -19,32 +21,56 @@ function EmployeeTable({
   const [isBreakModalVisible, setIsBreakModalVisible] = useState(false);
   const [employeeOnBreak, setEmployeeOnBreak] = useState(null);
 
-  const handleAssignSmall = (employeeId) => {
-    const employeeIndex = employees.findIndex((e) => e.id === employeeId);
-    lastAction.current = {
-      action: "small top",
-      employee: employees[employeeIndex],
-      currentEmployeeList: employees,
-      currentBigTopEmployeeList: bigTopEmployees,
-      currentBreakEmployeeList: breakEmployees,
-    };
-    if (employeeIndex !== -1) {
-      const updatedEmployee = {
-        ...employees[employeeIndex],
-        smallTopTotal: employees[employeeIndex].smallTopTotal + 1,
-      };
+  // const handleAssignSmall = (employeeId) => {
+  //   const employeeIndex = employees.findIndex((e) => e.id === employeeId);
+  //   lastAction.current = {
+  //     action: "small top",
+  //     employee: employees[employeeIndex],
+  //     currentEmployeeList: employees,
+  //     currentBigTopEmployeeList: bigTopEmployees,
+  //     currentBreakEmployeeList: breakEmployees,
+  //   };
+  //   if (employeeIndex !== -1) {
+  //     const updatedEmployee = {
+  //       ...employees[employeeIndex],
+  //       smallTopTotal: employees[employeeIndex].smallTopTotal + 1,
+  //     };
 
-      const updatedEmployees = [
-        ...employees.slice(0, employeeIndex),
-        ...employees.slice(employeeIndex + 1),
-        updatedEmployee,
-      ];
+  //     const updatedEmployees = [
+  //       ...employees.slice(0, employeeIndex),
+  //       ...employees.slice(employeeIndex + 1),
+  //       updatedEmployee,
+  //     ];
 
-      // console.log("Small top assigned to:", updatedEmployee.employeeName);
+  //     // console.log("Small top assigned to:", updatedEmployee.employeeName);
 
-      setEmployees(updatedEmployees);
-    }
-  };
+  //     setEmployees(updatedEmployees);
+  //   }
+  // };
+
+  // =================================
+
+
+const handleAssignSmall = async (employeeId) => {
+  const db = getDatabase();
+  const employeeRef = ref(db, 'employees/' + employeeId);
+
+  try {
+    // Fetch current data for the employee.
+    const snapshot = await get(employeeRef);
+    const data = snapshot.val();
+    const currentSmallTopTotal = data.smallTopTotal;
+
+    // Update smallTopTotal for the employee.
+    await update(employeeRef, {
+      smallTopTotal: currentSmallTopTotal + 1
+    });
+  } catch (error) {
+    console.log(error);
+    // Handle error, if any.
+  }
+};
+
 
   const handleAssignBig = (employee) => {
     const employeesCopy = [...employees];
