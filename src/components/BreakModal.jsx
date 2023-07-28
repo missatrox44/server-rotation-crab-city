@@ -44,13 +44,13 @@ export default function BreakModal({
               <div className="sm:flex sm:items-start">
                 <div className="mt-3 text-center w-full sm:ml-4 sm:mt-0 sm:text-left">
                   <h3
-                    className="text-base font-bold leading-10 text-5xl text-gray-900"
+                    className="font-bold leading-10 text-5xl text-gray-900"
                     id="modal-title"
                   >
                     {employee.employeeName}
                   </h3>
                   <div className="mt-2">
-                    <p className="text-sm text-gray-500 my-5 text-xl">
+                    <p className=" text-gray-500 my-5 text-xl">
                       Are you sure you want to go on break?
                     </p>
                   </div>
@@ -60,7 +60,7 @@ export default function BreakModal({
             <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
               <button
                 type="button"
-                className="inline-flex w-full justify-center rounded-full bg-amber-600 px-3 py-2.5 px-5 text-md font-semibold text-white shadow-sm hover:bg-amber-700 sm:ml-3 sm:w-auto"
+                className="inline-flex w-full justify-center rounded-full bg-amber-600 py-2.5 px-5 text-md font-semibold text-white shadow-sm hover:bg-amber-700 sm:ml-3 sm:w-auto"
                 onClick={handleBreak}
               >
                 Start Break
