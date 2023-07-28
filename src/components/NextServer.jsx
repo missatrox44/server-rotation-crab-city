@@ -4,7 +4,10 @@ function NextServer({ employees, nextServerIndex }) {
   return (
     <div className="my-3">
       <h2 className="text-3xl">
-        Next Server: <span className="font-bold">{employees[nextServerIndex]?.employeeName}</span>
+        Next Server:{" "}
+        <span className="font-bold">
+          {employees.employeeData[nextServerIndex]?.value.employeeName}
+        </span>
       </h2>
     </div>
   );
