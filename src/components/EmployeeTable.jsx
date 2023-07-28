@@ -19,41 +19,6 @@ function EmployeeTable({
   nextServerIndex,
   lastAction,
 }) {
-  // const [isBreakModalVisible, setIsBreakModalVisible] = useState(false);
-  // const [employeeOnBreak, setEmployeeOnBreak] = useState(null);
-
-  // const handleAssignSmall = async (employeeId) => {
-  //   const db = getDatabase();
-  //   const employeeRef = ref(db, "employees/" + employeeId);
-
-  //   try {
-  //     // Fetch current data for the employee.
-  //     const snapshot = await get(employeeRef);
-  //     const data = snapshot.val();
-  //     const currentSmallTopTotal = data.smallTopTotal;
-
-  //     // Update smallTopTotal for the employee.
-  //     await update(employeeRef, {
-  //       smallTopTotal: currentSmallTopTotal + 1,
-  //     });
-
-  //     // Move the assigned employee to the end of the table
-  //     const updatedEmployee = {
-  //       ...employees.employeeData.find((e) => e.key === employeeId).value,
-  //       smallTopTotal: currentSmallTopTotal + 1,
-  //     };
-
-  //     const updatedEmployeeData = employees.employeeData.filter(
-  //       (e) => e.key !== employeeId
-  //     );
-  //     updatedEmployeeData.push({ key: employeeId, value: updatedEmployee });
-
-  //     setEmployees({ employeeData: updatedEmployeeData });
-  //   } catch (error) {
-  //     console.log(error);
-  //     // Handle error, if any.
-  //   }
-  // };
 
   const handleAssignBig = (employee) => {
     const employeesCopy = [...employees];
@@ -97,25 +62,6 @@ function EmployeeTable({
     setBigTopEmployees(removedReadyEmployee);
   };
 
-  // const handleSkip = () => {
-  //   // console.log("Skip button clicked");
-  //   if (employees.length > 1) {
-  //     const skippedEmployee = employees[nextServerIndex];
-  //     const updatedEmployees = [
-  //       ...employees.slice(0, nextServerIndex),
-  //       ...employees.slice(nextServerIndex + 1),
-  //       skippedEmployee,
-  //     ];
-  //     lastAction.current = {
-  //       action: "skip",
-  //       employee: skippedEmployee,
-  //       currentEmployeeList: employees,
-  //       currentBigTopEmployeeList: bigTopEmployees,
-  //       currentBreakEmployeeList: breakEmployees,
-  //     };
-  //     setEmployees(updatedEmployees);
-  //   }
-  // };
 
   const handleBreakOver = (employee) => {
     lastAction.current = {
