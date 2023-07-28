@@ -38,6 +38,7 @@ function EmployeeTable({
       <tbody>
         {employees.employeeData.map((employee, index) => (
           <EmployeeRow
+            key={employee.key}
             employee={employee}
             index={index}
             setEmployees={setEmployees}
@@ -50,6 +51,7 @@ function EmployeeTable({
         ))}
         {bigTopEmployees.map((employee, index) => (
           <BigTopEmployeeRow
+            key={employee.key}
             employee={employee}
             setEmployees={setEmployees}
             lastAction={lastAction}
@@ -58,6 +60,7 @@ function EmployeeTable({
         ))}
         {breakEmployees.map((employee, index) => (
           <BreakEmployeeRow
+            key={employee.key}
             employee={employee}
             setEmployees={setEmployees}
             lastAction={lastAction}
