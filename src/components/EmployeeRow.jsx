@@ -71,17 +71,28 @@ function EmployeeRow({
     });
   };
 
-  const handleSkip = (employeeId) => {
+  const handleSkip = async (employeeId) => {
     if (employees.employeeData.length > 1) {
-      const employeeIndex = employees.employeeData.findIndex(
+      const db = getDatabase();
+
+      // Create a copy of the array
+      const updatedEmployees = [...employees.employeeData];
+      // Find the index of the employee to be skipped
+      const employeeIndex = updatedEmployees.findIndex(
         (e) => e.key === employeeId
       );
-      const skippedEmployee = employees.employeeData[employeeIndex];
-      const updatedEmployees = [
-        ...employees.employeeData.slice(0, employeeIndex),
-        ...employees.employeeData.slice(employeeIndex + 1),
-        skippedEmployee,
-      ];
+      // Extract the employee from the array
+      const skippedEmployee = updatedEmployees.splice(employeeIndex, 1)[0];
+      // Push the employee at the end of the array
+      updatedEmployees.push(skippedEmployee);
+
+      // update the order in Firebase for each employee
+      for (let i = 0; i < updatedEmployees.length; i++) {
+        const employeeRef = ref(db, "employees/" + updatedEmployees[i].key);
+        await update(employeeRef, {
+          order: i, // Set the order field for the current employee
+        });
+      }
 
       lastAction.current = {
         action: "skip",

@@ -55,6 +55,11 @@ function App() {
           const employeeData = employeeSnapshot.val();
           employeesArr.push({ key: employeeKey, value: employeeData });
         });
+
+          // Sort the array by the order field
+      employeesArr.sort((a, b) => a.value.order - b.value.order);
+      
+  
         setEmployees({ employeeData: [...employeesArr] });
       });
     } catch (error) {
