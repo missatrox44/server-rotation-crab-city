@@ -24,6 +24,7 @@ function HeaderForm({ employees, setEmployees }) {
       break: false,
       clockOut: false,
       trainee: isTrainee,
+      order: employees.employeeData.length, 
     };
 
     console.log("employees", employees);
