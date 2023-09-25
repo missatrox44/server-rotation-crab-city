@@ -40,7 +40,6 @@ function HeaderForm({ employees, setEmployees }) {
     let employeesRef = ref(db, 'employees/')
     push(employeesRef, newEmployee);
   }
-  console.log('employees', employees);
 
   return (
     <form>

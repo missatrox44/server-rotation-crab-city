@@ -36,11 +36,15 @@ function EmployeeRow({
         smallTopTotal: currentSmallTopTotal + 1,
       };
 
+      // Filters out the selected employee
       const updatedEmployeeData = employees.employeeData.filter(
         (e) => e.key !== employeeId
       );
+      
+      // Adds the employee to the end of the list
       updatedEmployeeData.push({ key: employeeId, value: updatedEmployee });
-
+      
+      // Sets the state of the employee; updates the browser
       setEmployees({ employeeData: updatedEmployeeData });
     } catch (error) {
       console.log(error);
@@ -49,26 +53,77 @@ function EmployeeRow({
   };
 
   // CURRENTLY NOT FUNCTIONAL
-  const handleAssignBig = (employee) => {
-    const employeesCopy = [...employees];
-    const notBigTopEmployees = [];
-    employeesCopy.map((currentEmployee) => {
-      if (currentEmployee.id !== employee.id) {
-        notBigTopEmployees.push(currentEmployee);
-      } else {
-        lastAction.current = {
-          action: "big top",
-          employee: employee,
-          currentEmployeeList: employees,
-          currentBigTopEmployeeList: bigTopEmployees,
-          currentBreakEmployeeList: breakEmployees,
-        };
-        currentEmployee.bigTopTotal++;
-        const newBigTopEmployees = [...bigTopEmployees, currentEmployee];
-        setBigTopEmployees(newBigTopEmployees);
-      }
-      setEmployees(notBigTopEmployees);
-    });
+  const handleAssignBig = async(employeeId) => {
+    const db = getDatabase();
+    const employeeRef = ref(db, "employees/" + employeeId)
+
+    try {
+       // Fetch current data for the employee.
+       const snapshot = await get(employeeRef);
+       const data = snapshot.val();
+       const currentBigTopTotal = data.bigTopTotal;
+
+       // Update bigTopTotal for the employee.
+      await update(employeeRef, {
+        bigTopTotal: currentBigTopTotal + 1,
+      });
+      
+      // Move the assigned employee to the end of the table
+      const updatedEmployee = {
+        ...employees.employeeData.find((e) => e.key === employeeId).value,
+        bigTopTotal: currentBigTopTotal + 1,
+      };
+
+      // Filters out the selected employee and creates a new array without selected employee
+      const updatedEmployeeData = employees.employeeData.filter(
+        (e) => e.key !== employeeId
+      );
+
+      // Adds the updated employee to the end of the list
+      updatedEmployeeData.push({ key: employeeId, value: updatedEmployee });
+      
+      // Sets the state of the employee; updates the browser
+      setEmployees({ employeeData: updatedEmployeeData });
+
+      // Disable Row
+      
+      // const employeesCopy = [...employees];
+      
+      // const workingEmployees = employees.employeeData.filter((currentEmployee) => {
+      //   if (currentEmployee.id !== employee.id) {
+      //     return currentEmployee;
+      //   }
+      // });
+
+      // const newBreakingEmployees = [...breakEmployees, employee];
+      // console.log('newBreakingEmployees', newBreakingEmployees);
+      // setBreakEmployees(newBreakingEmployees);
+      // setEmployees(workingEmployees);
+
+
+    } catch (error) {
+      
+    }
+    
+    // const employeesCopy = [...employees];
+    // const notBigTopEmployees = [];
+    // employeesCopy.map((currentEmployee) => {
+    //   if (currentEmployee.id !== employee.id) {
+    //     notBigTopEmployees.push(currentEmployee);
+    //   } else {
+    //     lastAction.current = {
+    //       action: "big top",
+    //       employee: employee,
+    //       currentEmployeeList: employees,
+    //       currentBigTopEmployeeList: bigTopEmployees,
+    //       currentBreakEmployeeList: breakEmployees,
+    //     };
+    //     currentEmployee.bigTopTotal++;
+    //     const newBigTopEmployees = [...bigTopEmployees, currentEmployee];
+    //     setBigTopEmployees(newBigTopEmployees);
+    //   }
+    //   setEmployees(notBigTopEmployees);
+    // });
   };
 
   const handleSkip = async (employeeId) => {
