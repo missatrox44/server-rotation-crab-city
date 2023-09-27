@@ -4,6 +4,7 @@ import SkipBtn from "./Btns/SkipBtn";
 import BreakBtn from "./Btns/BreakBtn";
 import ClockOutBtn from "./Btns/ClockOutBtn";
 import { getDatabase, ref, update, get } from "firebase/database";
+import { useState } from "react";
 
 function EmployeeRow({
   employee,
@@ -15,6 +16,11 @@ function EmployeeRow({
   employees,
   bigTopEmployees,
 }) {
+
+  // State controls
+  const [disabled, setDisabled] = useState(false);
+
+  // Retrieves user, updates DB & browser for small tops
   const handleAssignSmall = async (employeeId) => {
     const db = getDatabase();
     const employeeRef = ref(db, "employees/" + employeeId);
@@ -52,8 +58,12 @@ function EmployeeRow({
     }
   };
 
-  // CURRENTLY NOT FUNCTIONAL
+  // CURRENTLY NOT FUllY FUNCTIONAL
+  // Retrieves user, updates DB & browser for big tops, disables user
+  // TO DO: display buton & functionality to allow user to return.
+  // TO DO: update user to `disabled` in DB
   const handleAssignBig = async(employeeId) => {
+    // Find employee by ID
     const db = getDatabase();
     const employeeRef = ref(db, "employees/" + employeeId)
 
@@ -85,45 +95,12 @@ function EmployeeRow({
       // Sets the state of the employee; updates the browser
       setEmployees({ employeeData: updatedEmployeeData });
 
-      // Disable Row
-      
-      // const employeesCopy = [...employees];
-      
-      // const workingEmployees = employees.employeeData.filter((currentEmployee) => {
-      //   if (currentEmployee.id !== employee.id) {
-      //     return currentEmployee;
-      //   }
-      // });
-
-      // const newBreakingEmployees = [...breakEmployees, employee];
-      // console.log('newBreakingEmployees', newBreakingEmployees);
-      // setBreakEmployees(newBreakingEmployees);
-      // setEmployees(workingEmployees);
-
+      // Disable User Buttons
+      setDisabled(true);
 
     } catch (error) {
-      
+      console.log(error)
     }
-    
-    // const employeesCopy = [...employees];
-    // const notBigTopEmployees = [];
-    // employeesCopy.map((currentEmployee) => {
-    //   if (currentEmployee.id !== employee.id) {
-    //     notBigTopEmployees.push(currentEmployee);
-    //   } else {
-    //     lastAction.current = {
-    //       action: "big top",
-    //       employee: employee,
-    //       currentEmployeeList: employees,
-    //       currentBigTopEmployeeList: bigTopEmployees,
-    //       currentBreakEmployeeList: breakEmployees,
-    //     };
-    //     currentEmployee.bigTopTotal++;
-    //     const newBigTopEmployees = [...bigTopEmployees, currentEmployee];
-    //     setBigTopEmployees(newBigTopEmployees);
-    //   }
-    //   setEmployees(notBigTopEmployees);
-    // });
   };
 
   const handleSkip = async (employeeId) => {
@@ -172,7 +149,7 @@ function EmployeeRow({
       </td>
       <td className="p-2 hidden-on-mobile">{employee.value.smallTopTotal}</td>
       <td className="p-2">
-        <AssignBtn onClick={() => handleAssignSmall(employee.key)} />
+        <AssignBtn disabled={disabled} onClick={() => {handleAssignSmall(employee.key)}} />
       </td>
       <td className="p-2 hidden-on-mobile">
         {!employee.value.trainee && employee.value.bigTopTotal}
@@ -182,6 +159,7 @@ function EmployeeRow({
           <AssignBtn
             onClick={() => handleAssignBig(employee.key)}
             bigTop={true}
+            disabled={disabled}
           />
         )}
       </td>
