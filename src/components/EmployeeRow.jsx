@@ -3,6 +3,7 @@ import AssignBtn from "./Btns/AssignBtn";
 import SkipBtn from "./Btns/SkipBtn";
 import BreakBtn from "./Btns/BreakBtn";
 import ClockOutBtn from "./Btns/ClockOutBtn";
+import ReadyBtn from "./Btns/ReadyBtn";
 import { getDatabase, ref, update, get } from "firebase/database";
 import { useState } from "react";
 
@@ -16,7 +17,6 @@ function EmployeeRow({
   employees,
   bigTopEmployees,
 }) {
-
   // State controls
   const [disabled, setDisabled] = useState(false);
 
@@ -46,10 +46,10 @@ function EmployeeRow({
       const updatedEmployeeData = employees.employeeData.filter(
         (e) => e.key !== employeeId
       );
-      
+
       // Adds the employee to the end of the list
       updatedEmployeeData.push({ key: employeeId, value: updatedEmployee });
-      
+
       // Sets the state of the employee; updates the browser
       setEmployees({ employeeData: updatedEmployeeData });
     } catch (error) {
@@ -60,24 +60,23 @@ function EmployeeRow({
 
   // CURRENTLY NOT FUllY FUNCTIONAL
   // Retrieves user, updates DB & browser for big tops, disables user
-  // TO DO: display buton & functionality to allow user to return.
   // TO DO: update user to `disabled` in DB
-  const handleAssignBig = async(employeeId) => {
+  const handleAssignBig = async (employeeId) => {
     // Find employee by ID
     const db = getDatabase();
-    const employeeRef = ref(db, "employees/" + employeeId)
+    const employeeRef = ref(db, "employees/" + employeeId);
 
     try {
-       // Fetch current data for the employee.
-       const snapshot = await get(employeeRef);
-       const data = snapshot.val();
-       const currentBigTopTotal = data.bigTopTotal;
+      // Fetch current data for the employee.
+      const snapshot = await get(employeeRef);
+      const data = snapshot.val();
+      const currentBigTopTotal = data.bigTopTotal;
 
-       // Update bigTopTotal for the employee.
+      // Update bigTopTotal for the employee.
       await update(employeeRef, {
         bigTopTotal: currentBigTopTotal + 1,
       });
-      
+
       // Move the assigned employee to the end of the table
       const updatedEmployee = {
         ...employees.employeeData.find((e) => e.key === employeeId).value,
@@ -91,16 +90,19 @@ function EmployeeRow({
 
       // Adds the updated employee to the end of the list
       updatedEmployeeData.push({ key: employeeId, value: updatedEmployee });
-      
+
       // Sets the state of the employee; updates the browser
       setEmployees({ employeeData: updatedEmployeeData });
 
       // Disable User Buttons
       setDisabled(true);
-
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
+  };
+
+  const handleReturn = async () => {
+    setDisabled(false);
   };
 
   const handleSkip = async (employeeId) => {
@@ -145,11 +147,23 @@ function EmployeeRow({
           employee.value.trainee ? "text-cyan-600" : ""
         }`}
       >
+        {disabled ? (
+          <ReadyBtn
+            onClick={handleReturn}
+          />
+        ) : (
+          ""
+        )}
         {employee.value.employeeName}
       </td>
       <td className="p-2 hidden-on-mobile">{employee.value.smallTopTotal}</td>
       <td className="p-2">
-        <AssignBtn disabled={disabled} onClick={() => {handleAssignSmall(employee.key)}} />
+        <AssignBtn
+          disabled={disabled}
+          onClick={() => {
+            handleAssignSmall(employee.key);
+          }}
+        />
       </td>
       <td className="p-2 hidden-on-mobile">
         {!employee.value.trainee && employee.value.bigTopTotal}
