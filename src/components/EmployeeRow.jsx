@@ -18,7 +18,7 @@ function EmployeeRow({
   bigTopEmployees,
 }) {
   // State controls
-  const [disabled, setDisabled] = useState(false);
+  const [disabled, setDisabled] = useState(employee.value.disabled);
 
   // Retrieves user, updates DB & browser for small tops
   const handleAssignSmall = async (employeeId) => {
@@ -58,9 +58,8 @@ function EmployeeRow({
     }
   };
 
-  // CURRENTLY NOT FUllY FUNCTIONAL
   // Retrieves user, updates DB & browser for big tops, disables user
-  // TO DO: update user to `disabled` in DB
+  // BUG ISSUE - quick flash of first added employee's name as 'Next Server' screen before displaying correctly. I think something is off with how the employees are being set. 
   const handleAssignBig = async (employeeId) => {
     // Find employee by ID
     const db = getDatabase();
@@ -75,8 +74,10 @@ function EmployeeRow({
       // Update bigTopTotal for the employee.
       await update(employeeRef, {
         bigTopTotal: currentBigTopTotal + 1,
-        disabled: true
+        disabled: true,
       });
+
+      employee.value.disabled = true;
 
       // Move the assigned employee to the end of the table
       const updatedEmployee = {
@@ -94,16 +95,34 @@ function EmployeeRow({
 
       // Sets the state of the employee; updates the browser
       setEmployees({ employeeData: updatedEmployeeData });
-
-      // Disable User Buttons
-      setDisabled(true);
+      // setDisabled(true);
     } catch (error) {
       console.log(error);
     }
   };
 
-  const handleReturn = async () => {
-    setDisabled(false);
+  // Returns server into rotation when ready for more tables
+  // BUG ISSUE - employee order does not persist, seems to return user to previous position. 
+  // To Do: Keep user in same position in the rotation
+  const handleReturn = async (employeeId) => {
+    // Find employee by ID
+    const db = getDatabase();
+    const employeeRef = ref(db, "employees/" + employeeId);
+
+    try {
+      // Fetch current data for the employee.
+      const snapshot = await get(employeeRef);
+      const data = snapshot.val();
+
+      // Update bigTopTotal for the employee.
+      await update(employeeRef, {
+        disabled: false,
+      });
+
+      setDisabled(false);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handleSkip = async (employeeId) => {
@@ -148,33 +167,50 @@ function EmployeeRow({
           employee.value.trainee ? "text-cyan-600" : ""
         }`}
       >
-        {disabled ? (
-          <ReadyBtn
-            onClick={handleReturn}
-          />
+        {employee.value.disabled ? (
+          <ReadyBtn onClick={() => handleReturn(employee.key)} />
         ) : (
           ""
         )}
         {employee.value.employeeName}
       </td>
+
       <td className="p-2 hidden-on-mobile">{employee.value.smallTopTotal}</td>
-      <td className="p-2">
-        <AssignBtn
-          disabled={disabled}
-          onClick={() => {
-            handleAssignSmall(employee.key);
-          }}
-        />
-      </td>
+      {employee.value.disabled ? (
+        <td className="p-2">
+          <AssignBtn
+            disabled={true}
+            onClick={() => {
+              handleAssignSmall(employee.key);
+            }}
+          />
+        </td>
+      ) : (
+        <td className="p-2">
+          <AssignBtn
+            disabled={false}
+            onClick={() => {
+              handleAssignSmall(employee.key);
+            }}
+          />
+        </td>
+      )}
+
       <td className="p-2 hidden-on-mobile">
         {!employee.value.trainee && employee.value.bigTopTotal}
       </td>
       <td className="p-2">
-        {!employee.value.trainee && (
+        {employee.value.disabled ? (
           <AssignBtn
             onClick={() => handleAssignBig(employee.key)}
             bigTop={true}
-            disabled={disabled}
+            disabled={true}
+          />
+        ) : (
+          <AssignBtn
+            onClick={() => handleAssignBig(employee.key)}
+            bigTop={true}
+            disabled={false}
           />
         )}
       </td>
