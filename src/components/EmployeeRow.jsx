@@ -75,6 +75,7 @@ function EmployeeRow({
       // Update bigTopTotal for the employee.
       await update(employeeRef, {
         bigTopTotal: currentBigTopTotal + 1,
+        disabled: true
       });
 
       // Move the assigned employee to the end of the table
