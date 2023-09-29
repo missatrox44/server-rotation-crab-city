@@ -1,10 +1,4 @@
 import React, { useState } from "react";
-// import AssignBtn from "./Btns/AssignBtn";
-// import SkipBtn from "./Btns/SkipBtn";
-// import BreakBtn from "./Btns/BreakBtn";
-// import ClockOutBtn from "./Btns/ClockOutBtn";
-// import BreakOverBtn from "./Btns/BreakOverBtn";
-// import ReadyBtn from "./Btns/ReadyBtn";
 import EmployeeRow from "./EmployeeRow";
 import BreakEmployeeRow from "./BreakEmployeeRow";
 import BigTopEmployeeRow from "./BigTopEmployeeRow";
@@ -37,6 +31,7 @@ function EmployeeTable({
       </thead>
       <tbody>
         {employees.employeeData.map((employee, index) => (
+          
           <EmployeeRow
             key={employee.key}
             employee={employee}
