@@ -16,6 +16,8 @@ function EmployeeRow({
   setBreakEmployees,
   employees,
   bigTopEmployees,
+  onBreak,
+  setOnBreak
 }) {
   // State controls
   const [disabled, setDisabled] = useState(employee.value.disabled);
@@ -225,6 +227,8 @@ function EmployeeRow({
           lastAction={lastAction}
           breakEmployees={breakEmployees}
           setBreakEmployees={setBreakEmployees}
+          onBreak={onBreak}
+          setOnBreak={setOnBreak}
         />
       </td>
       <td className="p-2">

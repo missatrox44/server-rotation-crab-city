@@ -3,20 +3,25 @@ import BreakOverBtn from "./Btns/BreakOverBtn";
 
 function BreakEmployeeRow({
   employee,
+  employees,
   setEmployees,
-  lastAction,
+  // lastAction,
   breakEmployees,
 }) {
   const handleBreakOver = (employee) => {
-    lastAction.current = {
-      action: "break over",
-      employee: employee,
-      currentEmployeeList: employees,
-      currentBigTopEmployeeList: bigTopEmployees,
-      currentBreakEmployeeList: breakEmployees,
-    };
-    const breakOverEmployee = [employee, ...employees];
-    setEmployees(breakOverEmployee);
+    console.log("employee", employee);
+    // lastAction.current = {
+    //   action: "break over",
+    //   employee: employee,
+    //   currentEmployeeList: employees,
+    //   currentBigTopEmployeeList: bigTopEmployees,
+    //   currentBreakEmployeeList: breakEmployees,
+    // };
+
+    // const breakOverEmployee = [employee, ...employees.employeeData];
+    // console.log("breakOverEmployee", breakOverEmployee);
+    
+    setEmployees( {employeeData: [...employees, employee]});
     const removedBreakEmployee = [...breakEmployees].filter(
       (currentEmployee) => {
         if (currentEmployee.id !== employee.id) {
@@ -24,22 +29,23 @@ function BreakEmployeeRow({
         }
       }
     );
+    
     setBreakEmployees(removedBreakEmployee);
   };
 
   return (
-    <tr key={employee.id}>
+    <tr key={employee.key}>
       <td
         className={`text-left py-2 pr-2 ${
-          employee.trainee ? "text-cyan-600" : ""
+          employee.value.trainee ? "text-cyan-600" : ""
         }`}
       >
-        {employee.employeeName}
+        {employee.value.employeeName}
       </td>
-      <td className="p-2 hidden-on-mobile">{employee.smallTopTotal}</td>
+      <td className="p-2 hidden-on-mobile">{employee.value.smallTopTotal}</td>
       <td></td>
       <td className="p-2 hidden-on-mobile">
-        {!employee.trainee && employee.bigTopTotal}
+        {!employee.value.trainee && employee.value.bigTopTotal}
       </td>
       <td></td>
       <td></td>

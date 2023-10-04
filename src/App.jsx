@@ -12,6 +12,7 @@ function App() {
   const [bigTopEmployees, setBigTopEmployees] = useState([]);
   const [breakEmployees, setBreakEmployees] = useState([]);
   const [nextServerIndex, setNextServerIndex] = useState(0);
+  const [onBreak, setOnBreak] = useState(false);
   const [error, setError] = useState(null);
 
   let lastAction = useRef({});
@@ -56,10 +57,9 @@ function App() {
           employeesArr.push({ key: employeeKey, value: employeeData });
         });
 
-          // Sort the array by the order field
-      employeesArr.sort((a, b) => a.value.order - b.value.order);
-      
-  
+        // Sort the array by the order field
+        employeesArr.sort((a, b) => a.value.order - b.value.order);
+
         setEmployees({ employeeData: [...employeesArr] });
       });
     } catch (error) {
@@ -74,7 +74,12 @@ function App() {
         <h1 className="text-blue-600 text-6xl">Crab City Server Rotation</h1>
         <p className="text-xs mb-6">v.1.3.0</p>
 
-        <HeaderForm employees={employees} setEmployees={setEmployees} />
+        <HeaderForm
+          employees={employees}
+          setEmployees={setEmployees}
+          onBreak={onBreak}
+          setOnBreak={setOnBreak}
+        />
       </header>
       {error && <p className="error-message">{error}</p>}
 
@@ -97,6 +102,8 @@ function App() {
               setBreakEmployees={setBreakEmployees}
               nextServerIndex={nextServerIndex}
               lastAction={lastAction}
+              onBreak={onBreak}
+              setOnBreak={setOnBreak}
             />
           </main>
 

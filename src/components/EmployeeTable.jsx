@@ -14,6 +14,8 @@ function EmployeeTable({
   setBreakEmployees,
   nextServerIndex,
   lastAction,
+  onBreak,
+  setOnBreak
 }) {
   return (
     <table className="mx-auto w-full">
@@ -42,6 +44,8 @@ function EmployeeTable({
             setBreakEmployees={setBreakEmployees}
             employees={employees}
             bigTopEmployees={bigTopEmployees}
+            onBreak={onBreak}
+            setOnBreak={setOnBreak}
           />
         ))}
         {bigTopEmployees.map((employee, index) => (
@@ -57,6 +61,7 @@ function EmployeeTable({
           <BreakEmployeeRow
             key={employee.key}
             employee={employee}
+            employees={employees}
             setEmployees={setEmployees}
             lastAction={lastAction}
             breakEmployees={breakEmployees}

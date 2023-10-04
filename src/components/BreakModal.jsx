@@ -8,6 +8,8 @@ export default function BreakModal({
   // lastAction,
   breakEmployees,
   setBreakEmployees,
+  onBreak,
+  setOnBreak
 }) {
   const handleBreak = () => {
     // lastAction.current = {
@@ -16,15 +18,30 @@ export default function BreakModal({
     //   currentEmployeeList: employees,
     //   currentBreakEmployeeList: breakEmployees,
     // };
-    const employeesCopy = [...employees];
-    const workingEmployees = employeesCopy.filter((currentEmployee) => {
-      if (currentEmployee.id !== employee.id) {
-        return currentEmployee;
+    
+    setOnBreak(true)
+    // Creates copy of the current employees
+    const employeesCopy = [...employees.employeeData];
+    const currentEmployeeKey = employee.key
+
+
+    // Creates new array without the currentEmployee
+    const workingEmployees = employeesCopy.filter((employee) => {
+      console.log(employee);
+      if (employee.key !== currentEmployeeKey) {
+        console.log('false');
+        return employee;
       }
     });
+
+    console.log("workingEmployees", workingEmployees);
+    console.log('breakEmployees', breakEmployees);
+    
     const newBreakingEmployees = [...breakEmployees, employee];
+    console.log("newBreakingEmployees", newBreakingEmployees);
+
     setBreakEmployees(newBreakingEmployees);
-    setEmployees(workingEmployees);
+    setEmployees({ employeeData: [...workingEmployees]});
     setIsBreakModalVisible(false);
   };
 

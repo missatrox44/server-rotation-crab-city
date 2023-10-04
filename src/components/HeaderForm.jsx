@@ -2,7 +2,7 @@ import { useState } from "react";
 import AddBtn from "./Btns/AddBtn";
 import { getDatabase, ref, set, push } from 'firebase/database';
 
-function HeaderForm({ employees, setEmployees }) {
+function HeaderForm({ employees, setEmployees, onBreak, setOnBreak }) {
 
   const [employeeName, setEmployeeName] = useState("");
   const [isTrainee, setIsTrainee] = useState(false);
@@ -21,7 +21,7 @@ function HeaderForm({ employees, setEmployees }) {
       employeeName: employeeName,
       smallTopTotal: 0,
       bigTopTotal: 0,
-      break: false,
+      break: onBreak,
       clockOut: false,
       trainee: isTrainee,
       order: employees.employeeData.length, 
