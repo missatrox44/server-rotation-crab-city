@@ -3,19 +3,13 @@ import EmployeeRow from "./EmployeeRow";
 import BreakEmployeeRow from "./BreakEmployeeRow";
 import BigTopEmployeeRow from "./BigTopEmployeeRow";
 
-// import { getDatabase, ref, update, get } from "firebase/database";
-
 function EmployeeTable({
   employees,
   setEmployees,
   bigTopEmployees,
-  setBigTopEmployees,
   breakEmployees,
   setBreakEmployees,
-  nextServerIndex,
   lastAction,
-  onBreak,
-  setOnBreak
 }) {
   return (
     <table className="mx-auto w-full">
@@ -33,7 +27,6 @@ function EmployeeTable({
       </thead>
       <tbody>
         {employees.employeeData.map((employee, index) => (
-          
           <EmployeeRow
             key={employee.key}
             employee={employee}
@@ -44,19 +37,9 @@ function EmployeeTable({
             setBreakEmployees={setBreakEmployees}
             employees={employees}
             bigTopEmployees={bigTopEmployees}
-            onBreak={onBreak}
-            setOnBreak={setOnBreak}
           />
         ))}
-        {bigTopEmployees.map((employee, index) => (
-          <BigTopEmployeeRow
-            key={employee.key}
-            employee={employee}
-            setEmployees={setEmployees}
-            lastAction={lastAction}
-            bigTopEmployees={bigTopEmployees}
-          />
-        ))}
+        
         {breakEmployees.map((employee, index) => (
           <BreakEmployeeRow
             key={employee.key}

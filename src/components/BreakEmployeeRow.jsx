@@ -9,18 +9,6 @@ function BreakEmployeeRow({
   breakEmployees,
 }) {
   const handleBreakOver = (employee) => {
-    console.log("employee", employee);
-    // lastAction.current = {
-    //   action: "break over",
-    //   employee: employee,
-    //   currentEmployeeList: employees,
-    //   currentBigTopEmployeeList: bigTopEmployees,
-    //   currentBreakEmployeeList: breakEmployees,
-    // };
-
-    // const breakOverEmployee = [employee, ...employees.employeeData];
-    // console.log("breakOverEmployee", breakOverEmployee);
-    
     setEmployees( {employeeData: [...employees, employee]});
     const removedBreakEmployee = [...breakEmployees].filter(
       (currentEmployee) => {

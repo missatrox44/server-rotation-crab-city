@@ -21,7 +21,7 @@ function HeaderForm({ employees, setEmployees, onBreak, setOnBreak }) {
       employeeName: employeeName,
       smallTopTotal: 0,
       bigTopTotal: 0,
-      break: onBreak,
+      break: false,
       clockOut: false,
       trainee: isTrainee,
       order: employees.employeeData.length, 

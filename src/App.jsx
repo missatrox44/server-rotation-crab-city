@@ -9,10 +9,8 @@ import EmployeeTable from "./components/EmployeeTable";
 
 function App() {
   const [employees, setEmployees] = useState({ employeeData: [] });
-  const [bigTopEmployees, setBigTopEmployees] = useState([]);
   const [breakEmployees, setBreakEmployees] = useState([]);
   const [nextServerIndex, setNextServerIndex] = useState(0);
-  const [onBreak, setOnBreak] = useState(false);
   const [error, setError] = useState(null);
 
   let lastAction = useRef({});
@@ -30,14 +28,12 @@ function App() {
       action,
       employee,
       currentEmployeeList,
-      currentBigTopEmployeeList,
       currentBreakEmployeeList,
     } = lastAction.current;
     if (action === "big top") {
       employee.bigTopTotal = employee.bigTopTotal - 1;
     }
     setEmployees(currentEmployeeList);
-    setBigTopEmployees(currentBigTopEmployeeList);
     setBreakEmployees(currentBreakEmployeeList);
     lastAction.current = {};
   };
@@ -46,20 +42,28 @@ function App() {
     getAllEmployees();
   }, []);
 
+  // Retireves all employees from DB
   const getAllEmployees = () => {
     try {
       const getEmployees = ref(db, "employees");
       onValue(getEmployees, (snapshot) => {
         let employeesArr = [];
+        let breakEmployees = [];
         snapshot.forEach((employeeSnapshot) => {
           const employeeKey = employeeSnapshot.key;
           const employeeData = employeeSnapshot.val();
-          employeesArr.push({ key: employeeKey, value: employeeData });
+          console.log(employeeData);
+          (!employeeData.break ? (
+            employeesArr.push({ key: employeeKey, value: employeeData })
+          ) : (
+            breakEmployees.push({key: employeeKey, value: employeeData})
+          )
+            )
         });
 
         // Sort the array by the order field
         employeesArr.sort((a, b) => a.value.order - b.value.order);
-
+        setBreakEmployees([...breakEmployees])
         setEmployees({ employeeData: [...employeesArr] });
       });
     } catch (error) {
@@ -74,18 +78,11 @@ function App() {
         <h1 className="text-blue-600 text-6xl">Crab City Server Rotation</h1>
         <p className="text-xs mb-6">v.1.3.0</p>
 
-        <HeaderForm
-          employees={employees}
-          setEmployees={setEmployees}
-          onBreak={onBreak}
-          setOnBreak={setOnBreak}
-        />
+        <HeaderForm employees={employees} setEmployees={setEmployees} />
       </header>
       {error && <p className="error-message">{error}</p>}
 
-      {(employees.employeeData.length > 0 ||
-        bigTopEmployees.length > 0 ||
-        breakEmployees.length > 0) && (
+      {(employees.employeeData.length > 0 || breakEmployees.length > 0) && (
         <div>
           <hr className="my-8" />
 
@@ -96,14 +93,10 @@ function App() {
             <EmployeeTable
               employees={employees}
               setEmployees={setEmployees}
-              bigTopEmployees={bigTopEmployees}
-              setBigTopEmployees={setBigTopEmployees}
               breakEmployees={breakEmployees}
               setBreakEmployees={setBreakEmployees}
               nextServerIndex={nextServerIndex}
               lastAction={lastAction}
-              onBreak={onBreak}
-              setOnBreak={setOnBreak}
             />
           </main>
 

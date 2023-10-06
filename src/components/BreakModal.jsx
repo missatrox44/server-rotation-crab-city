@@ -1,48 +1,58 @@
 import React from "react";
+import { useState } from "react";
+
+import { getDatabase, ref, update, get } from "firebase/database";
 
 export default function BreakModal({
   employee,
   employees,
   setEmployees,
   setIsBreakModalVisible,
-  // lastAction,
   breakEmployees,
   setBreakEmployees,
-  onBreak,
-  setOnBreak
 }) {
-  const handleBreak = () => {
-    // lastAction.current = {
-    //   action: "break",
-    //   employee: employee,
-    //   currentEmployeeList: employees,
-    //   currentBreakEmployeeList: breakEmployees,
-    // };
-    
-    setOnBreak(true)
-    // Creates copy of the current employees
-    const employeesCopy = [...employees.employeeData];
-    const currentEmployeeKey = employee.key
+  const [onBreak, setOnBreak] = useState(employee.value.break);
 
+  const handleBreak = async (employeeId) => {
+    console.log(employeeId);
 
-    // Creates new array without the currentEmployee
-    const workingEmployees = employeesCopy.filter((employee) => {
-      console.log(employee);
-      if (employee.key !== currentEmployeeKey) {
-        console.log('false');
-        return employee;
-      }
-    });
+    // Find employee by ID
+    const db = getDatabase();
+    const employeeRef = ref(db, "employees/" + employeeId);
 
-    console.log("workingEmployees", workingEmployees);
-    console.log('breakEmployees', breakEmployees);
-    
-    const newBreakingEmployees = [...breakEmployees, employee];
-    console.log("newBreakingEmployees", newBreakingEmployees);
+    try {
+      // Fetch current data for the employee.
+      const snapshot = await get(employeeRef);
 
-    setBreakEmployees(newBreakingEmployees);
-    setEmployees({ employeeData: [...workingEmployees]});
-    setIsBreakModalVisible(false);
+      // Update break status for the employee.
+      await update(employeeRef, {
+        break: true,
+      });
+
+      // Sets state of employee
+      employee.value.break = true;
+
+      // Creates copy of the current employees
+      const employeesCopy = [...employees.employeeData];
+      const currentEmployeeKey = employee.key;
+
+      // Creates new array without the currentEmployee
+      const workingEmployees = employeesCopy.filter((employee) => {
+        if (employee.key !== currentEmployeeKey) {
+          return employee;
+        }
+      });
+
+      // Adds onBreak employee to seaparte array
+      const newBreakingEmployees = [...breakEmployees, employee];
+     
+      // State handling
+      setBreakEmployees(newBreakingEmployees);
+      setEmployees({ employeeData: [...workingEmployees] });
+      setIsBreakModalVisible(false);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
@@ -78,7 +88,9 @@ export default function BreakModal({
               <button
                 type="button"
                 className="inline-flex w-full justify-center rounded-full bg-amber-600 py-2.5 px-5 text-md font-semibold text-white shadow-sm hover:bg-amber-700 sm:ml-3 sm:w-auto"
-                onClick={handleBreak}
+                onClick={() => {
+                  handleBreak(employee.key);
+                }}
               >
                 Start Break
               </button>

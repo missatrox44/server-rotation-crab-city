@@ -16,8 +16,8 @@ function EmployeeRow({
   setBreakEmployees,
   employees,
   bigTopEmployees,
-  onBreak,
-  setOnBreak
+  // onBreak,
+  // setOnBreak
 }) {
   // State controls
   const [disabled, setDisabled] = useState(employee.value.disabled);
@@ -97,7 +97,6 @@ function EmployeeRow({
 
       // Sets the state of the employee; updates the browser
       setEmployees({ employeeData: updatedEmployeeData });
-      // setDisabled(true);
     } catch (error) {
       console.log(error);
     }
@@ -112,10 +111,6 @@ function EmployeeRow({
     const employeeRef = ref(db, "employees/" + employeeId);
 
     try {
-      // Fetch current data for the employee.
-      const snapshot = await get(employeeRef);
-      const data = snapshot.val();
-
       // Update bigTopTotal for the employee.
       await update(employeeRef, {
         disabled: false,
@@ -227,8 +222,8 @@ function EmployeeRow({
           lastAction={lastAction}
           breakEmployees={breakEmployees}
           setBreakEmployees={setBreakEmployees}
-          onBreak={onBreak}
-          setOnBreak={setOnBreak}
+          // onBreak={onBreak}
+          // setOnBreak={setOnBreak}
         />
       </td>
       <td className="p-2">
