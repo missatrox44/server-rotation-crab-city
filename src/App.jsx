@@ -20,6 +20,7 @@ function App() {
     setError(null);
   };
 
+  // Undo Currently not Functioning
   const handleUndo = () => {
     if (!lastAction.current.action) {
       return;
@@ -45,14 +46,21 @@ function App() {
   // Retireves all employees from DB
   const getAllEmployees = () => {
     try {
+      // Finds employees DB
       const getEmployees = ref(db, "employees");
+      
+      // Creates lists for working employees & employees on break
       onValue(getEmployees, (snapshot) => {
         let employeesArr = [];
         let breakEmployees = [];
+
+        // Iterates through DB employee list, adds employee to correct list
         snapshot.forEach((employeeSnapshot) => {
           const employeeKey = employeeSnapshot.key;
           const employeeData = employeeSnapshot.val();
-          console.log(employeeData);
+          
+          // If not on break, employee is placed in employees array
+          // If on break, employee is placed in breakEmployees array
           (!employeeData.break ? (
             employeesArr.push({ key: employeeKey, value: employeeData })
           ) : (
@@ -63,6 +71,8 @@ function App() {
 
         // Sort the array by the order field
         employeesArr.sort((a, b) => a.value.order - b.value.order);
+        
+        // State handling for on and off break employees
         setBreakEmployees([...breakEmployees])
         setEmployees({ employeeData: [...employeesArr] });
       });

@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import EmployeeRow from "./EmployeeRow";
 import BreakEmployeeRow from "./BreakEmployeeRow";
-import BigTopEmployeeRow from "./BigTopEmployeeRow";
 
 function EmployeeTable({
   employees,
@@ -48,6 +47,7 @@ function EmployeeTable({
             setEmployees={setEmployees}
             lastAction={lastAction}
             breakEmployees={breakEmployees}
+            setBreakEmployees={setBreakEmployees}
           />
         ))}
       </tbody>

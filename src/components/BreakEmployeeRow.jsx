@@ -1,24 +1,42 @@
 import React from "react";
 import BreakOverBtn from "./Btns/BreakOverBtn";
+import { getDatabase, ref, update, get } from "firebase/database";
 
 function BreakEmployeeRow({
   employee,
   employees,
   setEmployees,
-  // lastAction,
   breakEmployees,
+  setBreakEmployees,
 }) {
-  const handleBreakOver = (employee) => {
-    setEmployees( {employeeData: [...employees, employee]});
-    const removedBreakEmployee = [...breakEmployees].filter(
+  const handleBreakOver = async (employee) => {
+    // Adds the off break employee back to active employees list
+    setEmployees({ employeeData: [...employees.employeeData, employee] });
+
+    // Creates new onBreak array without the selected employee
+    const updatedBreakEmployees = [...breakEmployees].filter(
       (currentEmployee) => {
-        if (currentEmployee.id !== employee.id) {
+        if (currentEmployee.key !== employee.key) {
           return currentEmployee;
         }
       }
     );
-    
-    setBreakEmployees(removedBreakEmployee);
+
+    // Find employee by ID
+    const db = getDatabase();
+    const employeeRef = ref(db, "employees/" + employee.key);
+
+    try {
+      // Update break status for the employee
+      await update(employeeRef, {
+        break: false,
+      });
+      
+      // Updates state for employees on break
+      setBreakEmployees([...updatedBreakEmployees]);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (

@@ -11,26 +11,18 @@ export default function BreakModal({
   breakEmployees,
   setBreakEmployees,
 }) {
-  const [onBreak, setOnBreak] = useState(employee.value.break);
-
+  // Disables user, sets DB break status
   const handleBreak = async (employeeId) => {
-    console.log(employeeId);
 
     // Find employee by ID
     const db = getDatabase();
     const employeeRef = ref(db, "employees/" + employeeId);
 
     try {
-      // Fetch current data for the employee.
-      const snapshot = await get(employeeRef);
-
-      // Update break status for the employee.
+      // Update break status for the employee
       await update(employeeRef, {
         break: true,
       });
-
-      // Sets state of employee
-      employee.value.break = true;
 
       // Creates copy of the current employees
       const employeesCopy = [...employees.employeeData];
