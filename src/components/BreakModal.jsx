@@ -1,31 +1,50 @@
 import React from "react";
+import { useState } from "react";
+
+import { getDatabase, ref, update, get } from "firebase/database";
 
 export default function BreakModal({
   employee,
   employees,
   setEmployees,
   setIsBreakModalVisible,
-  // lastAction,
   breakEmployees,
   setBreakEmployees,
 }) {
-  const handleBreak = () => {
-    // lastAction.current = {
-    //   action: "break",
-    //   employee: employee,
-    //   currentEmployeeList: employees,
-    //   currentBreakEmployeeList: breakEmployees,
-    // };
-    const employeesCopy = [...employees];
-    const workingEmployees = employeesCopy.filter((currentEmployee) => {
-      if (currentEmployee.id !== employee.id) {
-        return currentEmployee;
-      }
-    });
-    const newBreakingEmployees = [...breakEmployees, employee];
-    setBreakEmployees(newBreakingEmployees);
-    setEmployees(workingEmployees);
-    setIsBreakModalVisible(false);
+  // Disables user, sets DB break status
+  const handleBreak = async (employeeId) => {
+
+    // Find employee by ID
+    const db = getDatabase();
+    const employeeRef = ref(db, "employees/" + employeeId);
+
+    try {
+      // Update break status for the employee
+      await update(employeeRef, {
+        break: true,
+      });
+
+      // Creates copy of the current employees
+      const employeesCopy = [...employees.employeeData];
+      const currentEmployeeKey = employee.key;
+
+      // Creates new array without the currentEmployee
+      const workingEmployees = employeesCopy.filter((employee) => {
+        if (employee.key !== currentEmployeeKey) {
+          return employee;
+        }
+      });
+
+      // Adds onBreak employee to seaparte array
+      const newBreakingEmployees = [...breakEmployees, employee];
+     
+      // State handling
+      setBreakEmployees(newBreakingEmployees);
+      setEmployees({ employeeData: [...workingEmployees] });
+      setIsBreakModalVisible(false);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
@@ -61,7 +80,9 @@ export default function BreakModal({
               <button
                 type="button"
                 className="inline-flex w-full justify-center rounded-full bg-amber-600 py-2.5 px-5 text-md font-semibold text-white shadow-sm hover:bg-amber-700 sm:ml-3 sm:w-auto"
-                onClick={handleBreak}
+                onClick={() => {
+                  handleBreak(employee.key);
+                }}
               >
                 Start Break
               </button>

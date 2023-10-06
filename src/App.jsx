@@ -9,7 +9,6 @@ import EmployeeTable from "./components/EmployeeTable";
 
 function App() {
   const [employees, setEmployees] = useState({ employeeData: [] });
-  const [bigTopEmployees, setBigTopEmployees] = useState([]);
   const [breakEmployees, setBreakEmployees] = useState([]);
   const [nextServerIndex, setNextServerIndex] = useState(0);
   const [error, setError] = useState(null);
@@ -21,6 +20,7 @@ function App() {
     setError(null);
   };
 
+  // Undo Currently not Functioning
   const handleUndo = () => {
     if (!lastAction.current.action) {
       return;
@@ -29,14 +29,12 @@ function App() {
       action,
       employee,
       currentEmployeeList,
-      currentBigTopEmployeeList,
       currentBreakEmployeeList,
     } = lastAction.current;
     if (action === "big top") {
       employee.bigTopTotal = employee.bigTopTotal - 1;
     }
     setEmployees(currentEmployeeList);
-    setBigTopEmployees(currentBigTopEmployeeList);
     setBreakEmployees(currentBreakEmployeeList);
     lastAction.current = {};
   };
@@ -45,21 +43,37 @@ function App() {
     getAllEmployees();
   }, []);
 
+  // Retireves all employees from DB
   const getAllEmployees = () => {
     try {
+      // Finds employees DB
       const getEmployees = ref(db, "employees");
+      
+      // Creates lists for working employees & employees on break
       onValue(getEmployees, (snapshot) => {
         let employeesArr = [];
+        let breakEmployees = [];
+
+        // Iterates through DB employee list, adds employee to correct list
         snapshot.forEach((employeeSnapshot) => {
           const employeeKey = employeeSnapshot.key;
           const employeeData = employeeSnapshot.val();
-          employeesArr.push({ key: employeeKey, value: employeeData });
+          
+          // If not on break, employee is placed in employees array
+          // If on break, employee is placed in breakEmployees array
+          (!employeeData.break ? (
+            employeesArr.push({ key: employeeKey, value: employeeData })
+          ) : (
+            breakEmployees.push({key: employeeKey, value: employeeData})
+          )
+            )
         });
 
-          // Sort the array by the order field
-      employeesArr.sort((a, b) => a.value.order - b.value.order);
-      
-  
+        // Sort the array by the order field
+        employeesArr.sort((a, b) => a.value.order - b.value.order);
+        
+        // State handling for on and off break employees
+        setBreakEmployees([...breakEmployees])
         setEmployees({ employeeData: [...employeesArr] });
       });
     } catch (error) {
@@ -78,9 +92,7 @@ function App() {
       </header>
       {error && <p className="error-message">{error}</p>}
 
-      {(employees.employeeData.length > 0 ||
-        bigTopEmployees.length > 0 ||
-        breakEmployees.length > 0) && (
+      {(employees.employeeData.length > 0 || breakEmployees.length > 0) && (
         <div>
           <hr className="my-8" />
 
@@ -91,8 +103,6 @@ function App() {
             <EmployeeTable
               employees={employees}
               setEmployees={setEmployees}
-              bigTopEmployees={bigTopEmployees}
-              setBigTopEmployees={setBigTopEmployees}
               breakEmployees={breakEmployees}
               setBreakEmployees={setBreakEmployees}
               nextServerIndex={nextServerIndex}

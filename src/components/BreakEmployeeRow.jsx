@@ -1,45 +1,57 @@
 import React from "react";
 import BreakOverBtn from "./Btns/BreakOverBtn";
+import { getDatabase, ref, update, get } from "firebase/database";
 
 function BreakEmployeeRow({
   employee,
+  employees,
   setEmployees,
-  lastAction,
   breakEmployees,
+  setBreakEmployees,
 }) {
-  const handleBreakOver = (employee) => {
-    lastAction.current = {
-      action: "break over",
-      employee: employee,
-      currentEmployeeList: employees,
-      currentBigTopEmployeeList: bigTopEmployees,
-      currentBreakEmployeeList: breakEmployees,
-    };
-    const breakOverEmployee = [employee, ...employees];
-    setEmployees(breakOverEmployee);
-    const removedBreakEmployee = [...breakEmployees].filter(
+  const handleBreakOver = async (employee) => {
+    // Adds the off break employee back to active employees list
+    setEmployees({ employeeData: [...employees.employeeData, employee] });
+
+    // Creates new onBreak array without the selected employee
+    const updatedBreakEmployees = [...breakEmployees].filter(
       (currentEmployee) => {
-        if (currentEmployee.id !== employee.id) {
+        if (currentEmployee.key !== employee.key) {
           return currentEmployee;
         }
       }
     );
-    setBreakEmployees(removedBreakEmployee);
+
+    // Find employee by ID
+    const db = getDatabase();
+    const employeeRef = ref(db, "employees/" + employee.key);
+
+    try {
+      // Update break status for the employee
+      await update(employeeRef, {
+        break: false,
+      });
+      
+      // Updates state for employees on break
+      setBreakEmployees([...updatedBreakEmployees]);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
-    <tr key={employee.id}>
+    <tr key={employee.key}>
       <td
         className={`text-left py-2 pr-2 ${
-          employee.trainee ? "text-cyan-600" : ""
+          employee.value.trainee ? "text-cyan-600" : ""
         }`}
       >
-        {employee.employeeName}
+        {employee.value.employeeName}
       </td>
-      <td className="p-2 hidden-on-mobile">{employee.smallTopTotal}</td>
+      <td className="p-2 hidden-on-mobile">{employee.value.smallTopTotal}</td>
       <td></td>
       <td className="p-2 hidden-on-mobile">
-        {!employee.trainee && employee.bigTopTotal}
+        {!employee.value.trainee && employee.value.bigTopTotal}
       </td>
       <td></td>
       <td></td>

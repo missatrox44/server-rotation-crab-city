@@ -1,18 +1,13 @@
 import React, { useState } from "react";
 import EmployeeRow from "./EmployeeRow";
 import BreakEmployeeRow from "./BreakEmployeeRow";
-import BigTopEmployeeRow from "./BigTopEmployeeRow";
-
-// import { getDatabase, ref, update, get } from "firebase/database";
 
 function EmployeeTable({
   employees,
   setEmployees,
   bigTopEmployees,
-  setBigTopEmployees,
   breakEmployees,
   setBreakEmployees,
-  nextServerIndex,
   lastAction,
 }) {
   return (
@@ -31,7 +26,6 @@ function EmployeeTable({
       </thead>
       <tbody>
         {employees.employeeData.map((employee, index) => (
-          
           <EmployeeRow
             key={employee.key}
             employee={employee}
@@ -44,22 +38,16 @@ function EmployeeTable({
             bigTopEmployees={bigTopEmployees}
           />
         ))}
-        {bigTopEmployees.map((employee, index) => (
-          <BigTopEmployeeRow
-            key={employee.key}
-            employee={employee}
-            setEmployees={setEmployees}
-            lastAction={lastAction}
-            bigTopEmployees={bigTopEmployees}
-          />
-        ))}
+        
         {breakEmployees.map((employee, index) => (
           <BreakEmployeeRow
             key={employee.key}
             employee={employee}
+            employees={employees}
             setEmployees={setEmployees}
             lastAction={lastAction}
             breakEmployees={breakEmployees}
+            setBreakEmployees={setBreakEmployees}
           />
         ))}
       </tbody>
