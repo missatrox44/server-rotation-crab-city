@@ -1,11 +1,11 @@
-import React from "react";
-import AssignBtn from "./Btns/AssignBtn";
-import SkipBtn from "./Btns/SkipBtn";
-import BreakBtn from "./Btns/BreakBtn";
-import ClockOutBtn from "./Btns/ClockOutBtn";
-import ReadyBtn from "./Btns/ReadyBtn";
-import { getDatabase, ref, update, get } from "firebase/database";
-import { useState } from "react";
+import React from 'react';
+import AssignBtn from './Btns/AssignBtn';
+import SkipBtn from './Btns/SkipBtn';
+import BreakBtn from './Btns/BreakBtn';
+import ClockOutBtn from './Btns/ClockOutBtn';
+import ReadyBtn from './Btns/ReadyBtn';
+import { getDatabase, ref, update, get } from 'firebase/database';
+import { useState } from 'react';
 
 function EmployeeRow({
   employee,
@@ -25,7 +25,7 @@ function EmployeeRow({
   // Retrieves user, updates DB & browser for small tops
   const handleAssignSmall = async (employeeId) => {
     const db = getDatabase();
-    const employeeRef = ref(db, "employees/" + employeeId);
+    const employeeRef = ref(db, 'employees/' + employeeId);
 
     try {
       // Fetch current data for the employee.
@@ -61,11 +61,11 @@ function EmployeeRow({
   };
 
   // Retrieves user, updates DB & browser for big tops, disables user
-  // BUG ISSUE - quick flash of first added employee's name as 'Next Server' screen before displaying correctly. I think something is off with how the employees are being set. 
+  // BUG ISSUE - quick flash of first added employee's name as 'Next Server' screen before displaying correctly. I think something is off with how the employees are being set.
   const handleAssignBig = async (employeeId) => {
     // Find employee by ID
     const db = getDatabase();
-    const employeeRef = ref(db, "employees/" + employeeId);
+    const employeeRef = ref(db, 'employees/' + employeeId);
 
     try {
       // Fetch current data for the employee.
@@ -103,12 +103,12 @@ function EmployeeRow({
   };
 
   // Returns server into rotation when ready for more tables
-  // BUG ISSUE - employee order does not persist, seems to return user to previous position. 
+  // BUG ISSUE - employee order does not persist, seems to return user to previous position.
   // To Do: Keep user in same position in the rotation
   const handleReturn = async (employeeId) => {
     // Find employee by ID
     const db = getDatabase();
-    const employeeRef = ref(db, "employees/" + employeeId);
+    const employeeRef = ref(db, 'employees/' + employeeId);
 
     try {
       // Update bigTopTotal for the employee.
@@ -139,14 +139,14 @@ function EmployeeRow({
 
       // update the order in Firebase for each employee
       for (let i = 0; i < updatedEmployees.length; i++) {
-        const employeeRef = ref(db, "employees/" + updatedEmployees[i].key);
+        const employeeRef = ref(db, 'employees/' + updatedEmployees[i].key);
         await update(employeeRef, {
           order: i, // Set the order field for the current employee
         });
       }
 
       lastAction.current = {
-        action: "skip",
+        action: 'skip',
         employee: skippedEmployee,
         currentEmployeeList: employees,
         currentBigTopEmployeeList: bigTopEmployees,
@@ -161,13 +161,13 @@ function EmployeeRow({
     <tr key={employee.key}>
       <td
         className={`text-left py-2 pr-2 ${
-          employee.value.trainee ? "text-cyan-600" : ""
+          employee.value.trainee ? 'text-cyan-600' : ''
         }`}
       >
         {employee.value.disabled ? (
           <ReadyBtn onClick={() => handleReturn(employee.key)} />
         ) : (
-          ""
+          ''
         )}
         {employee.value.employeeName}
       </td>
@@ -197,18 +197,14 @@ function EmployeeRow({
         {!employee.value.trainee && employee.value.bigTopTotal}
       </td>
       <td className="p-2">
-        {employee.value.disabled ? (
+        {!employee.value.trainee ? (
           <AssignBtn
             onClick={() => handleAssignBig(employee.key)}
             bigTop={true}
-            disabled={true}
+            disabled={employee.value.disabled}
           />
         ) : (
-          <AssignBtn
-            onClick={() => handleAssignBig(employee.key)}
-            bigTop={true}
-            disabled={false}
-          />
+          <span>Trainee</span>
         )}
       </td>
       <td className="p-2">
