@@ -203,6 +203,11 @@ function EmployeeRow({
           />
         ) : (
           <span>Trainee</span>
+          // <AssignBtn
+          //   onClick={() => handleAssignBig(employee.key)}
+          //   bigTop={true}
+          //   disabled={true}
+          //   />
         )}
       </td>
       <td className="p-2">
