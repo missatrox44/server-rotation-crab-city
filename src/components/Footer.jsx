@@ -6,9 +6,10 @@ function Footer({ employees, handleUndo }) {
 
   return (
     <footer className="bottom-0 w-full my-4">
-      <div className="flex pb-5">
-        {employees.length ? <UndoBtn onClick={() => handleUndo()}/> : ""}
-      </div>
+      {/* UNDO BTN NOT FUNCTIONAL */}
+      {/* <div className="flex pb-5">
+        {employees.employeeData.length ? <UndoBtn onClick={() => handleUndo()}/> : ""}
+      </div> */}
       Created by{" "}
       <a target="_blank" href="https://github.com/missatrox44">
         S4R4

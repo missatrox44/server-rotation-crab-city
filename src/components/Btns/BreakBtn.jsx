@@ -9,6 +9,8 @@ function BreakBtn({
   // lastAction,
   breakEmployees,
   setBreakEmployees,
+  onBreak,
+  setOnBreak
 }) {
   const [isBreakModalVisible, setIsBreakModalVisible] = useState(false);
 
@@ -33,6 +35,8 @@ function BreakBtn({
           // lastAction={lastAction}
           breakEmployees={breakEmployees}
           setBreakEmployees={setBreakEmployees}
+          onBreak={onBreak}
+          setOnBreak={setOnBreak}
         />
       ) : null}
     </>
