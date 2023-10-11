@@ -1,9 +1,8 @@
 import { useState } from "react";
 import AddBtn from "./Btns/AddBtn";
-import { getDatabase, ref, set, push } from 'firebase/database';
+import { getDatabase, ref, push } from "firebase/database";
 
-function HeaderForm({ employees, setEmployees, onBreak, setOnBreak }) {
-
+function HeaderForm({ employees, setEmployees }) {
   const [employeeName, setEmployeeName] = useState("");
   const [isTrainee, setIsTrainee] = useState(false);
 
@@ -15,35 +14,38 @@ function HeaderForm({ employees, setEmployees, onBreak, setOnBreak }) {
     setIsTrainee(event.target.checked);
   };
 
+  // Creates new employee
   const handleAddEmployee = () => {
     const newEmployee = {
-      // id: Date.now(),
       employeeName: employeeName,
       smallTopTotal: 0,
       bigTopTotal: 0,
       break: false,
       clockOut: false,
       trainee: isTrainee,
-      order: employees.employeeData.length, 
-      disabled: false
+      order: employees.employeeData.length,
+      disabled: false,
     };
 
-    setEmployees({...employees.employeeData, newEmployee});
+    // Adds newly added employee to list
+    setEmployees({ ...employees.employeeData, newEmployee });
     setEmployeeName("");
     setIsTrainee(false);
+
+    // Function to add employee to database
     writeUserData(newEmployee);
   };
-  
+
+  // Adds employee to database
   function writeUserData(newEmployee) {
     const db = getDatabase();
-    let employeesRef = ref(db, 'employees/')
+    let employeesRef = ref(db, "employees/");
     push(employeesRef, newEmployee);
   }
 
   return (
     <form>
-      <label 
-      htmlFor="name">Employee Name: </label>
+      <label htmlFor="name">Employee Name: </label>
       <input
         type="text"
         name="name"

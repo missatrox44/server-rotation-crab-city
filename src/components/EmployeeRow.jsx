@@ -1,11 +1,11 @@
-import React from 'react';
-import AssignBtn from './Btns/AssignBtn';
-import SkipBtn from './Btns/SkipBtn';
-import BreakBtn from './Btns/BreakBtn';
-import ClockOutBtn from './Btns/ClockOutBtn';
-import ReadyBtn from './Btns/ReadyBtn';
-import { getDatabase, ref, update, get } from 'firebase/database';
-import { useState } from 'react';
+import React from "react";
+import AssignBtn from "./Btns/AssignBtn";
+import SkipBtn from "./Btns/SkipBtn";
+import BreakBtn from "./Btns/BreakBtn";
+import ClockOutBtn from "./Btns/ClockOutBtn";
+import ReadyBtn from "./Btns/ReadyBtn";
+import { getDatabase, ref, update, get } from "firebase/database";
+import { useState } from "react";
 
 function EmployeeRow({
   employee,
@@ -20,52 +20,51 @@ function EmployeeRow({
   // State controls
   const [disabled, setDisabled] = useState(employee.value.disabled);
 
-
+  // Updates employee order in database
   const updateEmployeeOrderInFirebase = async (updatedEmployees) => {
     const db = getDatabase();
-  
+
     for (let i = 0; i < updatedEmployees.length; i++) {
-      const employeeRef = ref(db, 'employees/' + updatedEmployees[i].key);
+      const employeeRef = ref(db, "employees/" + updatedEmployees[i].key);
       await update(employeeRef, {
         order: i,
       });
     }
   };
-  
 
   // Retrieves user, updates DB & browser for small tops
   const handleAssignSmall = async (employeeId) => {
     const db = getDatabase();
-    const employeeRef = ref(db, 'employees/' + employeeId);
-  
+    const employeeRef = ref(db, "employees/" + employeeId);
+
     try {
       // Fetch current data for the employee.
       const snapshot = await get(employeeRef);
       const data = snapshot.val();
       const currentSmallTopTotal = data.smallTopTotal;
-  
+
       // Update smallTopTotal for the employee.
       await update(employeeRef, {
         smallTopTotal: currentSmallTopTotal + 1,
       });
-  
+
       // Move the assigned employee to the end of the table
       const updatedEmployee = {
         ...employees.employeeData.find((e) => e.key === employeeId).value,
         smallTopTotal: currentSmallTopTotal + 1,
       };
-  
+
       // Filters out the selected employee
       const updatedEmployeeData = employees.employeeData.filter(
         (e) => e.key !== employeeId
       );
-  
+
       // Adds the employee to the end of the list
       updatedEmployeeData.push({ key: employeeId, value: updatedEmployee });
-  
+
       // Sets the state of the employee; updates the browser
       setEmployees({ employeeData: updatedEmployeeData });
-  
+
       // Call the function to update order in Firebase
       await updateEmployeeOrderInFirebase(updatedEmployeeData);
     } catch (error) {
@@ -73,60 +72,55 @@ function EmployeeRow({
       // Handle error, if any.
     }
   };
-  
 
   // Retrieves user, updates DB & browser for big tops, disables user
-  // BUG ISSUE - quick flash of first added employee's name as 'Next Server' screen before displaying correctly. I think something is off with how the employees are being set.
-  // ADDED NEW FUNCTION updateEmployeeOrderInFirebase in order to set their order and the changes persist after page refresh
   const handleAssignBig = async (employeeId) => {
     const db = getDatabase();
-    const employeeRef = ref(db, 'employees/' + employeeId);
-  
+    const employeeRef = ref(db, "employees/" + employeeId);
+
     try {
       // Fetch current data for the employee.
       const snapshot = await get(employeeRef);
       const data = snapshot.val();
       const currentBigTopTotal = data.bigTopTotal;
-  
+
       // Update bigTopTotal for the employee.
       await update(employeeRef, {
         bigTopTotal: currentBigTopTotal + 1,
         disabled: true,
       });
-  
+
       employee.value.disabled = true;
-  
+
       // Move the assigned employee to the end of the table
       const updatedEmployee = {
         ...employees.employeeData.find((e) => e.key === employeeId).value,
         bigTopTotal: currentBigTopTotal + 1,
       };
-  
+
       // Filters out the selected employee and creates a new array without selected employee
       const updatedEmployeeData = employees.employeeData.filter(
         (e) => e.key !== employeeId
       );
-  
+
       // Adds the updated employee to the end of the list
       updatedEmployeeData.push({ key: employeeId, value: updatedEmployee });
-  
+
       // Sets the state of the employee; updates the browser
       setEmployees({ employeeData: updatedEmployeeData });
-  
+
       // Call the function to update order in Firebase
       await updateEmployeeOrderInFirebase(updatedEmployeeData);
     } catch (error) {
       console.log(error);
     }
   };
-  
+
   // Returns server into rotation when ready for more tables
-  // BUG ISSUE - employee order does not persist, seems to return user to previous position.
-  // To Do: Keep user in same position in the rotation
   const handleReturn = async (employeeId) => {
     // Find employee by ID
     const db = getDatabase();
-    const employeeRef = ref(db, 'employees/' + employeeId);
+    const employeeRef = ref(db, "employees/" + employeeId);
 
     try {
       // Update bigTopTotal for the employee.
@@ -140,10 +134,9 @@ function EmployeeRow({
     }
   };
 
+  // Moves employee to end of list
   const handleSkip = async (employeeId) => {
     if (employees.employeeData.length > 1) {
-      const db = getDatabase();
-  
       // Create a copy of the array
       const updatedEmployees = [...employees.employeeData];
       // Find the index of the employee to be skipped
@@ -154,15 +147,15 @@ function EmployeeRow({
       const skippedEmployee = updatedEmployees.splice(employeeIndex, 1)[0];
       // Push the employee at the end of the array
       updatedEmployees.push(skippedEmployee);
-  
+
       lastAction.current = {
-        action: 'skip',
+        action: "skip",
         employee: skippedEmployee,
         currentEmployeeList: employees,
       };
-  
+
       setEmployees({ employeeData: updatedEmployees });
-      
+
       // Call the function to update order in Firebase
       await updateEmployeeOrderInFirebase(updatedEmployees);
     }
@@ -172,13 +165,13 @@ function EmployeeRow({
     <tr key={employee.key}>
       <td
         className={`text-left py-2 pr-2 ${
-          employee.value.trainee ? 'text-cyan-600' : ''
+          employee.value.trainee ? "text-cyan-600" : ""
         }`}
       >
         {employee.value.disabled ? (
           <ReadyBtn onClick={() => handleReturn(employee.key)} />
         ) : (
-          ''
+          ""
         )}
         {employee.value.employeeName}
       </td>
@@ -215,7 +208,7 @@ function EmployeeRow({
             disabled={employee.value.disabled}
           />
         ) : (
-        " "
+          " "
         )}
       </td>
       <td className="p-2">
@@ -226,7 +219,6 @@ function EmployeeRow({
           employee={employee}
           employees={employees}
           setEmployees={setEmployees}
-          lastAction={lastAction}
           breakEmployees={breakEmployees}
           setBreakEmployees={setBreakEmployees}
         />

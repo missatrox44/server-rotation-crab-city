@@ -1,11 +1,13 @@
 import React from "react";
-import { useState } from "react";
 
 function NextServer({ employees }) {
+  
+  // Returns first employee who is not disabled
   const findNextAvaliable = (employee) => {
     return employee.value.disabled === false
   }
 
+  // Finds next availabe server
   let nextAvaliable = employees.employeeData.find(findNextAvaliable)
 
   return (
