@@ -1,6 +1,6 @@
 import React from "react";
 import BreakOverBtn from "./Btns/BreakOverBtn";
-import { getDatabase, ref, update, get } from "firebase/database";
+import { getDatabase, ref, update } from "firebase/database";
 
 function BreakEmployeeRow({
   employee,
@@ -9,8 +9,9 @@ function BreakEmployeeRow({
   breakEmployees,
   setBreakEmployees,
 }) {
+  // Function to handle 'Break Over' button click
   const handleBreakOver = async (employee) => {
-    // Adds the off break employee back to active employees list
+    // Adds the off-break employee back to active employees list
     setEmployees({ employeeData: [...employees.employeeData, employee] });
 
     // Creates new onBreak array without the selected employee
@@ -31,7 +32,7 @@ function BreakEmployeeRow({
       await update(employeeRef, {
         break: false,
       });
-      
+
       // Updates state for employees on break
       setBreakEmployees([...updatedBreakEmployees]);
     } catch (error) {

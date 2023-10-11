@@ -10,21 +10,31 @@ export default function ClockOutModal({
   setIsModalVisible,
   lastAction,
 }) {
+  // Function to handle 'Clock Out' button click
   const handleClockOut = () => {
     lastAction.current = {
       action: "clock out",
       employee: employee,
       currentEmployeeList: employees,
     };
+
+    // Creates copy of employee array
     const employeesCopy = [...employees.employeeData];
+
+    // Filters out selected employee. Creates new array without employee
     const clockedInEmployees = employeesCopy.filter(
       (clockedInEmployee) => clockedInEmployee.key !== employee.key
     );
+
+    // Updates employees, closes modal
     setEmployees({ employeeData: clockedInEmployees });
     setIsModalVisible(false);
+
+    // Function call to remove employee from db
     deleteEmployee(employee.key);
   };
 
+  // Removes selected employee from database
   const deleteEmployee = (employeeKey) => {
     try {
       const employeeRef = ref(db, `employees/${employeeKey}`);

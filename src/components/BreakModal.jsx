@@ -1,5 +1,5 @@
 import React from "react";
-import { getDatabase, ref, update, get } from "firebase/database";
+import { getDatabase, ref, update } from "firebase/database";
 
 export default function BreakModal({
   employee,
@@ -11,7 +11,6 @@ export default function BreakModal({
 }) {
   // Disables user, sets DB break status
   const handleBreak = async (employeeId) => {
-
     // Find employee by ID
     const db = getDatabase();
     const employeeRef = ref(db, "employees/" + employeeId);
@@ -35,7 +34,7 @@ export default function BreakModal({
 
       // Adds onBreak employee to seaparte array
       const newBreakingEmployees = [...breakEmployees, employee];
-     
+
       // State handling
       setBreakEmployees(newBreakingEmployees);
       setEmployees({ employeeData: [...workingEmployees] });
