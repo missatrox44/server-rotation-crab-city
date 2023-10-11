@@ -19,7 +19,7 @@ The current system of using a dry-erase board for server rotation was not effici
   - Small Tops: Displays the running count of small tops assigned
    -Assign Small: When pressed, the small top count is incremented by one, and the employee is moved to the back of the queue.
   - Big Tops: Displays the running count of big tops assigned. This will not appear for trainees.
-  - Assign Big: When pressed, the big top count is incremented by one, and the employee is disabled to account for the time needed to handle a large party. A new 'Ready' button will appear before the employee's name. The Small and Big Assign buttons will be disabled. The Employee will hold their spot in the queue until they are ready to be assigned more tables. 
+  - Assign Big: When pressed, the big top count is incremented by one, and the employee is disabled to account for the time needed to handle a large party. A new 'Return' button will appear before the employee's name. The Small and Big Assign buttons will be disabled. The Employee will hold their spot in the queue until they are ready to be assigned more tables. 
   - Skip: When pressed, the employee is moved to the back of the queue.
    -Break: When pressed, the employee is taken out of the queue (paused). A new button 'Break Over' will appear, while the Small/Big Assign and Skip buttons are removed.
   - Clock Out: When pressed, the employee will be prompted to make SURE user meant to press button. Once confirmed, the employee will be removed from the table completely.

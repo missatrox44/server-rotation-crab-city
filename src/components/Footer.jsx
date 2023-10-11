@@ -15,7 +15,7 @@ function Footer({ employees, handleUndo }) {
         S4R4
       </a>
       {" - "}
-      <a target="_blank" href="https://chelsea314.github.io/portfolio/">
+      <a target="_blank" href="https://www.linkedin.com/in/chelsea-sexton/">
         Chelsea
       </a>
       {" - "}

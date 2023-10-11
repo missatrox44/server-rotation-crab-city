@@ -76,8 +76,6 @@ function EmployeeRow({
   
 
   // Retrieves user, updates DB & browser for big tops, disables user
-  // BUG ISSUE - quick flash of first added employee's name as 'Next Server' screen before displaying correctly. I think something is off with how the employees are being set.
-  // ADDED NEW FUNCTION updateEmployeeOrderInFirebase in order to set their order and the changes persist after page refresh
   const handleAssignBig = async (employeeId) => {
     const db = getDatabase();
     const employeeRef = ref(db, 'employees/' + employeeId);
@@ -121,8 +119,6 @@ function EmployeeRow({
   };
   
   // Returns server into rotation when ready for more tables
-  // BUG ISSUE - employee order does not persist, seems to return user to previous position.
-  // To Do: Keep user in same position in the rotation
   const handleReturn = async (employeeId) => {
     // Find employee by ID
     const db = getDatabase();
@@ -226,7 +222,6 @@ function EmployeeRow({
           employee={employee}
           employees={employees}
           setEmployees={setEmployees}
-          lastAction={lastAction}
           breakEmployees={breakEmployees}
           setBreakEmployees={setBreakEmployees}
         />

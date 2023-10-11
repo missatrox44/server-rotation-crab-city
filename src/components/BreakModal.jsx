@@ -1,6 +1,4 @@
 import React from "react";
-import { useState } from "react";
-
 import { getDatabase, ref, update, get } from "firebase/database";
 
 export default function BreakModal({

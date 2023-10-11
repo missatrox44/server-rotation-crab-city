@@ -11,31 +11,30 @@ import ClearFirebaseModal from './components/ClearFirebaseModal';
 function App() {
   const [employees, setEmployees] = useState({ employeeData: [] });
   const [breakEmployees, setBreakEmployees] = useState([]);
-  const [nextServerIndex, setNextServerIndex] = useState(0);
   const [error, setError] = useState(null);
   const [isModalVisible, setModalVisible] = useState(false);
 
   let lastAction = useRef({});
 
   // Error reset function
-  const resetError = () => {
-    setError(null);
-  };
+  // const resetError = () => {
+  //   setError(null);
+  // };
 
-  // Undo Currently not Functioning
-  const handleUndo = () => {
-    if (!lastAction.current.action) {
-      return;
-    }
-    const { action, employee, currentEmployeeList, currentBreakEmployeeList } =
-      lastAction.current;
-    if (action === 'big top') {
-      employee.bigTopTotal = employee.bigTopTotal - 1;
-    }
-    setEmployees(currentEmployeeList);
-    setBreakEmployees(currentBreakEmployeeList);
-    lastAction.current = {};
-  };
+  // // Undo Currently not Functioning
+  // const handleUndo = () => {
+  //   if (!lastAction.current.action) {
+  //     return;
+  //   }
+  //   const { action, employee, currentEmployeeList, currentBreakEmployeeList } =
+  //     lastAction.current;
+  //   if (action === 'big top') {
+  //     employee.bigTopTotal = employee.bigTopTotal - 1;
+  //   }
+  //   setEmployees(currentEmployeeList);
+  //   setBreakEmployees(currentBreakEmployeeList);
+  //   lastAction.current = {};
+  // };
 
   useEffect(() => {
     getAllEmployees();
@@ -72,7 +71,6 @@ function App() {
         setEmployees({ employeeData: [...employeesArr] });
       });
     } catch (error) {
-      console.log(error);
       setError(`Error fetching employees data: ${error.message}`);
     }
   };
@@ -95,6 +93,7 @@ function App() {
   const handleClearFirebaseCancel = () => {
     setModalVisible(false);
   };
+
   return (
     <div className="App">
       <button
@@ -122,7 +121,7 @@ function App() {
         <div>
           <hr className="my-8" />
 
-          <NextServer employees={employees} nextServerIndex={nextServerIndex} />
+          <NextServer employees={employees} />
 
           <hr className="my-8" />
           <main className="overflow-x-auto">
@@ -131,7 +130,6 @@ function App() {
               setEmployees={setEmployees}
               breakEmployees={breakEmployees}
               setBreakEmployees={setBreakEmployees}
-              nextServerIndex={nextServerIndex}
               lastAction={lastAction}
             />
           </main>
@@ -140,7 +138,7 @@ function App() {
         </div>
       )}
 
-      <Footer employees={employees} handleUndo={handleUndo} />
+      <Footer employees={employees} />
     </div>
   );
 }
