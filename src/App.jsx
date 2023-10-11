@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { ref, onValue } from 'firebase/database';
+import { ref, onValue, set } from 'firebase/database';
 import './App.css';
 import { db } from './utils/firebase';
 import Footer from './components/Footer';
@@ -82,11 +82,14 @@ function App() {
   };
 
   const handleClearFirebaseConfirm = async () => {
-    // Add code to clear your database here
-    const getEmployees = ref(db, 'employees');
-    await getEmployees.remove(); // This will clear the entire 'employees' collection
-
-    setModalVisible(false);
+    try {
+      const employeesRef = ref(db, 'employees');
+      // clear out db
+      await set(employeesRef, null);
+      setModalVisible(false);
+    } catch (error) {
+      console.error('Error clearing database:', error);
+    }
   };
 
   const handleClearFirebaseCancel = () => {
