@@ -1,42 +1,22 @@
-import { useState, useEffect, useRef } from 'react';
-import { ref, onValue, set } from 'firebase/database';
-import './App.css';
-import { db } from './utils/firebase';
-import Footer from './components/Footer';
-import HeaderForm from './components/HeaderForm';
-import NextServer from './components/NextServer';
-import EmployeeTable from './components/EmployeeTable';
-import ClearFirebaseModal from './components/ClearFirebaseModal';
+import { useState, useEffect, useRef } from "react";
+import { ref, onValue, set } from "firebase/database";
+import "./App.css";
+import { db } from "./utils/firebase";
+import Footer from "./components/Footer";
+import HeaderForm from "./components/HeaderForm";
+import NextServer from "./components/NextServer";
+import EmployeeTable from "./components/EmployeeTable";
+import ClearFirebaseModal from "./components/ClearFirebaseModal";
 
 function App() {
   const [employees, setEmployees] = useState({ employeeData: [] });
   const [breakEmployees, setBreakEmployees] = useState([]);
-  const [nextServerIndex, setNextServerIndex] = useState(0);
   const [error, setError] = useState(null);
   const [isModalVisible, setModalVisible] = useState(false);
 
   let lastAction = useRef({});
 
-  // Error reset function
-  const resetError = () => {
-    setError(null);
-  };
-
-  // Undo Currently not Functioning
-  const handleUndo = () => {
-    if (!lastAction.current.action) {
-      return;
-    }
-    const { action, employee, currentEmployeeList, currentBreakEmployeeList } =
-      lastAction.current;
-    if (action === 'big top') {
-      employee.bigTopTotal = employee.bigTopTotal - 1;
-    }
-    setEmployees(currentEmployeeList);
-    setBreakEmployees(currentBreakEmployeeList);
-    lastAction.current = {};
-  };
-
+  // On page load, employees retrieved from database
   useEffect(() => {
     getAllEmployees();
   }, []);
@@ -45,7 +25,7 @@ function App() {
   const getAllEmployees = () => {
     try {
       // Finds employees DB
-      const getEmployees = ref(db, 'employees');
+      const getEmployees = ref(db, "employees");
 
       // Creates lists for working employees & employees on break
       onValue(getEmployees, (snapshot) => {
@@ -72,29 +52,32 @@ function App() {
         setEmployees({ employeeData: [...employeesArr] });
       });
     } catch (error) {
-      console.log(error);
       setError(`Error fetching employees data: ${error.message}`);
     }
   };
 
+  // Modal Controls for Reset Btn
   const handleClearFirebase = () => {
     setModalVisible(true);
   };
 
+  // Function to remove all employees from database
   const handleClearFirebaseConfirm = async () => {
     try {
-      const employeesRef = ref(db, 'employees');
-      // clear out db
+      const employeesRef = ref(db, "employees");
+      // Clears out db
       await set(employeesRef, null);
       setModalVisible(false);
     } catch (error) {
-      console.error('Error clearing database:', error);
+      console.error("Error clearing database:", error);
     }
   };
 
+  // Modal Controls for Reset Btn
   const handleClearFirebaseCancel = () => {
     setModalVisible(false);
   };
+
   return (
     <div className="App">
       <button
@@ -111,8 +94,11 @@ function App() {
       />
 
       <header>
-        <h1 className="text-blue-600 text-6xl mt-6">Crab City Server Rotation</h1>
-        <p className="text-xs mb-6">v.2.0.0</p>
+        <h1 className="text-blue-600 text-6xl mt-6">
+          Server Rotation
+        </h1>
+        <h2 className="text-white-600 text-3xl m-2">Crab City | Odessa</h2>
+        <p className="text-blue-600 text-xs mb-6">v.2.0.0</p>
 
         <HeaderForm employees={employees} setEmployees={setEmployees} />
       </header>
@@ -122,7 +108,7 @@ function App() {
         <div>
           <hr className="my-8" />
 
-          <NextServer employees={employees} nextServerIndex={nextServerIndex} />
+          <NextServer employees={employees} />
 
           <hr className="my-8" />
           <main className="overflow-x-auto">
@@ -131,7 +117,6 @@ function App() {
               setEmployees={setEmployees}
               breakEmployees={breakEmployees}
               setBreakEmployees={setBreakEmployees}
-              nextServerIndex={nextServerIndex}
               lastAction={lastAction}
             />
           </main>
@@ -140,7 +125,7 @@ function App() {
         </div>
       )}
 
-      <Footer employees={employees} handleUndo={handleUndo} />
+      <Footer employees={employees} />
     </div>
   );
 }
