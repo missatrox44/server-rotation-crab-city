@@ -111,8 +111,8 @@ function App() {
       />
 
       <header>
-        <h1 className="text-blue-600 text-6xl">Crab City Server Rotation</h1>
-        <p className="text-xs mb-6">v.1.3.0</p>
+        <h1 className="text-blue-600 text-6xl mt-6">Crab City Server Rotation</h1>
+        <p className="text-xs mb-6">v.2.0.0</p>
 
         <HeaderForm employees={employees} setEmployees={setEmployees} />
       </header>
