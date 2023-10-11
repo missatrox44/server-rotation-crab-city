@@ -12,7 +12,7 @@ function Footer() {
         Chelsea
       </a>
       {" - "}
-      <a target="_blank" href="https://andcooke.github.io/react-portfolio/">
+      <a target="_blank" href="https://www.linkedin.com/in/andrew-l-cooke/">
         Andrew
       </a>
     </footer>
