@@ -4,7 +4,7 @@ function Footer() {
   return (
     <footer className="bottom-0 w-full my-4">
       Created by{" "}
-      <a target="_blank" href="https://github.com/missatrox44">
+      <a target="_blank" href="https://www.sarabaqla.dev">
         S4R4
       </a>
       {" - "}
