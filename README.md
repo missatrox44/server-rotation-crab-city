@@ -45,11 +45,7 @@ The current system of using a dry-erase board for server rotation was not effici
 ![Table](./images/screen-2.png)
 
 ## Wireframe
-![wireframe](./src/assets/wireframe.png)
-<!-- ![wireframe2](./src/assets/wireframe2.png)  -->
-<!-- ![wireframe3](./src/assets/wireframe3.png) -->
-
-
+![wireframe](./images/wireframe.png)
 
 ## Contact Us
 
