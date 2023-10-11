@@ -217,7 +217,7 @@ function EmployeeRow({
             disabled={employee.value.disabled}
           />
         ) : (
-          <span>Trainee</span>
+        " "
         )}
       </td>
       <td className="p-2">
